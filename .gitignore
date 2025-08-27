@@ -1,0 +1,38 @@
+# ELFs
+sbwt
+build_index
+count_occ
+sbwt_test
+sbwt-debug
+build_index-debug
+*.o
+*.a
+*.so
+
+*.pyc
+
+# sequence files
+*.fa
+*.fastq
+*.fasta
+**/genome
+*.sbwt
+
+# cmake files
+CMakeCache.txt
+**/CMakeFiles
+**/cmake-build-debug
+**/cmake-build-release
+cmake_install.cmake
+Makefile
+
+# IDE files
+**/.idea
+*.cbp
+**/venv
+
+# log files
+*.log
+
+# other files
+*~
