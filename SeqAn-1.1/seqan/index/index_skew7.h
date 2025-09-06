@@ -806,12 +806,25 @@ namespace SEQAN_NAMESPACE_MAIN
 		TText &s,
 		Skew7 const &_dummy,
         TSize maxLCP,
-        unsigned K = ValueSize< typename Value<TText>::Type >::VALUE)
+		unsigned K)
     {
         unsigned depth = 0;
         for(TSize i = 1; i < maxLCP; i*=7) ++depth;
         createSuffixArray(SA, s, _dummy, K, depth);
     }
+
+	// Overload supplying former default value for K.
+	template < typename TSA,
+			   typename TText,
+			   typename TSize >
+	inline void createSuffixArrayPart(
+		TSA &SA,
+		TText &s,
+		Skew7 const &_dummy,
+		TSize maxLCP)
+	{
+		createSuffixArrayPart(SA, s, _dummy, maxLCP, ValueSize< typename Value<TText>::Type >::VALUE);
+	}
 
 //}
 

@@ -30,6 +30,7 @@ Makefile
 **/.idea
 *.cbp
 **/venv
+.vscode/*
 
 # log files
 *.log

@@ -17,11 +17,13 @@
 
 namespace sbwt
 {
-        const uint32_t FLAG32[32] = {
-                        1,      1<<1,   1<<2,   1<<3,   1<<4,   1<<5,   1<<6,   1<<7,
-                        1<<8,   1<<9,   1<<10,  1<<11,  1<<12,  1<<13,  1<<14,  1<<15,
-                        1<<16,  1<<17,  1<<18,  1<<19,  1<<20,  1<<21,  1<<22,  1<<23,
-                        1<<24,  1<<25,  1<<26,  1<<27,  1<<28,  1<<29,  1<<30,  1<<31
+        // NOTE: Using unsigned (1u) to avoid signed int left-shift to sign bit and
+        // narrowing warnings (e.g. 1<<31 becomes -2147483648 as signed int before conversion).
+        constexpr uint32_t FLAG32[32] = {
+                        1u<<0,  1u<<1,  1u<<2,  1u<<3,  1u<<4,  1u<<5,  1u<<6,  1u<<7,
+                        1u<<8,  1u<<9,  1u<<10, 1u<<11, 1u<<12, 1u<<13, 1u<<14, 1u<<15,
+                        1u<<16, 1u<<17, 1u<<18, 1u<<19, 1u<<20, 1u<<21, 1u<<22, 1u<<23,
+                        1u<<24, 1u<<25, 1u<<26, 1u<<27, 1u<<28, 1u<<29, 1u<<30, 1u<<31
         };
 
         /**
@@ -737,7 +739,12 @@ namespace sbwt
          */
         void reads_buffer::ReadNext()
         {
-                length_read = getline(ptr_buffer, ptr_length_buffer, file_stream);
+                if (!file_stream) {
+                        length_read = -1;
+                        return;
+                }
+                // Use global ::getline (POSIX). macOS requires _POSIX_C_SOURCE or equivalent feature test macro.
+                length_read = ::getline(ptr_buffer, ptr_length_buffer, file_stream);
                 if (length_read == -1)
                         return;
                 /*
