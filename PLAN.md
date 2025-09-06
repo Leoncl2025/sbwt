@@ -10,6 +10,6 @@ To publish this study to journal
     - Add perf regression benchmark test
 
 - Solid the material
+  - **Prerequisite**: Read papers related to bwa/bowtie/soap and seek the gap of material or experiments
   - Set up the hardware env
   - Run the align jobs using different software (bwa, soap...) and data
-  - Read papers related to bwa/bowtie/soap and seek the gap of material or experiments
