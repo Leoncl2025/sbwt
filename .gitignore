@@ -37,3 +37,7 @@ Makefile
 
 # other files
 *~
+
+# Build
+build/*
+release/*

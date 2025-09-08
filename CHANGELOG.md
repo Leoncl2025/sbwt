@@ -11,3 +11,4 @@
 ### ✨ Features and improvements
 
 - Compatibility on MacOS
+- Add end-to-end test and benchmark test
