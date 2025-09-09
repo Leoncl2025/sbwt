@@ -1,5 +1,8 @@
-#cmake_minimum_required(VERSION 3.9)
+cmake_minimum_required(VERSION 3.24)
 project(sbwt)
+
+# Always include CTest early so the BUILD_TESTING option is created (default ON)
+include(CTest)
 
 # Check Platform
 if(CYGWIN)
@@ -59,3 +62,16 @@ add_executable(count_occ ${CMAKE_SOURCE_DIR}/count_occ.cc ${SRC_C} ${SRC_CC} ${S
 add_executable(sbwt ${CMAKE_SOURCE_DIR}/sbwt_aligner.cpp ${SRC_C} ${SRC_CC} ${SRC_CPP})
 
 add_executable(sbwt_test ${CMAKE_SOURCE_DIR}/sbwt_test.cpp ${SRC_C} ${SRC_CC} ${SRC_CPP})
+
+# Register tests if requested
+if(BUILD_TESTING)
+    enable_testing() # Ensure testing targets are generated
+    find_package(Python3 COMPONENTS Interpreter REQUIRED)
+    add_test(
+        NAME e2e_app
+        COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_build_index_e2e.py $<TARGET_FILE:build_index>
+    )
+    set_tests_properties(e2e_app PROPERTIES
+        PASS_REGULAR_EXPRESSION "All e2e checks passed"
+    )
+endif()

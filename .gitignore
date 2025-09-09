@@ -30,9 +30,14 @@ Makefile
 **/.idea
 *.cbp
 **/venv
+.vscode/*
 
 # log files
 *.log
 
 # other files
 *~
+
+# Build
+build/*
+release/*

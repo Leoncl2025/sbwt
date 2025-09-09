@@ -7,3 +7,17 @@ cd release
 cmake -DCMAKE_BUILD_TYPE=Release ..
 make
 ```
+
+## Build and test
+
+### Build
+```bash
+cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
+cmake --build build -j
+```
+
+## Running tests (CTest)
+
+```bash
+ctest --test-dir build -V
+```

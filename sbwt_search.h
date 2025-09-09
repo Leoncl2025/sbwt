@@ -1,8 +1,14 @@
 #ifndef SBWT_SEARCH_H
 #define SBWT_SEARCH_H
 
+// Enable POSIX.1-2008 interfaces (getline) on non-GNU libcs (e.g. macOS / BSD)
+#ifndef _POSIX_C_SOURCE
+#define _POSIX_C_SOURCE 200809L
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
+#include <sys/types.h> // for ssize_t
 
 #include <cstdint>
 #include <string>
@@ -65,8 +71,8 @@ namespace sbwt
         public:
                 char            *buffer;
                 char            **ptr_buffer;
-                uint64_t        length_buffer;
-                uint64_t        *ptr_length_buffer;
+                size_t          length_buffer;      // must be size_t for POSIX getline
+                size_t          *ptr_length_buffer; // pointer passed directly to getline
                 ssize_t         length_read;
 
                 FILE            *file_stream;
