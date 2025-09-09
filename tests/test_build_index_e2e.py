@@ -12,14 +12,7 @@ def run(cmd: List[str], *, expect_rc: int = 0) -> subprocess.CompletedProcess:
         raise SystemExit(1)
     return proc
 
-
-def assert_equal(actual, expected, msg: str = ""):
-    if actual != expected:
-        print(f"Assertion failed: {actual!r} != {expected!r} {msg}")
-        raise SystemExit(2)
-
-
-def main() -> int:
+def build_index() -> int:
     if len(sys.argv) < 2:
         print("Usage: test_build_index_e2e.py <path-to-my_app>")
         return 99
@@ -37,4 +30,4 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(build_index())
