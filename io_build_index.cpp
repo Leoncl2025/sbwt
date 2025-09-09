@@ -139,8 +139,8 @@ void WriteIntoDiskBuildSecondIndex(
         string file_second_filename = prefix_filename
                                       + "."
                                       + std::to_string(build_index.period)
-                                      + "."
-                                      + std::to_string(second_index.size_seed)
+                                      //+ "."
+                                      //+ std::to_string(second_index.size_seed)
                                       + ".second.sbwt";
         std::ofstream second_fout(file_second_filename.c_str(), std::ios::binary);
         LOGINFO("Write second index...\n");

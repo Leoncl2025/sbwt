@@ -68,10 +68,17 @@ if(BUILD_TESTING)
     enable_testing() # Ensure testing targets are generated
     find_package(Python3 COMPONENTS Interpreter REQUIRED)
     add_test(
-        NAME e2e_app
+        NAME e2e_build_index
         COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_build_index_e2e.py $<TARGET_FILE:build_index>
     )
-    set_tests_properties(e2e_app PROPERTIES
+    add_test(
+        NAME e2e_sbwt
+        COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_sbwt_e2e.py $<TARGET_FILE:build_index> $<TARGET_FILE:sbwt>
+    )
+    set_tests_properties(e2e_build_index PROPERTIES
+        PASS_REGULAR_EXPRESSION "All e2e checks passed"
+    )
+    set_tests_properties(e2e_sbwt PROPERTIES
         PASS_REGULAR_EXPRESSION "All e2e checks passed"
     )
 endif()
