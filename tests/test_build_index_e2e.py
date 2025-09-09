@@ -31,6 +31,7 @@ def main() -> int:
     ref_fa = "test_ref.fa"
     reads_fa = "test_reads.fa"
     generate_reads_ref(ref_fa, reads_fa, ref_size=10000, kmer=150, reads_size=100)
+    run([exe, ref_fa, '3', '50'])
     print("All e2e checks passed")
     return 0
 
