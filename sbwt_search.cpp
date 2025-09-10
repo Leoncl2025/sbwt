@@ -1169,7 +1169,7 @@ namespace sbwt
                 head_str[rb_reads.length_read] = '\0';
 
                 /// count matched segment
-                uint64_t total_reads = 1;
+                uint64_t total_reads = 0;
                 uint64_t matched_reads = 0;
 
                 rb_reads.ReadNext();/// sequence
@@ -1619,7 +1619,7 @@ namespace sbwt
                 head_str[rb_reads.length_read] = '\0';
 
                 /// count matched segment
-                uint64_t total_reads = 1;
+                uint64_t total_reads = 0;
                 uint64_t matched_reads = 0;
 
                 rb_reads.ReadNext();/// sequence
