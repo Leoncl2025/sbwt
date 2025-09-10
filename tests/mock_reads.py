@@ -6,12 +6,12 @@ def IsDna(c):
     return c == 'A' or c == 'C' or c == 'G' or c == 'T'
 
 
-def mutation(reads):
+def mutation(reads, max_mismatches=7):
     d = {'A': "CGT", 'C': "AGT", 'G': "ACT", 'T': "ACG"}
     idxs = list(range(len(reads)))
     random.shuffle(idxs)
     # max 7 mismatches
-    num = random.randrange(0, 8)
+    num = random.randrange(0, max_mismatches + 1)
     # num = random.randrange(1, 4)
     for i in range(num):
         i = idxs[i]
@@ -20,7 +20,7 @@ def mutation(reads):
     return reads, num
 
 
-def generate_reads_ref(file_name_ref, file_name_reads, ref_size, kmer, reads_size):
+def generate_reads_ref(file_name_ref, file_name_reads, ref_size, kmer, reads_size, max_mismatches=7):
     """Generate reference and reads files.
     
     file_name_ref: reference file name
@@ -28,6 +28,7 @@ def generate_reads_ref(file_name_ref, file_name_reads, ref_size, kmer, reads_siz
     ref_size: size of reference sequence
     kmer: length of each read
     reads_size: total size of reads to generate
+    max_mismatches: maximum number of mismatches in each read
     """
 
     seed = 13
@@ -39,7 +40,7 @@ def generate_reads_ref(file_name_ref, file_name_reads, ref_size, kmer, reads_siz
             raise SystemError("Reference size is smaller than kmer size")
         for i in range(0, reads_size):
             startI = random.randint(0, len(ref) - kmer)
-            line, num = mutation(ref[startI:startI + kmer])
+            line, num = mutation(ref[startI:startI + kmer], max_mismatches)
             f.write(f">r{i}-{num}-{i}{os.linesep}")
             f.write(f"{line}{os.linesep}")
 
