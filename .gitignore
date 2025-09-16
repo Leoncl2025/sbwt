@@ -41,3 +41,4 @@ Makefile
 # Build
 build/*
 release/*
+data/*
