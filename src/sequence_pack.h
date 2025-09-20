@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <bitset>
+#include <stdint.h>
 
 using std::vector;
 using std::bitset;

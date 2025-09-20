@@ -6,6 +6,7 @@
 #include <seqan/sequence.h>
 #include <sstream>
 #include "assert_helpers.h"
+#include <stdint.h>
 
 using namespace std;
 using namespace seqan;
