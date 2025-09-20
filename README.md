@@ -10,6 +10,9 @@ make
 
 ## Build and test
 
+### prerequisite
+Install cmake and g++ (version >= 11)
+
 ### Build
 ```bash
 cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
