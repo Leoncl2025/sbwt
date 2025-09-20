@@ -2,6 +2,7 @@
 #include <string>
 #include <bitset>
 #include <iostream>
+#include <stdint.h>
 
 #include "sequence_pack.h"
 

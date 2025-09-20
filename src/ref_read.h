@@ -7,6 +7,7 @@
 #include <string>
 #include <ctype.h>
 #include <fstream>
+#include <stdint.h>
 #include <seqan/sequence.h>
 #include "alphabet.h"
 #include "assert_helpers.h"

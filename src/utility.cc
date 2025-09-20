@@ -1,6 +1,7 @@
 #include <limits.h>  // for INT_MAX
 #include <stdio.h>
 #include <stdlib.h>  // for strtol uint32_t etc.
+#include <stdint.h>
 
 #include <iostream>
 #include <string>

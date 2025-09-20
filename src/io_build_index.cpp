@@ -7,6 +7,7 @@
 #include <string>
 #include <cassert>
 #include <memory> // for shared_ptr
+#include <stdint.h>
 
 #include <seqan/sequence.h>
 #include <seqan/file.h>
