@@ -84,9 +84,7 @@ BuildIndexRawData::BuildIndexRawData(char *file_name, const uint32_t &per, const
                 uint32_t total_num = 0;
                 char *ptr = buffer;
                 for (uint32_t i = 0; i < read_length; ++i) {
-                        if (IsDNA(*ptr)) {
-                                ++total_num;
-                        }
+                        ++total_num;
                         ++ptr;
                 }
 
@@ -100,10 +98,8 @@ BuildIndexRawData::BuildIndexRawData(char *file_name, const uint32_t &per, const
                 char *ptr0 = seq_raw;
                 ptr = buffer;
                 for (uint32_t i = 0; i < read_length; ++i) {
-                        if (IsDNA(*ptr)) {
-                                *ptr0 = *ptr;
-                                ++ptr0;
-                        }
+                        *ptr0 = ConvertToDNA(*ptr);
+                        ++ptr0;
                         ++ptr;
                 }
 

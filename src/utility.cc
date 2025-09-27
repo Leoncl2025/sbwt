@@ -91,6 +91,26 @@ bool IsDNA(char c)
         return c == 'A' || c == 'C' || c == 'G' || c == 'T';
 }
 
+char ConvertToDNA(char c)
+{
+        switch (c) {
+                case 'a':
+                case 'A':
+                        return 'A';
+                case 'c':
+                case 'C':
+                        return 'C';
+                case 'g':
+                case 'G':
+                        return 'G';
+                case 't':
+                case 'T':
+                        return 'T';
+                default:
+                        return 'A';
+        }
+}
+
 bool IsN(char c)
 {
         return c == 'N';

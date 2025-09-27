@@ -10,6 +10,7 @@ char *Extract(char *, const uint32_t &, uint32_t &);
 char *ReadFasta(char *, uint32_t &);
 bool IsDNA(char);
 bool IsN(char);
+char ConvertToDNA(char);
 uint32_t GetUint(int, char *);
 void CountSeedOccurrence(sbwt::BuildIndexRawData &, uint32_t);
 void PrintHelp_BuildIndex(int, char**);
