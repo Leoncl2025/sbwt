@@ -15,7 +15,7 @@ def run_tests():
             raise SystemExit("No sequences found in the provided FASTA file.")
         write_header = False
         for header, sequence in records:  # only the first sequence
-            with open(output_fa, 'w') as f:
+            with open(output_fa, 'a') as f:
                 if not write_header:
                     write_header = True
                     f.write(f">{header}{os.linesep}")
