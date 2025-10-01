@@ -41,7 +41,7 @@ char *Extract(char *seq, const uint32_t &seq_size, uint32_t &trimmed_length)
     ptr = seq;
     for (uint32_t i = 0; i < seq_size; ++i) {
         if (IsDNA(*ptr)) {
-            *ptr0 = *ptr;
+            *ptr0 = ConvertToDNA(*ptr);
             ++ptr0;
         }
         ++ptr;
@@ -88,7 +88,8 @@ char *ReadFasta(char *file_name, uint32_t &read_length)
 
 bool IsDNA(char c)
 {
-    return c == 'A' || c == 'C' || c == 'G' || c == 'T';
+    return c == 'A' || c == 'C' || c == 'G' || c == 'T' ||
+           c == 'a' || c == 'c' || c == 'g' || c == 't' || c == 'N' || c == 'n';
 }
 
 char ConvertToDNA(char c)
