@@ -38,15 +38,15 @@ namespace SEQAN_NAMESPACE_MAIN
 template <typename TValue>
 struct _Context_LSS
 {
-	TValue *I,                   /* group array, ultimately suffix array.*/
-	*V,                          /* inverse array, ultimately inverse of I.*/
-	r,                           /* number of symbols aggregated by transform.*/
-	h;                           /* length of already-sorted prefixes.*/
+	TValue *I,           /* group array, ultimately suffix array.*/
+	*V,              /* inverse array, ultimately inverse of I.*/
+	r,               /* number of symbols aggregated by transform.*/
+	h;               /* length of already-sorted prefixes.*/
 
 	// MODIFIED: renamed defines according to SeqAn's naming conventions
-	#define SEQAN_LSSKEY(p)          (V[*(p)+(h)])
+	#define SEQAN_LSSKEY(p)      (V[*(p)+(h)])
 	#define SEQAN_LSSSWAP(p, q)      (tmp=*(p), *(p)=*(q), *(q)=tmp)
-	#define SEQAN_LSSMED3(a, b, c)   (SEQAN_LSSKEY(a)<SEQAN_LSSKEY(b) ?                        \
+	#define SEQAN_LSSMED3(a, b, c)   (SEQAN_LSSKEY(a)<SEQAN_LSSKEY(b) ?            \
 			(SEQAN_LSSKEY(b)<SEQAN_LSSKEY(c) ? (b) : SEQAN_LSSKEY(a)<SEQAN_LSSKEY(c) ? (c) : (a))       \
 			: (SEQAN_LSSKEY(b)>SEQAN_LSSKEY(c) ? (b) : SEQAN_LSSKEY(a)>SEQAN_LSSKEY(c) ? (c) : (a)))
 
@@ -57,13 +57,13 @@ struct _Context_LSS
 	{
 	   TValue g;
 
-	   g=pm-I;                      /* group number.*/
-	   V[*pl]=g;                    /* update group number of first position.*/
+	   g=pm-I;              /* group number.*/
+	   V[*pl]=g;            /* update group number of first position.*/
 	   if (pl==pm)
-		  *pl=-1;                   /* one element, sorted group.*/
+		  *pl=-1;           /* one element, sorted group.*/
 	   else
-		  do                        /* more than one element, unsorted group.*/
-			 V[*++pl]=g;            /* update group numbers.*/
+		  do            /* more than one element, unsorted group.*/
+			 V[*++pl]=g;        /* update group numbers.*/
 		  while (pl<pm);
 	}
 
@@ -74,24 +74,24 @@ struct _Context_LSS
 	   TValue *pa, *pb, *pi, *pn;
 	   TValue f, v, tmp;
 
-	   pa=p;                        /* pa is start of group being picked out.*/
-	   pn=p+n-1;                    /* pn is last position of subarray.*/
+	   pa=p;            /* pa is start of group being picked out.*/
+	   pn=p+n-1;            /* pn is last position of subarray.*/
 	   while (pa<pn) {
 		  for (pi=pb=pa+1, f=SEQAN_LSSKEY(pa); pi<=pn; ++pi)
 			 if ((v=SEQAN_LSSKEY(pi))<f) {
-				f=v;                /* f is smallest key found.*/
+				f=v;        /* f is smallest key found.*/
 				SEQAN_LSSSWAP(pi, pa);       /* place smallest element at beginning.*/
-				pb=pa+1;            /* pb is position for elements equal to f.*/
+				pb=pa+1;        /* pb is position for elements equal to f.*/
 			 } else if (v==f) {     /* if equal to smallest key.*/
 				SEQAN_LSSSWAP(pi, pb);       /* place next to other smallest elements.*/
 				++pb;
 			 }
 		  update_group(pa, pb-1);   /* update group values for new group.*/
-		  pa=pb;                    /* continue sorting rest of the subarray.*/
+		  pa=pb;            /* continue sorting rest of the subarray.*/
 	   }
-	   if (pa==pn) {                /* check if last part is single element.*/
+	   if (pa==pn) {        /* check if last part is single element.*/
 		  V[*pa]=pa-I;
-		  *pa=-1;                   /* sorted group.*/
+		  *pa=-1;           /* sorted group.*/
 	   }
 	}
 
@@ -101,11 +101,11 @@ struct _Context_LSS
 	   TValue *pl, *pm, *pn;
 	   TValue s;
 	   
-	   pm=p+(n>>1);                 /* small arrays, middle element.*/
+	   pm=p+(n>>1);         /* small arrays, middle element.*/
 	   if (n>7) {
 		  pl=p;
 		  pn=p+n-1;
-		  if (n>40) {               /* big arrays, pseudomedian of 9.*/
+		  if (n>40) {           /* big arrays, pseudomedian of 9.*/
 			 s=n>>3;
 			 pl=SEQAN_LSSMED3(pl, pl+s, pl+s+s);
 			 pm=SEQAN_LSSMED3(pm-s, pm, pm+s);
@@ -127,7 +127,7 @@ struct _Context_LSS
 	   TValue *pa, *pb, *pc, *pd, *pl, *pm, *pn;
 	   TValue f, v, s, t, tmp;
 
-	   if (n<7) {                   /* multi-selection sort smallest arrays.*/
+	   if (n<7) {           /* multi-selection sort smallest arrays.*/
 		  select_sort_split(p, n);
 		  return;
 	   }
@@ -135,7 +135,7 @@ struct _Context_LSS
 	   v=choose_pivot(p, n);
 	   pa=pb=p;
 	   pc=pd=p+n-1;
-	   while (1) {                  /* split-end partition.*/
+	   while (1) {          /* split-end partition.*/
 		  while (pb<=pc && (f=SEQAN_LSSKEY(pb))<=v) {
 			 if (f==v) {
 				SEQAN_LSSSWAP(pa, pb);
@@ -189,23 +189,23 @@ struct _Context_LSS
 	   TValue *pi, i, c, d, g;
 
 	   for (pi=p; pi<p+k; ++pi)
-		  *pi=-1;                   /* mark linked lists empty.*/
+		  *pi=-1;           /* mark linked lists empty.*/
 	   for (i=0; i<=n; ++i) {
-		  x[i]=p[c=x[i]];           /* insert in linked list.*/
+		  x[i]=p[c=x[i]];       /* insert in linked list.*/
 		  p[c]=i;
 	   }
 	   for (pi=p+k-1, i=n; pi>=p; --pi) {
-		  d=x[c=*pi];               /* c is position, d is next in list.*/
-		  x[c]=g=i;                 /* last position equals group number.*/
-		  if (d>=0) {               /* if more than one element in group.*/
-			 p[i--]=c;              /* p is permutation for the sorted x.*/
+		  d=x[c=*pi];           /* c is position, d is next in list.*/
+		  x[c]=g=i;         /* last position equals group number.*/
+		  if (d>=0) {           /* if more than one element in group.*/
+			 p[i--]=c;          /* p is permutation for the sorted x.*/
 			 do {
-				d=x[c=d];           /* next in linked list.*/
-				x[c]=g;             /* group number in x.*/
-				p[i--]=c;           /* permutation in p.*/
+				d=x[c=d];       /* next in linked list.*/
+				x[c]=g;         /* group number in x.*/
+				p[i--]=c;       /* permutation in p.*/
 			 } while (d>=0);
 		  } else
-			 p[i--]=-1;             /* one element, sorted group.*/
+			 p[i--]=-1;         /* one element, sorted group.*/
 	   }
 	}
 
@@ -231,49 +231,49 @@ struct _Context_LSS
 	   TValue *pi, *pj;
 	   
 	   for (s=0, i=k-l; i; i>>=1)
-		  ++s;                      /* s is number of bits in old symbol.*/
+		  ++s;              /* s is number of bits in old symbol.*/
 	   e=SupremumValue<TValue>::VALUE>>s; /* e is for overflow checking.*/
 	   for (b=d=r=0; r<n && d<=e && (c=d<<s|(k-l))<=q; ++r) {
-		  b=b<<s|(x[r]-l+1);        /* b is start of x in chunk alphabet.*/
-		  d=c;                      /* d is max symbol in chunk alphabet.*/
+		  b=b<<s|(x[r]-l+1);    /* b is start of x in chunk alphabet.*/
+		  d=c;              /* d is max symbol in chunk alphabet.*/
 	   }
-	   m=(1<<(r-1)*s)-1;            /* m masks off top old symbol from chunk.*/
-	   x[n]=l-1;                    /* emulate zero terminator.*/
-	   if (d<=n) {                  /* if bucketing possible, compact alphabet.*/
+	   m=(1<<(r-1)*s)-1;        /* m masks off top old symbol from chunk.*/
+	   x[n]=l-1;            /* emulate zero terminator.*/
+	   if (d<=n) {          /* if bucketing possible, compact alphabet.*/
 		  for (pi=p; pi<=p+d; ++pi)
-			 *pi=0;                 /* zero transformation table.*/
+			 *pi=0;         /* zero transformation table.*/
 		  for (pi=x+r, c=b; pi<=x+n; ++pi) {
-			 p[c]=1;                /* mark used chunk symbol.*/
+			 p[c]=1;        /* mark used chunk symbol.*/
 			 c=(c&m)<<s|(*pi-l+1);  /* shift in next old symbol in chunk.*/
 		  }
 		  for (i=1; i<r; ++i) {     /* handle last r-1 positions.*/
-			 p[c]=1;                /* mark used chunk symbol.*/
-			 c=(c&m)<<s;            /* shift in next old symbol in chunk.*/
+			 p[c]=1;        /* mark used chunk symbol.*/
+			 c=(c&m)<<s;        /* shift in next old symbol in chunk.*/
 		  }
 		  for (pi=p, j=1; pi<=p+d; ++pi)
 			 if (*pi)
-				*pi=j++;            /* j is new alphabet size.*/
+				*pi=j++;        /* j is new alphabet size.*/
 		  for (pi=x, pj=x+r, c=b; pj<=x+n; ++pi, ++pj) {
-			 *pi=p[c];              /* transform to new alphabet.*/
+			 *pi=p[c];          /* transform to new alphabet.*/
 			 c=(c&m)<<s|(*pj-l+1);  /* shift in next old symbol in chunk.*/
 		  }
-		  while (pi<x+n) {          /* handle last r-1 positions.*/
-			 *pi++=p[c];            /* transform to new alphabet.*/
-			 c=(c&m)<<s;            /* shift right-end zero in chunk.*/
+		  while (pi<x+n) {      /* handle last r-1 positions.*/
+			 *pi++=p[c];        /* transform to new alphabet.*/
+			 c=(c&m)<<s;        /* shift right-end zero in chunk.*/
 		  }
-	   } else {                     /* bucketing not possible, don't compact.*/
+	   } else {             /* bucketing not possible, don't compact.*/
 		  for (pi=x, pj=x+r, c=b; pj<=x+n; ++pi, ++pj) {
-			 *pi=c;                 /* transform to new alphabet.*/
+			 *pi=c;         /* transform to new alphabet.*/
 			 c=(c&m)<<s|(*pj-l+1);  /* shift in next old symbol in chunk.*/
 		  }
-		  while (pi<x+n) {          /* handle last r-1 positions.*/
-			 *pi++=c;               /* transform to new alphabet.*/
-			 c=(c&m)<<s;            /* shift right-end zero in chunk.*/
+		  while (pi<x+n) {      /* handle last r-1 positions.*/
+			 *pi++=c;           /* transform to new alphabet.*/
+			 c=(c&m)<<s;        /* shift right-end zero in chunk.*/
 		  }
-		  j=d+1;                    /* new alphabet size.*/
+		  j=d+1;            /* new alphabet size.*/
 	   }
-	   x[n]=0;                      /* end-of-string symbol is zero.*/
-	   return j;                    /* return new alphabet size.*/
+	   x[n]=0;              /* end-of-string symbol is zero.*/
+	   return j;            /* return new alphabet size.*/
 	}
 
 	/* Makes suffix array p of x. x becomes inverse of p. p and x are both of size
@@ -286,44 +286,44 @@ struct _Context_LSS
 	   TValue *pi, *pk;
 	   TValue i, j, s, sl;
 	   
-	   V=x;                         /* set global values.*/
+	   V=x;             /* set global values.*/
 	   I=p;
 	   
-	   if (n>=k-l) {                /* if bucketing possible,*/
+	   if (n>=k-l) {        /* if bucketing possible,*/
 		  j=transform(V, I, n, k, l, n);
 		  bucketsort(V, I, n, j);   /* bucketsort on first r positions.*/
 	   } else {
 		  transform(V, I, n, k, l, SupremumValue<TValue>::VALUE);
 		  for (i=0; i<=n; ++i)
-			 I[i]=i;                /* initialize I with suffix numbers.*/
+			 I[i]=i;        /* initialize I with suffix numbers.*/
 		  h=0;
 		  sort_split(I, n+1);       /* quicksort on first r positions.*/
 	   }
-	   h=r;                         /* number of symbols aggregated by transform.*/
+	   h=r;             /* number of symbols aggregated by transform.*/
 	   
 	   while (*I>=-n) {
-		  pi=I;                     /* pi is first position of group.*/
-		  sl=0;                     /* sl is negated length of sorted groups.*/
+		  pi=I;             /* pi is first position of group.*/
+		  sl=0;             /* sl is negated length of sorted groups.*/
 		  do {
 			 if ((s=*pi)<0) {
-				pi-=s;              /* skip over sorted group.*/
-				sl+=s;              /* add negated length to sl.*/
+				pi-=s;          /* skip over sorted group.*/
+				sl+=s;          /* add negated length to sl.*/
 			 } else {
 				if (sl) {
 				   *(pi+sl)=sl;     /* combine sorted groups before pi.*/
 				   sl=0;
 				}
-				pk=I+V[s]+1;        /* pk-1 is last position of unsorted group.*/
+				pk=I+V[s]+1;    /* pk-1 is last position of unsorted group.*/
 				sort_split(pi, pk-pi);
-				pi=pk;              /* next group.*/
+				pi=pk;          /* next group.*/
 			 }
 		  } while (pi<=I+n);
-		  if (sl)                   /* if the array ends with a sorted group.*/
-			 *(pi+sl)=sl;           /* combine sorted groups at end of I.*/
-		  h=2*h;                    /* double sorted-depth.*/
+		  if (sl)           /* if the array ends with a sorted group.*/
+			 *(pi+sl)=sl;       /* combine sorted groups at end of I.*/
+		  h=2*h;            /* double sorted-depth.*/
 	   }
 
-	   for (i=0; i<=n; ++i)         /* reconstruct suffix array from inverse.*/
+	   for (i=0; i<=n; ++i)     /* reconstruct suffix array from inverse.*/
 		  I[V[i]]=i;
 	}  
 };
@@ -343,7 +343,7 @@ struct _Context_LSS
 	// better use LarssonSadakane as a pipe (look down)
 
     template < typename TSA,
-               typename TText >
+           typename TText >
     void createSuffixArray(
 		TSA &SA,
 		TText &s,
@@ -377,7 +377,7 @@ struct _Context_LSS
 		Pipe(TInput &_textIn):
 			in(sa)
 		{
-	        typedef typename Iterator<TText, Standard>::Type TIter;
+	    typedef typename Iterator<TText, Standard>::Type TIter;
 
 			TValue len = length(_textIn);
 			TText text;
@@ -400,13 +400,13 @@ struct _Context_LSS
 		}
 
 		inline typename Value<TSource>::Type const & operator*() {
-            return *in;
-        }
-        
-        inline Pipe& operator++() {
-            ++in;
-            return *this;
-        }        
+        return *in;
+    }
+    
+    inline Pipe& operator++() {
+        ++in;
+        return *this;
+    }    
 	};
 
 	template < typename TInput >
@@ -419,7 +419,7 @@ struct _Context_LSS
     template < typename TInput >
     inline typename Size< Pipe< TInput, LarssonSadakane > >::Type
 	length(Pipe< TInput, LarssonSadakane > const &me) {
-        return length(me.in) - 1;
+    return length(me.in) - 1;
     }
 
 }

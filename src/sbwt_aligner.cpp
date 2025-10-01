@@ -14,14 +14,14 @@ using std::bitset;
 
 int main(int argc, char **argv)
 {
-        if (argc < 3) {
-                PrintHelp_SbwtAligner(argc, argv);
-                return 1;
-        }
+    if (argc < 3) {
+        PrintHelp_SbwtAligner(argc, argv);
+        return 1;
+    }
 
-        //sbwt::UnsortedUnpackedSearch(argv);
-        //sbwt::UnsortedPackedSearch(argv);
-        sbwt::SortedPackedSearch(argc, argv);
+    //sbwt::UnsortedUnpackedSearch(argv);
+    //sbwt::UnsortedPackedSearch(argv);
+    sbwt::SortedPackedSearch(argc, argv);
 
-        return 0;
+    return 0;
 }

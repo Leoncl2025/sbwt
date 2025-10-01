@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -81,7 +81,7 @@ namespace SEQAN_NAMESPACE_MAIN
 		typedef typename Cargo<Index>::Type					TCargo;
 
 		// 1st word flags
-		static TSize const LEAF          = (TSize)1 << (BitsPerValue<TSize>::VALUE - 1); // this node is a leaf
+		static TSize const LEAF      = (TSize)1 << (BitsPerValue<TSize>::VALUE - 1); // this node is a leaf
 		static TSize const LAST_CHILD    = (TSize)1 << (BitsPerValue<TSize>::VALUE - 2); // this node is the last child
 		// 2nd word flag
 		static TSize const UNEVALUATED   = (TSize)1 << (BitsPerValue<TSize>::VALUE - 1); // this node is partially evalutated and has no evaluated children
@@ -132,12 +132,12 @@ namespace SEQAN_NAMESPACE_MAIN
 
 	template < typename TText, typename TSpec >
 	struct DefaultIndexCreator<Index<TText, Index_Wotd<TSpec> >, Fibre_SA> {
-        typedef Default Type;
+    typedef Default Type;
     };
 
 	template < typename TText, typename TSSetSpec, typename TSpec >
 	struct DefaultIndexCreator<Index<StringSet<TText, TSSetSpec>, Index_Wotd<TSpec> >, Fibre_SA> {
-        typedef Default Type;
+    typedef Default Type;
     };
 
 

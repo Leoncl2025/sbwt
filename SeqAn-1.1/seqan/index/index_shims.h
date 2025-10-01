@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -39,19 +39,19 @@ namespace SEQAN_NAMESPACE_MAIN
 		TAlgSpec const)
 	{
 	SEQAN_CHECKPOINT
-        // signed characters behave different than unsigned when compared
-        // to get the same index with signed or unsigned chars we simply cast them to unsigned
-        // before feeding them into the pipeline
-        typedef typename _MakeUnsigned< typename Value<TObject>::Type >::Type TUValue;
+    // signed characters behave different than unsigned when compared
+    // to get the same index with signed or unsigned chars we simply cast them to unsigned
+    // before feeding them into the pipeline
+    typedef typename _MakeUnsigned< typename Value<TObject>::Type >::Type TUValue;
 
-        // specialization
+    // specialization
 		typedef Pipe< TObject, Source<> >				src_t;
-        typedef Pipe< src_t, Caster<TUValue> >          unsigner_t;
-		typedef Pipe< unsigner_t, TAlgSpec >	        creator_t;
+    typedef Pipe< src_t, Caster<TUValue> >      unsigner_t;
+		typedef Pipe< unsigner_t, TAlgSpec >	    creator_t;
 
 		// instantiation and processing
 		src_t		src(text);
-        unsigner_t  unsigner(src);
+    unsigner_t  unsigner(src);
 		creator_t	creator(unsigner);
 
 		suffixArray << creator;
@@ -73,24 +73,24 @@ namespace SEQAN_NAMESPACE_MAIN
 		TAlgSpec const)
 	{
 	SEQAN_CHECKPOINT
-        // signed characters behave different than unsigned when compared
-        // to get the same index with signed or unsigned chars we simply cast them to unsigned
-        // before feeding them into the pipeline
+    // signed characters behave different than unsigned when compared
+    // to get the same index with signed or unsigned chars we simply cast them to unsigned
+    // before feeding them into the pipeline
 		typedef typename Concatenator<StringSet<TString, TSpec> >::Type			TConcat;
-        typedef typename _MakeUnsigned< typename Value<TConcat>::Type >::Type	TUValue;
+    typedef typename _MakeUnsigned< typename Value<TConcat>::Type >::Type	TUValue;
 		typedef Multi<
 			TAlgSpec, 
 			typename Value<TSA>::Type, 
 			typename StringSetLimits<StringSet<TString, TSpec> >::Type >		MultiConstrSpec;
 
-        // specialization
+    // specialization
 		typedef Pipe< TConcat, Source<> >				src_t;
-        typedef Pipe< src_t, Caster<TUValue> >          unsigner_t;
+    typedef Pipe< src_t, Caster<TUValue> >      unsigner_t;
 		typedef Pipe< unsigner_t, MultiConstrSpec >	    creator_t;
 
 		// instantiation and processing
 		src_t		src(concat(stringSet));
-        unsigner_t  unsigner(src);
+    unsigner_t  unsigner(src);
 		creator_t	creator(unsigner, stringSetLimits(stringSet));
 
 		suffixArray << creator;
@@ -112,7 +112,7 @@ namespace SEQAN_NAMESPACE_MAIN
 */
 
     template < typename TSA,
-               typename TText,
+           typename TText,
 			   typename TAlgSpec >
     inline void createSuffixArray(
 		TSA &SA,
@@ -139,7 +139,7 @@ namespace SEQAN_NAMESPACE_MAIN
 	{
 	SEQAN_CHECKPOINT
 		// -> explicitly create SA using external memory
-        createSuffixArrayExt(SA, s, alg);
+    createSuffixArrayExt(SA, s, alg);
 	}
 
 	template < 
@@ -154,7 +154,7 @@ namespace SEQAN_NAMESPACE_MAIN
 		TAlgSpec const)
 	{
 	SEQAN_CHECKPOINT
-        createSuffixArrayExt(SA, s, Skew7());
+    createSuffixArrayExt(SA, s, Skew7());
 	}
 
 
@@ -167,9 +167,9 @@ namespace SEQAN_NAMESPACE_MAIN
 	//////////////////////////////////////////////////////////////////////////////
 
 	template < 
-        typename TLCPTable,
+    typename TLCPTable,
 		typename TObject, 
-        typename TSA,
+    typename TSA,
 		typename TAlgSpec >
 	void createLCPTableExt(
 		TLCPTable &LCP,
@@ -197,10 +197,10 @@ namespace SEQAN_NAMESPACE_MAIN
 
 	// build lcp table (external) for mutliple sequences
 	template < 
-        typename TLCPTable,
+    typename TLCPTable,
 		typename TString,
 		typename TSpec,
-        typename TSA,
+    typename TSA,
 		typename TAlgSpec >
 	void createLCPTableExt(
 		TLCPTable &LCP,
@@ -245,8 +245,8 @@ namespace SEQAN_NAMESPACE_MAIN
 */
 
 	template < 
-        typename TLCPTable,
-        typename TValue,
+    typename TLCPTable,
+    typename TValue,
 		typename TConfig,
 		typename TSA >
 	void createLCPTable(
@@ -256,12 +256,12 @@ namespace SEQAN_NAMESPACE_MAIN
 		Kasai const)
 	{
 	SEQAN_CHECKPOINT
-        createLCPTableExt(LCP, s, SA, Kasai());
+    createLCPTableExt(LCP, s, SA, Kasai());
 	}
 
 	template < 
-        typename TLCPTable,
-        typename TValue,
+    typename TLCPTable,
+    typename TValue,
 		typename TConfig,
 		typename TSSetSpec,
 		typename TSA >
@@ -271,7 +271,7 @@ namespace SEQAN_NAMESPACE_MAIN
 		TSA const &SA,
 		Kasai const)
 	{
-        createLCPTableExt(LCP, s, SA, Kasai());
+    createLCPTableExt(LCP, s, SA, Kasai());
 	}
 
 
@@ -289,9 +289,9 @@ namespace SEQAN_NAMESPACE_MAIN
 	// of suffix intervals used in the binary search)
 	template < 
 		typename TValue, 
-        typename TSpec,
+    typename TSpec,
 		typename TObject, 
-        typename TSA,
+    typename TSA,
 		typename TAlgSpec >
 	void createLCPETableExt(
 		String< TValue, TSpec > &LCPE,
@@ -321,10 +321,10 @@ namespace SEQAN_NAMESPACE_MAIN
     // build enhanced LCP table with an lcp algorithm
 	// and a dynamic programming tree construction alg
     template <
-        typename TValue,
-        typename TSpec,
-        typename TText,
-        typename TSA,
+    typename TValue,
+    typename TSpec,
+    typename TText,
+    typename TSA,
 		typename TAlgSpec >
     void createLCPETable(
 		String< TValue, TSpec > &LCPE,
@@ -333,8 +333,8 @@ namespace SEQAN_NAMESPACE_MAIN
 		TAlgSpec const alg)
 	{
 	SEQAN_CHECKPOINT
-        //TSA LCP;
-        //resize(LCP, length(s), Exact());
+    //TSA LCP;
+    //resize(LCP, length(s), Exact());
 		// we use LCPE[n-lcpSize..n-1] as a temporary buffer instead of allocating one
 		typename Suffix<String< TValue, TSpec > >::Type LCP = suffix(LCPE, length(LCPE) - length(s));
 
@@ -342,14 +342,14 @@ namespace SEQAN_NAMESPACE_MAIN
 		#ifdef SEQAN_TEST_INDEX
 			isLCPTable(LCP, SA, s);
 		#endif
-        createLCPBinTree(LCPE, LCP);
+    createLCPBinTree(LCPE, LCP);
     }
 
     template <
-        typename TValue,
-        typename TConfig,
-        typename TText,
-        typename TSA,
+    typename TValue,
+    typename TConfig,
+    typename TText,
+    typename TSA,
 		typename TAlgSpec >
     void createLCPETable(
 		String< TValue, External<TConfig> > &LCPE,
@@ -358,14 +358,14 @@ namespace SEQAN_NAMESPACE_MAIN
 		TAlgSpec const alg)
 	{
 	SEQAN_CHECKPOINT
-        createLCPETableExt(LCPE, s, SA, alg);
+    createLCPETableExt(LCPE, s, SA, alg);
     }
 
     template <
-        typename TValue,
-        typename TSpec,
-        typename TText,
-        typename TSA>
+    typename TValue,
+    typename TSpec,
+    typename TText,
+    typename TSA>
     inline void createLCPETable(
 		String< TValue, TSpec > &LCPE,
 		TText &s,
@@ -385,7 +385,7 @@ namespace SEQAN_NAMESPACE_MAIN
 	//////////////////////////////////////////////////////////////////////////////
 
 	template < typename TBWT,
-               typename TText,
+           typename TText,
 			   typename TSA >
     void createBWTableExt(
 		TBWT &bwt,

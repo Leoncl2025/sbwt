@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -29,108 +29,108 @@ namespace SEQAN_NAMESPACE_MAIN
 #ifdef PLATFORM_WINDOWS
 
     static SECURITY_ATTRIBUTES MutexDefaultAttributes = {
-        sizeof(SECURITY_ATTRIBUTES),
-        NULL,
-        true
+    sizeof(SECURITY_ATTRIBUTES),
+    NULL,
+    true
     };
 
     struct Mutex
     {
-        typedef HANDLE Handle;
+    typedef HANDLE Handle;
 
-        Handle hMutex;
+    Handle hMutex;
 
-        Mutex():
-            hMutex(NULL) {}
+    Mutex():
+        hMutex(NULL) {}
 
-        Mutex(BOOL initial) {
-            SEQAN_DO_SYS2(open(initial), "Could not create Mutex")
-        }
+    Mutex(BOOL initial) {
+        SEQAN_DO_SYS2(open(initial), "Could not create Mutex")
+    }
 
-        ~Mutex() {
-            if (*this)
-                SEQAN_DO_SYS2(close(), "Could not destroy Mutex")
-        }
+    ~Mutex() {
+        if (*this)
+        SEQAN_DO_SYS2(close(), "Could not destroy Mutex")
+    }
 
-        inline bool open(BOOL initial = false) {
-            return (hMutex = CreateMutex(&MutexDefaultAttributes, initial, NULL)) != NULL;
-        }
+    inline bool open(BOOL initial = false) {
+        return (hMutex = CreateMutex(&MutexDefaultAttributes, initial, NULL)) != NULL;
+    }
 
-        inline bool close() {
-            return CloseHandle(hMutex) && !(hMutex = NULL);
-        }
+    inline bool close() {
+        return CloseHandle(hMutex) && !(hMutex = NULL);
+    }
 
-        inline bool lock(DWORD timeout_millis = INFINITE) {
-            return WaitForSingleObject(hMutex, timeout_millis) != WAIT_TIMEOUT;
-        }
+    inline bool lock(DWORD timeout_millis = INFINITE) {
+        return WaitForSingleObject(hMutex, timeout_millis) != WAIT_TIMEOUT;
+    }
 
-        inline bool unlock() {
-            return ReleaseMutex(hMutex) != 0;
-        }
+    inline bool unlock() {
+        return ReleaseMutex(hMutex) != 0;
+    }
 
-        inline operator bool() const {
-            return hMutex != NULL;
-        }
+    inline operator bool() const {
+        return hMutex != NULL;
+    }
 
     private:
 
-        Mutex(Mutex const &) {
-            // resource copying is not yet supported (performance reason)
-            // it needs a reference counting technique
-        }
+    Mutex(Mutex const &) {
+        // resource copying is not yet supported (performance reason)
+        // it needs a reference counting technique
+    }
     };
     
 #else
 
     struct Mutex
     {
-        typedef pthread_mutex_t* Handle;
-        
-        pthread_mutex_t data, *hMutex;
+    typedef pthread_mutex_t* Handle;
+    
+    pthread_mutex_t data, *hMutex;
 
-        Mutex():
-            hMutex(NULL) {}
+    Mutex():
+        hMutex(NULL) {}
 
-        Mutex(bool initial) {
-            SEQAN_DO_SYS(open(initial));
-        }
+    Mutex(bool initial) {
+        SEQAN_DO_SYS(open(initial));
+    }
 
-        ~Mutex() {
-            if (*this)
-                SEQAN_DO_SYS(close());
-        }
+    ~Mutex() {
+        if (*this)
+        SEQAN_DO_SYS(close());
+    }
 
-        inline bool open(bool initial = false)
-        {
-            if (!pthread_mutex_init(&data, NULL) && (hMutex = &data)) {
-                if (initial) return lock();
-                return true;
-            } else
-                return false;
-        }
+    inline bool open(bool initial = false)
+    {
+        if (!pthread_mutex_init(&data, NULL) && (hMutex = &data)) {
+        if (initial) return lock();
+        return true;
+        } else
+        return false;
+    }
 
-        inline bool close() {
-            return !(pthread_mutex_destroy(hMutex) || (hMutex = NULL));
-        }
+    inline bool close() {
+        return !(pthread_mutex_destroy(hMutex) || (hMutex = NULL));
+    }
 
-        inline bool lock() {
-            return !pthread_mutex_lock(hMutex);
-        }
+    inline bool lock() {
+        return !pthread_mutex_lock(hMutex);
+    }
 
-        inline bool unlock() {
-            return !pthread_mutex_unlock(hMutex);
-        }
+    inline bool unlock() {
+        return !pthread_mutex_unlock(hMutex);
+    }
 
-        inline operator bool() const {
-            return hMutex != NULL;
-        }
+    inline operator bool() const {
+        return hMutex != NULL;
+    }
 
     private:
 
-        Mutex(Mutex const &) {
-            // resource copying is not yet supported (performance reason)
-            // it needs a reference counting technique
-        }
+    Mutex(Mutex const &) {
+        // resource copying is not yet supported (performance reason)
+        // it needs a reference counting technique
+    }
 
     };
     

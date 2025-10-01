@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -73,28 +73,28 @@
     typedef _proFloat _proTValue;
 
     enum _proConsts {
-        SEQAN_PROPAGESIZE         = 4096, // B in byte
-        SEQAN_PROFLOAT            = 0,
-        SEQAN_PROINT              = 1,
-        SEQAN_PROTIME             = 2,
-        SEQAN_PROTYPEMASK         = 3,
-        SEQAN_PROSTATE            = 4
+    SEQAN_PROPAGESIZE     = 4096, // B in byte
+    SEQAN_PROFLOAT        = 0,
+    SEQAN_PROINT          = 1,
+    SEQAN_PROTIME         = 2,
+    SEQAN_PROTYPEMASK     = 3,
+    SEQAN_PROSTATE        = 4
     };
 
     enum _proValueIndex {
 		SEQAN_PROSYSTIME		  = 0,
 		SEQAN_PROCPUTIME		  = 1,
-        SEQAN_PROMEMORY           = 2,    // current memory usage (state value)
-        SEQAN_PROIO               = 3,    // IOs done (measured in Blocks of size B)
-        SEQAN_PROIORANDOM         = 4,    // IOs calls done (read/write calls done)
-        SEQAN_PROIOVOLUME         = 5,    // current disk usage (state value)
-        SEQAN_PRODEPTH            = 6,    // algorithmic rec. depth or loop count
+    SEQAN_PROMEMORY       = 2,    // current memory usage (state value)
+    SEQAN_PROIO           = 3,    // IOs done (measured in Blocks of size B)
+    SEQAN_PROIORANDOM     = 4,    // IOs calls done (read/write calls done)
+    SEQAN_PROIOVOLUME     = 5,    // current disk usage (state value)
+    SEQAN_PRODEPTH        = 6,    // algorithmic rec. depth or loop count
 		SEQAN_PROOPENFILES		  = 7,	  // currently opened files
-        SEQAN_PROIWAIT            = 8,    // waiting time (initiating)
-        SEQAN_PROCWAIT            = 9,    // waiting time (completing)
-		SEQAN_PROEXTRA1           = 10,
-		SEQAN_PROEXTRA2           = 11,
-		SEQAN_PROEXTRA3           = 12,
+    SEQAN_PROIWAIT        = 8,    // waiting time (initiating)
+    SEQAN_PROCWAIT        = 9,    // waiting time (completing)
+		SEQAN_PROEXTRA1       = 10,
+		SEQAN_PROEXTRA2       = 11,
+		SEQAN_PROEXTRA3       = 12,
 		SEQAN_PROINDEXCOUNT       = 13,
 		SEQAN_PROEXTRACOUNT       = 3
     };
@@ -102,17 +102,17 @@
     const char _proValueType[] = {
 		SEQAN_PROTIME, 
 		SEQAN_PROTIME, 
-        SEQAN_PROINT + SEQAN_PROSTATE, 
-        SEQAN_PROINT,
-        SEQAN_PROINT,
-        SEQAN_PROINT + SEQAN_PROSTATE, 
-        SEQAN_PROINT + SEQAN_PROSTATE, 
-        SEQAN_PROINT + SEQAN_PROSTATE, 
-        SEQAN_PROFLOAT,
-        SEQAN_PROFLOAT,
-        SEQAN_PROFLOAT + SEQAN_PROSTATE,
-        SEQAN_PROFLOAT + SEQAN_PROSTATE,
-        SEQAN_PROFLOAT + SEQAN_PROSTATE
+    SEQAN_PROINT + SEQAN_PROSTATE, 
+    SEQAN_PROINT,
+    SEQAN_PROINT,
+    SEQAN_PROINT + SEQAN_PROSTATE, 
+    SEQAN_PROINT + SEQAN_PROSTATE, 
+    SEQAN_PROINT + SEQAN_PROSTATE, 
+    SEQAN_PROFLOAT,
+    SEQAN_PROFLOAT,
+    SEQAN_PROFLOAT + SEQAN_PROSTATE,
+    SEQAN_PROFLOAT + SEQAN_PROSTATE,
+    SEQAN_PROFLOAT + SEQAN_PROSTATE
     };
 
     typedef _proTValue _proTStates[SEQAN_PROINDEXCOUNT];
@@ -162,7 +162,7 @@
    	}
 
     #ifdef PLATFORM_WINDOWS
-//        inline _proFloat sysTime() { return GetTickCount() * 1e-3; }
+//    inline _proFloat sysTime() { return GetTickCount() * 1e-3; }
 		inline _proFloat sysTime() { return ( (_proFloat) clock() ) / CLOCKS_PER_SEC; }
     #else
 
@@ -200,118 +200,118 @@
     
     struct _proFile {
 
-        FILE   *out;
-        bool   running;
+    FILE   *out;
+    bool   running;
 
-        _proFloat dumpStep;            // 0 .. manual dump mode, >0 .. live stream
-        _proFloat dumpNext;        
+    _proFloat dumpStep;        // 0 .. manual dump mode, >0 .. live stream
+    _proFloat dumpNext;    
 
-        _proTStates all, last;
-        ::std::string mark;
-        unsigned	lines;
+    _proTStates all, last;
+    ::std::string mark;
+    unsigned	lines;
 
-        _proFile() {
-            running = false;
+    _proFile() {
+        running = false;
+    }
+
+    _proFile(char const *fname, _proFloat _dumpStep = 300.0) { // five minutes default dump interval
+        running = false;
+        start(fname, _dumpStep);
+    }
+
+    ~_proFile() {
+        if (running) stop();
+    }
+
+    inline void start(char const *fname, _proFloat _dumpStep = 300.0, bool append = false) {
+        if (append)
+        out = fopen(fname, "a");
+        else {
+        out = fopen(fname, "w");
+        dumpHeader();
         }
 
-        _proFile(char const *fname, _proFloat _dumpStep = 300.0) { // five minutes default dump interval
-            running = false;
-            start(fname, _dumpStep);
-        }
-
-        ~_proFile() {
-            if (running) stop();
-        }
-
-        inline void start(char const *fname, _proFloat _dumpStep = 300.0, bool append = false) {
-            if (append)
-                out = fopen(fname, "a");
-            else {
-                out = fopen(fname, "w");
-                dumpHeader();
-            }
-
-            if (!out) printf("WARNING: proFile could not be opened.\n");
+        if (!out) printf("WARNING: proFile could not be opened.\n");
 
 			setTime(_proData<>::_proValue);
-            syncAll(all);
-            syncAll(last);
-            running      = true;
-            lines		 = 0;
-            dumpStep     = _dumpStep;
-            dumpNext     = sysTime();
-            dump(last);
-        }
+        syncAll(all);
+        syncAll(last);
+        running      = true;
+        lines		 = 0;
+        dumpStep     = _dumpStep;
+        dumpNext     = sysTime();
+        dump(last);
+    }
 
-        inline void stop() {
-            dump(last);
-            maximize(all, last);
-            if (dumpStep == 0) {
-                mark = "Zusammenfassung";
-                dump(all);
-            }
-            fclose(out);
-            running = false;
+    inline void stop() {
+        dump(last);
+        maximize(all, last);
+        if (dumpStep == 0) {
+        mark = "Zusammenfassung";
+        dump(all);
         }
+        fclose(out);
+        running = false;
+    }
 
-        inline void syncTime(_proTStates &dst) {
-            memcpy(dst, _proData<>::_proValue, 2 * sizeof(_proTValue));
-        }
+    inline void syncTime(_proTStates &dst) {
+        memcpy(dst, _proData<>::_proValue, 2 * sizeof(_proTValue));
+    }
 
-        inline void sync(_proTStates &dst) {
-            memcpy(&(dst[2]), &(_proData<>::_proValue[2]), sizeof(_proTStates) - 2 * sizeof(_proTValue));
-        }
+    inline void sync(_proTStates &dst) {
+        memcpy(&(dst[2]), &(_proData<>::_proValue[2]), sizeof(_proTStates) - 2 * sizeof(_proTValue));
+    }
 
-        inline void syncAll(_proTStates &dst) {
-            memcpy(dst, _proData<>::_proValue, sizeof(_proTStates));
-        }
+    inline void syncAll(_proTStates &dst) {
+        memcpy(dst, _proData<>::_proValue, sizeof(_proTStates));
+    }
 
 		inline static void setTime(_proTStates &dst) {
-            dst[0] = sysTime();
+        dst[0] = sysTime();
 			dst[1] = cpuTime();
 		}
 
-        inline void maximize(_proTStates &dst, _proTStates const &src) {
-            for(int i = 0; i < SEQAN_PROINDEXCOUNT; ++i)
-                if (((_proValueType[i] & SEQAN_PROSTATE) != 0))
-                    if (dst[i] < src[i])
-                        dst[i] = src[i];
-        }
+    inline void maximize(_proTStates &dst, _proTStates const &src) {
+        for(int i = 0; i < SEQAN_PROINDEXCOUNT; ++i)
+        if (((_proValueType[i] & SEQAN_PROSTATE) != 0))
+            if (dst[i] < src[i])
+            dst[i] = src[i];
+    }
 
-        inline void dumpTab() {
-            if (!bol)
-                fprintf(out, " \t");
-            bol = false;
-        }
+    inline void dumpTab() {
+        if (!bol)
+        fprintf(out, " \t");
+        bol = false;
+    }
 
-        inline void dumpEndl() { fprintf(out, "\n"); }
+    inline void dumpEndl() { fprintf(out, "\n"); }
 
-        inline void dumpHeader() {
-            fprintf(out, "\"Echtzeit\"\t\"CPU-Zeit\"\t\"Speicher\"\t\"I/O-Zugriffe\"\t\"wahlfreie I/Os\"\t\"I/O-Volumen\"\t\"Rekursionstiefe\"\t\"Offene Dateien\"\t\"Idle-Zeit vor I/O\"\t\"Idle-Zeit nach I/O\"\n");
-        }
+    inline void dumpHeader() {
+        fprintf(out, "\"Echtzeit\"\t\"CPU-Zeit\"\t\"Speicher\"\t\"I/O-Zugriffe\"\t\"wahlfreie I/Os\"\t\"I/O-Volumen\"\t\"Rekursionstiefe\"\t\"Offene Dateien\"\t\"Idle-Zeit vor I/O\"\t\"Idle-Zeit nach I/O\"\n");
+    }
 
-        inline void dumpTime(_proFloat seconds) {
+    inline void dumpTime(_proFloat seconds) {
 			if (seconds < 0) {
 				fputc('-', out);
 				seconds = -seconds;
 			}
-            int secs    = (int)seconds;
-            int mins    = secs/60;  secs -= 60*mins;
-            int hours   = mins/60;  mins -= 60*hours;
-            fprintf(out, "%d:%02d:%02d", hours, mins, secs);
-        }
+        int secs    = (int)seconds;
+        int mins    = secs/60;  secs -= 60*mins;
+        int hours   = mins/60;  mins -= 60*hours;
+        fprintf(out, "%d:%02d:%02d", hours, mins, secs);
+    }
 
-        inline void dumpTimeEx(_proFloat seconds) {
-            int milli   = (int)(seconds * 1000.0);
-            int secs    = (int)seconds;
-            int mins    = secs/60;  secs -= 60*mins;
-            int hours   = mins/60;  mins -= 60*hours;
-            fprintf(out, "%d:%02d:%02d.%03d", hours, mins, secs, milli);
-        }
+    inline void dumpTimeEx(_proFloat seconds) {
+        int milli   = (int)(seconds * 1000.0);
+        int secs    = (int)seconds;
+        int mins    = secs/60;  secs -= 60*mins;
+        int hours   = mins/60;  mins -= 60*hours;
+        fprintf(out, "%d:%02d:%02d.%03d", hours, mins, secs, milli);
+    }
 
-        inline void dumpValue(_proTStates &stat, int valNum) {
+    inline void dumpValue(_proTStates &stat, int valNum) {
 			_proFloat f = stat[valNum];
-            if ((_proValueType[valNum] & SEQAN_PROSTATE) == 0)
+        if ((_proValueType[valNum] & SEQAN_PROSTATE) == 0)
 				f = _proData<>::_proValue[valNum] - f;
 
 			switch (_proValueType[valNum] & SEQAN_PROTYPEMASK) {
@@ -326,83 +326,83 @@
 				case SEQAN_PROTIME:
 					dumpTimeEx(f);
 			}
-        }
+    }
 
-        inline void dumpSysValues(_proTStates &stat) {
-            for(int i = 0; i < SEQAN_PROINDEXCOUNT - SEQAN_PROEXTRACOUNT; ++i) {
-                dumpTab();
-                dumpValue(stat, i);
-            }
+    inline void dumpSysValues(_proTStates &stat) {
+        for(int i = 0; i < SEQAN_PROINDEXCOUNT - SEQAN_PROEXTRACOUNT; ++i) {
+        dumpTab();
+        dumpValue(stat, i);
         }
+    }
 
-        inline void dumpExtraValues(_proTStates &stat) {
-            for(int i = 0; i < _proData<>::_proExtraCount; ++i) {
-                dumpTab();
-                dumpValue(stat, SEQAN_PROINDEXCOUNT - SEQAN_PROEXTRACOUNT + i);
-            }
+    inline void dumpExtraValues(_proTStates &stat) {
+        for(int i = 0; i < _proData<>::_proExtraCount; ++i) {
+        dumpTab();
+        dumpValue(stat, SEQAN_PROINDEXCOUNT - SEQAN_PROEXTRACOUNT + i);
+        }
 	}
 	
-        inline void dumpMark() {
-            if (!mark.empty()) {
-                dumpTab();
-                fprintf(out, "\"%s\"", mark.c_str());
-                mark.erase();
-            }
+    inline void dumpMark() {
+        if (!mark.empty()) {
+        dumpTab();
+        fprintf(out, "\"%s\"", mark.c_str());
+        mark.erase();
         }
+    }
 
-        inline void dump(_proTStates &stat) {
+    inline void dump(_proTStates &stat) {
 			setTime(_proData<>::_proValue);
-            dumpNext += dumpStep;
-            bol = true;
-            bool _flush = ((dumpStep == 0.0)) || ((lines & 16) == 0);
+        dumpNext += dumpStep;
+        bol = true;
+        bool _flush = ((dumpStep == 0.0)) || ((lines & 16) == 0);
 
-            dumpSysValues(stat);
-            dumpExtraValues(stat);
-            dumpMark();
-            dumpEndl();
-            if (_flush) fflush(out);
-            ++lines;
-        }
+        dumpSysValues(stat);
+        dumpExtraValues(stat);
+        dumpMark();
+        dumpEndl();
+        if (_flush) fflush(out);
+        ++lines;
+    }
 
-        inline void signalDumpTest(_proFloat now) {
-            if (dumpStep > 0 && now > dumpNext && running) {
-                dump(last);
-                maximize(all, last);
-                sync(last);
-            }
+    inline void signalDumpTest(_proFloat now) {
+        if (dumpStep > 0 && now > dumpNext && running) {
+        dump(last);
+        maximize(all, last);
+        sync(last);
         }
+    }
 
-        inline void signalNewMax(int valNum) {
-            if (running)
-                if (last[valNum] < _proData<>::_proValue[valNum])
-                    last[valNum] = _proData<>::_proValue[valNum];
-        }
+    inline void signalNewMax(int valNum) {
+        if (running)
+        if (last[valNum] < _proData<>::_proValue[valNum])
+            last[valNum] = _proData<>::_proValue[valNum];
+    }
 
-        inline void setMark(const char *text) {
-            if (running) {
-                mark = text;
-                if (dumpStep == 0.0) {
-                    dump(last);                 // manual dump;
-                    maximize(all, last);
-                    sync(last);
-                }
-            }
+    inline void setMark(const char *text) {
+        if (running) {
+        mark = text;
+        if (dumpStep == 0.0) {
+            dump(last);         // manual dump;
+            maximize(all, last);
+            sync(last);
         }
-        
-        inline void reset() {
-        	syncTime(last);
         }
+    }
+    
+    inline void reset() {
+    	syncTime(last);
+    }
 
-        inline void setEndMark(const char *text) {
-            if (running) {
+    inline void setEndMark(const char *text) {
+        if (running) {
 				setMark(text);
 				reset();
 			}
-        }
+    }
 
     private:
-        
-        bool bol;   // begin of line
+    
+    bool bol;   // begin of line
     };
 
 
@@ -424,59 +424,59 @@
 */
 
     inline void _proSignalDumpTest(_proFloat now) {
-        if (_proData<>::_proPFileStream) _proData<>::_proPFileStream->signalDumpTest(now);
+    if (_proData<>::_proPFileStream) _proData<>::_proPFileStream->signalDumpTest(now);
     }
 
     inline void _proSignalNewMax(int valNum) {
-        if (((_proValueType[valNum] & SEQAN_PROSTATE) != 0)) {
-            if (_proData<>::_proPFileStream) _proData<>::_proPFileStream->signalNewMax(valNum);
-            if (_proData<>::_proPFile)       _proData<>::_proPFile->signalNewMax(valNum);
-        }
+    if (((_proValueType[valNum] & SEQAN_PROSTATE) != 0)) {
+        if (_proData<>::_proPFileStream) _proData<>::_proPFileStream->signalNewMax(valNum);
+        if (_proData<>::_proPFile)       _proData<>::_proPFile->signalNewMax(valNum);
+    }
     }
 
     inline void _proMark(const char *text) {
-        if (_proData<>::_proPFileStream) _proData<>::_proPFileStream->setMark(text);
-        if (_proData<>::_proPFile)       _proData<>::_proPFile->setMark(text);
+    if (_proData<>::_proPFileStream) _proData<>::_proPFileStream->setMark(text);
+    if (_proData<>::_proPFile)       _proData<>::_proPFile->setMark(text);
     }
 
     inline void _proEndMark(const char *text) {
-        if (_proData<>::_proPFileStream) { _proData<>::_proPFileStream->setEndMark(text); }
-        if (_proData<>::_proPFile)       { _proData<>::_proPFile->setEndMark(text); }
+    if (_proData<>::_proPFileStream) { _proData<>::_proPFileStream->setEndMark(text); }
+    if (_proData<>::_proPFile)       { _proData<>::_proPFile->setEndMark(text); }
     }
 
     inline void _proReset() {
-        if (_proData<>::_proPFileStream) { _proData<>::_proPFileStream->reset(); }
-        if (_proData<>::_proPFile)       { _proData<>::_proPFile->reset(); }
+    if (_proData<>::_proPFileStream) { _proData<>::_proPFileStream->reset(); }
+    if (_proData<>::_proPFile)       { _proData<>::_proPFile->reset(); }
     }
 
 
 
 
     inline void _proSet(_proValueIndex valNum, _proFloat value) {
-        _proFloat now = sysTime();
-        _proData<>::_proLastUpdate[valNum] = now;
-        if (_proData<>::_proValue[valNum] < value) {
-            _proData<>::_proValue[valNum] = value;
-            _proSignalNewMax(valNum);
-        } else
-            _proData<>::_proValue[valNum] = value;
-        _proSignalDumpTest(now);
+    _proFloat now = sysTime();
+    _proData<>::_proLastUpdate[valNum] = now;
+    if (_proData<>::_proValue[valNum] < value) {
+        _proData<>::_proValue[valNum] = value;
+        _proSignalNewMax(valNum);
+    } else
+        _proData<>::_proValue[valNum] = value;
+    _proSignalDumpTest(now);
     }
 
     inline void _proAdd(_proValueIndex valNum, _proFloat value) {
-        _proFloat now = sysTime();
-        _proData<>::_proValue[valNum] += value;
-        _proData<>::_proLastUpdate[valNum] = now;
-        if (valNum == SEQAN_PROIO) _proAdd(SEQAN_PROIORANDOM, 1);
-        _proSignalNewMax(valNum);
-        _proSignalDumpTest(now);
+    _proFloat now = sysTime();
+    _proData<>::_proValue[valNum] += value;
+    _proData<>::_proLastUpdate[valNum] = now;
+    if (valNum == SEQAN_PROIO) _proAdd(SEQAN_PROIORANDOM, 1);
+    _proSignalNewMax(valNum);
+    _proSignalDumpTest(now);
     }
 
     inline void _proSub(_proValueIndex valNum, _proFloat value) {
-        _proFloat now = sysTime();
-        _proData<>::_proValue[valNum] -= value;
-        _proData<>::_proLastUpdate[valNum] = now;
-        _proSignalDumpTest(now);
+    _proFloat now = sysTime();
+    _proData<>::_proValue[valNum] -= value;
+    _proData<>::_proLastUpdate[valNum] = now;
+    _proSignalDumpTest(now);
     }
     
     // simple interface for external programs

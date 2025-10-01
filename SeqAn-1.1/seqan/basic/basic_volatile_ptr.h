@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -50,24 +50,24 @@ namespace SEQAN_NAMESPACE_MAIN
 		_SelfPtr		next;			// prev == NULL means this is the master node
 		_SelfPtr		prev;			// prev == NULL means this is the master node
 
-        VolatilePtr() {	    // volatile pinters behave like normal pointers
-            prev = this;    // and are not initialized (ptr) per default
-            next = this;
-        };
+    VolatilePtr() {	    // volatile pinters behave like normal pointers
+        prev = this;    // and are not initialized (ptr) per default
+        next = this;
+    };
 
-        VolatilePtr(const pointer _p) {
+    VolatilePtr(const pointer _p) {
 			ptr = _p;
 			prev = this;
 			next = this;
-        }
+    }
 
-        VolatilePtr(const _Self& _vp) {
+    VolatilePtr(const _Self& _vp) {
 			ptr = _vp.ptr;
 			prev = this;
 			next = this;
-        }
+    }
 
-        VolatilePtr(_SelfRef _vp) {
+    VolatilePtr(_SelfRef _vp) {
 			ptr = _vp.ptr;
 			prev = this;
 			next = this;
@@ -77,13 +77,13 @@ namespace SEQAN_NAMESPACE_MAIN
 		~VolatilePtr() {
 			hangOff();
 		}
-        
-        template <typename size_type>
+    
+    template <typename size_type>
 		inline reference operator[] (size_type offset) {
 			return ptr[offset];
 		}
 
-        template <typename size_type>
+    template <typename size_type>
 		inline const_reference operator[] (size_type offset) const {
 			return ptr[offset];
 		}
@@ -91,7 +91,7 @@ namespace SEQAN_NAMESPACE_MAIN
 		inline _Self& operator=(_Self const &_Right) {
 			hangOff();
 			ptr = _Right.ptr;
-            if (ptr) hangOn(const_cast<_Self&>(_Right));
+        if (ptr) hangOn(const_cast<_Self&>(_Right));
 			return *this;
 		}
 
@@ -101,9 +101,9 @@ namespace SEQAN_NAMESPACE_MAIN
 			return *this;
 		}
 
-        inline bool isLonely() {
-            return next == this;
-        }
+    inline bool isLonely() {
+        return next == this;
+    }
 
 		inline void nukeCopies() {
 			_SelfPtr p = next;
@@ -114,7 +114,7 @@ namespace SEQAN_NAMESPACE_MAIN
 				p->next = p;
 				p = tmp;
 			}
-            prev = this;
+        prev = this;
 			next = this;
 		}
 
@@ -143,8 +143,8 @@ namespace SEQAN_NAMESPACE_MAIN
 		inline void hangOff() {
 			next->prev = prev;
 			prev->next = next;
-            next = this;
-            prev = this;
+        next = this;
+        prev = this;
 		}
 	};
 

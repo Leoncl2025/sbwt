@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -31,12 +31,12 @@ namespace SEQAN_NAMESPACE_MAIN
 //////////////////////////////////////////////////////////////////////////////
 
 template <typename TFile, typename TData> 
-void read(TFile & file, TData & data);       	// "projects/library/seqan/file/file_format_raw.h"(307)
+void read(TFile & file, TData & data);           // "projects/library/seqan/file/file_format_raw.h"(307)
 
 //////////////////////////////////////////////////////////////////////////////
 
 template <typename TFile, typename TData> 
-void write(TFile & file, TData & data);       	// "projects/library/seqan/file/file_format_raw.h"(327)
+void write(TFile & file, TData & data);           // "projects/library/seqan/file/file_format_raw.h"(327)
 
 template <typename TFile, typename TData> 
 void write(TFile & file, TData const & data);   // "projects/library/seqan/file/file_format_raw.h"(335)

@@ -20,19 +20,19 @@ using std::shared_ptr;
 
 int main(int argc, char **argv)
 {
-        using namespace utility;
+    using namespace utility;
 
-        if (argc != 3) {
-                PrintHelp_CountOcc(argc, argv);
-                return 1;
-        }
+    if (argc != 3) {
+        PrintHelp_CountOcc(argc, argv);
+        return 1;
+    }
 
-        string prefix_filename = string(argv[1]);
-        uint32_t seed_length = GetUint(argc, argv[2]);
+    string prefix_filename = string(argv[1]);
+    uint32_t seed_length = GetUint(argc, argv[2]);
 
-        sbwt::BuildIndexRawData build_index(prefix_filename);
+    sbwt::BuildIndexRawData build_index(prefix_filename);
 
-        CountSeedOccurrence(build_index, seed_length);
+    CountSeedOccurrence(build_index, seed_length);
 
-        return 0;
+    return 0;
 }

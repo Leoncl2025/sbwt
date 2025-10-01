@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -35,26 +35,26 @@ namespace SEQAN_NAMESPACE_MAIN
 	template <typename TTextInput, typename TNameInput, typename TCompression >
     struct Pipe< Bundle2< TTextInput, TNameInput >, Extender7<TCompression> >
     {
-        typedef typename Size<Pipe>::Type           SizeType;
-        typedef typename Value<TTextInput>::Type    TextInType;
-        typedef typename Value<TNameInput>::Type    NameInType;
+    typedef typename Size<Pipe>::Type       SizeType;
+    typedef typename Value<TTextInput>::Type    TextInType;
+    typedef typename Value<TNameInput>::Type    NameInType;
 
-        typedef Tuple<TextInType, 4, TCompression>  X4Tuple;
-        typedef Tuple<TextInType, 5, TCompression>  X5Tuple;
-        typedef Tuple<TextInType, 6, TCompression>  X6Tuple;
-        typedef Tuple<typename NameInType::T2, 3>   NTuple;
-        typedef Triple<SizeType, NTuple, X6Tuple, Compressed>   OutType0;
-        typedef Triple<SizeType, NTuple, X6Tuple, Compressed>   OutType3;
-        typedef Triple<SizeType, NTuple, X4Tuple, Compressed>   OutType5;
-        typedef Triple<SizeType, NTuple, X5Tuple, Compressed>   OutType6;
-        typedef Triple<SizeType, NTuple, X6Tuple, Compressed>   OutType124;
+    typedef Tuple<TextInType, 4, TCompression>  X4Tuple;
+    typedef Tuple<TextInType, 5, TCompression>  X5Tuple;
+    typedef Tuple<TextInType, 6, TCompression>  X6Tuple;
+    typedef Tuple<typename NameInType::T2, 3>   NTuple;
+    typedef Triple<SizeType, NTuple, X6Tuple, Compressed>   OutType0;
+    typedef Triple<SizeType, NTuple, X6Tuple, Compressed>   OutType3;
+    typedef Triple<SizeType, NTuple, X4Tuple, Compressed>   OutType5;
+    typedef Triple<SizeType, NTuple, X5Tuple, Compressed>   OutType6;
+    typedef Triple<SizeType, NTuple, X6Tuple, Compressed>   OutType124;
 
-        // pipeline interfaces to ease specialization
-        typedef Pipe< void, AbstractSource< OutType0, SizeType > > Out0;
-        typedef Pipe< void, AbstractSource< OutType3, SizeType > > Out3;
-        typedef Pipe< void, AbstractSource< OutType5, SizeType > > Out5;
-        typedef Pipe< void, AbstractSource< OutType6, SizeType > > Out6;
-        typedef Pipe< void, AbstractSource< OutType124, SizeType > > Out124;
+    // pipeline interfaces to ease specialization
+    typedef Pipe< void, AbstractSource< OutType0, SizeType > > Out0;
+    typedef Pipe< void, AbstractSource< OutType3, SizeType > > Out3;
+    typedef Pipe< void, AbstractSource< OutType5, SizeType > > Out5;
+    typedef Pipe< void, AbstractSource< OutType6, SizeType > > Out6;
+    typedef Pipe< void, AbstractSource< OutType124, SizeType > > Out124;
     };
 
 
@@ -67,25 +67,25 @@ namespace SEQAN_NAMESPACE_MAIN
 	static finline Src const __cp_(Dest &dst, Ofs const ofs, Src const src) {
 		return dst.i3.assignValueAt(ofs, src);
 	}
-        
+    
     template < typename TTextInput, typename TNameInput,
-               typename TOut0, typename TOut3, typename TOut5, typename TOut6, typename TOut124 >
+           typename TOut0, typename TOut3, typename TOut5, typename TOut6, typename TOut124 >
     static bool skew7_extend(TTextInput &textIn, TNameInput &nameIn,
-                             TOut0 &out0, TOut3 &out3, TOut5 &out5, TOut6 &out6, TOut124 &out124)
+                 TOut0 &out0, TOut3 &out3, TOut5 &out5, TOut6 &out6, TOut124 &out124)
     {
-        resize(out0, length(textIn) / 7);
-        resize(out3, (length(textIn) + 4) / 7);
-        resize(out5, (length(textIn) + 2) / 7);
-        resize(out6, (length(textIn) + 1) / 7);
-        resize(out124, length(nameIn));
-        if (!(
-            beginRead(textIn) &&
-            beginRead(nameIn) &&
-            beginWrite(out0) &&
-            beginWrite(out3) &&
-            beginWrite(out5) &&
-            beginWrite(out6) &&
-            beginWrite(out124))) return false;
+    resize(out0, length(textIn) / 7);
+    resize(out3, (length(textIn) + 4) / 7);
+    resize(out5, (length(textIn) + 2) / 7);
+    resize(out6, (length(textIn) + 1) / 7);
+    resize(out124, length(nameIn));
+    if (!(
+        beginRead(textIn) &&
+        beginRead(nameIn) &&
+        beginWrite(out0) &&
+        beginWrite(out3) &&
+        beginWrite(out5) &&
+        beginWrite(out6) &&
+        beginWrite(out124))) return false;
 
 		typename Value<TOut0>::Type   o0 = typename Value<TOut0>::Type();
 		typename Value<TOut124>::Type o1 = typename Value<TOut124>::Type();
@@ -100,125 +100,125 @@ namespace SEQAN_NAMESPACE_MAIN
 		o0.i1 = 0;
 
 		typename Size<TTextInput>::Type p = length(textIn);
-        unsigned r = (unsigned)(p % 7);
+    unsigned r = (unsigned)(p % 7);
 
 
-        // BEGIN I: PREFILL
+    // BEGIN I: PREFILL
 
-        switch (r) {
-        case 6:
-/* 6 */                                                                    __cp_(o6,0,    *textIn); ++textIn; o6.i1 = p--;
+    switch (r) {
+    case 6:
+/* 6 */                                    __cp_(o6,0,    *textIn); ++textIn; o6.i1 = p--;
 
-        case 5:
-/* 5 */                                                         __cp_(o5,0,__cp_(o6,1,    *textIn)); ++textIn; o5.i1 = p--;
+    case 5:
+/* 5 */                             __cp_(o5,0,__cp_(o6,1,    *textIn)); ++textIn; o5.i1 = p--;
 
-        case 4:
-/* 4 */                                                 o4.i2[0] = o5.i2[0] = o6.i2[0] = (*nameIn).i2; ++nameIn; o4.i1 = p--;
-                                                     __cp_(o4,0,__cp_(o5,1,__cp_(o6,2,    *textIn))); ++textIn;
-            
-        case 3:
-/* 3 */                                   __cp_(o3,0,__cp_(o4,1,__cp_(o5,2,__cp_(o6,3,   *textIn)))); ++textIn; o3.i1 = p--;
-                
-        case 2:
-/* 2 */                           o2.i2[0] = o3.i2[0] = o4.i2[1] = o5.i2[1] = o6.i2[1] = (*nameIn).i2; ++nameIn; o2.i1 = p--;
-                               __cp_(o2,0,__cp_(o3,1,__cp_(o4,2,__cp_(o5,3,__cp_(o6,4,    *textIn))))); ++textIn;
-                
-        case 1:
-/* 1 */                o1.i2[0] = o2.i2[1] = o3.i2[1] = o4.i2[2] = o5.i2[2] = o6.i2[2] = (*nameIn).i2; ++nameIn; o1.i1 = p--;
-                    __cp_(o1,0,__cp_(o2,1,__cp_(o3,2,                                     *textIn))); ++textIn;
-            if (r >= 6) push(out6, o6);
-            if (r >= 5) push(out5, o5);
-            if (r >= 4) push(out124, o4);
+    case 4:
+/* 4 */                         o4.i2[0] = o5.i2[0] = o6.i2[0] = (*nameIn).i2; ++nameIn; o4.i1 = p--;
+                             __cp_(o4,0,__cp_(o5,1,__cp_(o6,2,    *textIn))); ++textIn;
+        
+    case 3:
+/* 3 */                   __cp_(o3,0,__cp_(o4,1,__cp_(o5,2,__cp_(o6,3,   *textIn)))); ++textIn; o3.i1 = p--;
+        
+    case 2:
+/* 2 */               o2.i2[0] = o3.i2[0] = o4.i2[1] = o5.i2[1] = o6.i2[1] = (*nameIn).i2; ++nameIn; o2.i1 = p--;
+                   __cp_(o2,0,__cp_(o3,1,__cp_(o4,2,__cp_(o5,3,__cp_(o6,4,    *textIn))))); ++textIn;
+        
+    case 1:
+/* 1 */        o1.i2[0] = o2.i2[1] = o3.i2[1] = o4.i2[2] = o5.i2[2] = o6.i2[2] = (*nameIn).i2; ++nameIn; o1.i1 = p--;
+            __cp_(o1,0,__cp_(o2,1,__cp_(o3,2,                     *textIn))); ++textIn;
+        if (r >= 6) push(out6, o6);
+        if (r >= 5) push(out5, o5);
+        if (r >= 4) push(out124, o4);
 
-        case 0:;
-        }
+    case 0:;
+    }
 
-            // BEGIN II: PREFILL AND PUSH FULLY FILLED TRIPLES
+        // BEGIN II: PREFILL AND PUSH FULLY FILLED TRIPLES
 
-        if (!eof(nameIn)) {
-/* 0 */  __cp_(o0,0,__cp_(o1,1,__cp_(o2,2,__cp_(o3,3,                                     *textIn)))); ++textIn; o0.i1 = p--;
-                
-/* 6 */  __cp_(o0,1,__cp_(o1,2,__cp_(o2,3,__cp_(o3,4,                      __cp_(o6,0,    *textIn))))); ++textIn; o6.i1 = p--;
-                
-/* 5 */  __cp_(o0,2,__cp_(o1,3,__cp_(o2,4,__cp_(o3,5,           __cp_(o5,0,__cp_(o6,1,    *textIn)))))); ++textIn; o5.i1 = p--;
+    if (!eof(nameIn)) {
+/* 0 */  __cp_(o0,0,__cp_(o1,1,__cp_(o2,2,__cp_(o3,3,                     *textIn)))); ++textIn; o0.i1 = p--;
+        
+/* 6 */  __cp_(o0,1,__cp_(o1,2,__cp_(o2,3,__cp_(o3,4,              __cp_(o6,0,    *textIn))))); ++textIn; o6.i1 = p--;
+        
+/* 5 */  __cp_(o0,2,__cp_(o1,3,__cp_(o2,4,__cp_(o3,5,       __cp_(o5,0,__cp_(o6,1,    *textIn)))))); ++textIn; o5.i1 = p--;
 
 /* 4 */     o0.i2[0] = o1.i2[1] = o2.i2[2] = o3.i2[2] = o4.i2[0] = o5.i2[0] = o6.i2[0] = (*nameIn).i2; ++nameIn; o4.i1 = p--;
-         __cp_(o0,3,__cp_(o1,4,                      __cp_(o4,0,__cp_(o5,1,__cp_(o6,2,    *textIn))))); ++textIn;
-            if (r >= 3) push(out3, o3);
-            if (r >= 2) push(out124, o2);
-                
-/* 3 */  __cp_(o0,4,__cp_(o1,5,           __cp_(o3,0,__cp_(o4,1,__cp_(o5,2,__cp_(o6,3,    *textIn)))))); ++textIn; o3.i1 = p--;
-                
-/* 2 */     o0.i2[1] = o1.i2[2] = o2.i2[0] = o3.i2[0] = o4.i2[1] = o5.i2[1] = o6.i2[1] = (*nameIn).i2; ++nameIn; o2.i1 = p--;
-         __cp_(o0,5,           __cp_(o2,0,__cp_(o3,1,__cp_(o4,2,__cp_(o5,3,__cp_(o6,4,    *textIn)))))); ++textIn;
-            if (r >= 1) push(out124, o1);
-                
-/* 1 */     o0.i2[2] = o1.i2[0] = o2.i2[1] = o3.i2[1] = o4.i2[2] = o5.i2[2] = o6.i2[2] = (*nameIn).i2; ++nameIn; o1.i1 = p--;
-                    __cp_(o1,0,__cp_(o2,1,__cp_(o3,2,                                     *textIn))); ++textIn;
-            push(out0, o0);
-            push(out6, o6);
-            push(out5, o5);
-			push(out124, o4);
-            r = 7;
-        }
-
-        // MAIN LOOP: PUSH FULLY FILLED TRIPLES
+     __cp_(o0,3,__cp_(o1,4,              __cp_(o4,0,__cp_(o5,1,__cp_(o6,2,    *textIn))))); ++textIn;
+        if (r >= 3) push(out3, o3);
+        if (r >= 2) push(out124, o2);
         
-        while (!eof(nameIn)) {
-/* 0 */  __cp_(o0,0,__cp_(o1,1,__cp_(o2,2,__cp_(o3,3,                                     *textIn)))); ++textIn; o0.i1 -= 7;
-                
-/* 6 */  __cp_(o0,1,__cp_(o1,2,__cp_(o2,3,__cp_(o3,4,                      __cp_(o6,0,    *textIn))))); ++textIn; o6.i1 -= 7;
-                
-/* 5 */  __cp_(o0,2,__cp_(o1,3,__cp_(o2,4,__cp_(o3,5,           __cp_(o5,0,__cp_(o6,1,    *textIn)))))); ++textIn; o5.i1 -= 7;
+/* 3 */  __cp_(o0,4,__cp_(o1,5,       __cp_(o3,0,__cp_(o4,1,__cp_(o5,2,__cp_(o6,3,    *textIn)))))); ++textIn; o3.i1 = p--;
+        
+/* 2 */     o0.i2[1] = o1.i2[2] = o2.i2[0] = o3.i2[0] = o4.i2[1] = o5.i2[1] = o6.i2[1] = (*nameIn).i2; ++nameIn; o2.i1 = p--;
+     __cp_(o0,5,       __cp_(o2,0,__cp_(o3,1,__cp_(o4,2,__cp_(o5,3,__cp_(o6,4,    *textIn)))))); ++textIn;
+        if (r >= 1) push(out124, o1);
+        
+/* 1 */     o0.i2[2] = o1.i2[0] = o2.i2[1] = o3.i2[1] = o4.i2[2] = o5.i2[2] = o6.i2[2] = (*nameIn).i2; ++nameIn; o1.i1 = p--;
+            __cp_(o1,0,__cp_(o2,1,__cp_(o3,2,                     *textIn))); ++textIn;
+        push(out0, o0);
+        push(out6, o6);
+        push(out5, o5);
+			push(out124, o4);
+        r = 7;
+    }
+
+    // MAIN LOOP: PUSH FULLY FILLED TRIPLES
+    
+    while (!eof(nameIn)) {
+/* 0 */  __cp_(o0,0,__cp_(o1,1,__cp_(o2,2,__cp_(o3,3,                     *textIn)))); ++textIn; o0.i1 -= 7;
+        
+/* 6 */  __cp_(o0,1,__cp_(o1,2,__cp_(o2,3,__cp_(o3,4,              __cp_(o6,0,    *textIn))))); ++textIn; o6.i1 -= 7;
+        
+/* 5 */  __cp_(o0,2,__cp_(o1,3,__cp_(o2,4,__cp_(o3,5,       __cp_(o5,0,__cp_(o6,1,    *textIn)))))); ++textIn; o5.i1 -= 7;
 
 /* 4 */     o0.i2[0] = o1.i2[1] = o2.i2[2] = o3.i2[2] = o4.i2[0] = o5.i2[0] = o6.i2[0] = (*nameIn).i2; ++nameIn; o4.i1 -= 7;
-         __cp_(o0,3,__cp_(o1,4,                      __cp_(o4,0,__cp_(o5,1,__cp_(o6,2,    *textIn))))); ++textIn;
-            push(out3, o3);
-            push(out124, o2);
-                
-/* 3 */  __cp_(o0,4,__cp_(o1,5,           __cp_(o3,0,__cp_(o4,1,__cp_(o5,2,__cp_(o6,3,    *textIn)))))); ++textIn; o3.i1 -= 7;
-                
-/* 2 */     o0.i2[1] = o1.i2[2] = o2.i2[0] = o3.i2[0] = o4.i2[1] = o5.i2[1] = o6.i2[1] = (*nameIn).i2; ++nameIn; o2.i1 -= 7;
-         __cp_(o0,5,           __cp_(o2,0,__cp_(o3,1,__cp_(o4,2,__cp_(o5,3,__cp_(o6,4,    *textIn)))))); ++textIn;
-            push(out124, o1);
-                
-/* 1 */     o0.i2[2] = o1.i2[0] = o2.i2[1] = o3.i2[1] = o4.i2[2] = o5.i2[2] = o6.i2[2] = (*nameIn).i2; ++nameIn; o1.i1 -= 7;
-                    __cp_(o1,0,__cp_(o2,1,__cp_(o3,2,                                     *textIn))); ++textIn;
-            push(out0, o0);
-            push(out6, o6);
-            push(out5, o5);
-            push(out124, o4);
-        }
-
-        // END: FLUSH PARTIALLY FILLED TRIPLES
-
-        {
-/* 0 */             __cp_(o1,1,__cp_(o2,2,__cp_(o3,3,   0)));
-                
-/* 6 */             __cp_(o1,2,__cp_(o2,3,__cp_(o3,4,   0)));
-
-/* 5 */             __cp_(o1,3,__cp_(o2,4,__cp_(o3,5,   0)));
-
-/* 4 */                o1.i2[1] = o2.i2[2] = o3.i2[2] = 0;
-                    __cp_(o1,4,                         0);
-            if (r >= 3) push(out3, o3);
-            if (r >= 2) push(out124, o2);
-
-/* 3 */             __cp_(o1,5,                         0);
-
-/* 2 */                o1.i2[2] =						0;
-            if (r >= 1) push(out124, o1);
+     __cp_(o0,3,__cp_(o1,4,              __cp_(o4,0,__cp_(o5,1,__cp_(o6,2,    *textIn))))); ++textIn;
+        push(out3, o3);
+        push(out124, o2);
         
-        }
-                
-        endWrite(out124);
-        endWrite(out6);
-        endWrite(out5);
-        endWrite(out3);
-        endWrite(out0);
-        endRead(nameIn);
-        endRead(textIn);
-        return false;
+/* 3 */  __cp_(o0,4,__cp_(o1,5,       __cp_(o3,0,__cp_(o4,1,__cp_(o5,2,__cp_(o6,3,    *textIn)))))); ++textIn; o3.i1 -= 7;
+        
+/* 2 */     o0.i2[1] = o1.i2[2] = o2.i2[0] = o3.i2[0] = o4.i2[1] = o5.i2[1] = o6.i2[1] = (*nameIn).i2; ++nameIn; o2.i1 -= 7;
+     __cp_(o0,5,       __cp_(o2,0,__cp_(o3,1,__cp_(o4,2,__cp_(o5,3,__cp_(o6,4,    *textIn)))))); ++textIn;
+        push(out124, o1);
+        
+/* 1 */     o0.i2[2] = o1.i2[0] = o2.i2[1] = o3.i2[1] = o4.i2[2] = o5.i2[2] = o6.i2[2] = (*nameIn).i2; ++nameIn; o1.i1 -= 7;
+            __cp_(o1,0,__cp_(o2,1,__cp_(o3,2,                     *textIn))); ++textIn;
+        push(out0, o0);
+        push(out6, o6);
+        push(out5, o5);
+        push(out124, o4);
+    }
+
+    // END: FLUSH PARTIALLY FILLED TRIPLES
+
+    {
+/* 0 */         __cp_(o1,1,__cp_(o2,2,__cp_(o3,3,   0)));
+        
+/* 6 */         __cp_(o1,2,__cp_(o2,3,__cp_(o3,4,   0)));
+
+/* 5 */         __cp_(o1,3,__cp_(o2,4,__cp_(o3,5,   0)));
+
+/* 4 */        o1.i2[1] = o2.i2[2] = o3.i2[2] = 0;
+            __cp_(o1,4,             0);
+        if (r >= 3) push(out3, o3);
+        if (r >= 2) push(out124, o2);
+
+/* 3 */         __cp_(o1,5,             0);
+
+/* 2 */        o1.i2[2] =						0;
+        if (r >= 1) push(out124, o1);
+    
+    }
+        
+    endWrite(out124);
+    endWrite(out6);
+    endWrite(out5);
+    endWrite(out3);
+    endWrite(out0);
+    endRead(nameIn);
+    endRead(textIn);
+    return false;
     }
 
 
@@ -230,26 +230,26 @@ namespace SEQAN_NAMESPACE_MAIN
     template <typename TTextInput, typename TNameInput, typename TPair, typename TCompression >
     struct Pipe< Bundle2< TTextInput, TNameInput >, Extender7Multi<TPair, TCompression> >
     {
-        typedef typename Size<Pipe>::Type           SizeType;
-        typedef typename Value<TTextInput>::Type    TextInType;
-        typedef typename Value<TNameInput>::Type    NameInType;
+    typedef typename Size<Pipe>::Type       SizeType;
+    typedef typename Value<TTextInput>::Type    TextInType;
+    typedef typename Value<TNameInput>::Type    NameInType;
 
-        typedef Tuple<TextInType, 4, TCompression>  X4Tuple;
-        typedef Tuple<TextInType, 5, TCompression>  X5Tuple;
-        typedef Tuple<TextInType, 6, TCompression>  X6Tuple;
-        typedef Tuple<typename NameInType::T2, 3>   NTuple;
-        typedef Triple<TPair, NTuple, X6Tuple, Compressed>	OutType0;
-        typedef Triple<TPair, NTuple, X6Tuple, Compressed>	OutType3;
-        typedef Triple<TPair, NTuple, X4Tuple, Compressed>	OutType5;
-        typedef Triple<TPair, NTuple, X5Tuple, Compressed>	OutType6;
-        typedef Triple<TPair, NTuple, X6Tuple, Compressed>	OutType124;
+    typedef Tuple<TextInType, 4, TCompression>  X4Tuple;
+    typedef Tuple<TextInType, 5, TCompression>  X5Tuple;
+    typedef Tuple<TextInType, 6, TCompression>  X6Tuple;
+    typedef Tuple<typename NameInType::T2, 3>   NTuple;
+    typedef Triple<TPair, NTuple, X6Tuple, Compressed>	OutType0;
+    typedef Triple<TPair, NTuple, X6Tuple, Compressed>	OutType3;
+    typedef Triple<TPair, NTuple, X4Tuple, Compressed>	OutType5;
+    typedef Triple<TPair, NTuple, X5Tuple, Compressed>	OutType6;
+    typedef Triple<TPair, NTuple, X6Tuple, Compressed>	OutType124;
 
-        // pipeline interfaces to ease specialization
-        typedef Pipe< void, AbstractSource< OutType0, SizeType > > Out0;
-        typedef Pipe< void, AbstractSource< OutType3, SizeType > > Out3;
-        typedef Pipe< void, AbstractSource< OutType5, SizeType > > Out5;
-        typedef Pipe< void, AbstractSource< OutType6, SizeType > > Out6;
-        typedef Pipe< void, AbstractSource< OutType124, SizeType > > Out124;
+    // pipeline interfaces to ease specialization
+    typedef Pipe< void, AbstractSource< OutType0, SizeType > > Out0;
+    typedef Pipe< void, AbstractSource< OutType3, SizeType > > Out3;
+    typedef Pipe< void, AbstractSource< OutType5, SizeType > > Out5;
+    typedef Pipe< void, AbstractSource< OutType6, SizeType > > Out6;
+    typedef Pipe< void, AbstractSource< OutType124, SizeType > > Out124;
     };
 
 
@@ -257,7 +257,7 @@ namespace SEQAN_NAMESPACE_MAIN
 
 
     template < typename TTextInput, typename TLimitsString, typename TNameInput,
-               typename TOut0, typename TOut3, typename TOut5, typename TOut6, typename TOut124 >
+           typename TOut0, typename TOut3, typename TOut5, typename TOut6, typename TOut124 >
     static bool skew7_extend_multi(
 		TTextInput &textIn, TLimitsString const &limits, 
 		TNameInput &nameIn1, TNameInput &nameIn2, TNameInput &nameIn4, 
@@ -297,16 +297,16 @@ namespace SEQAN_NAMESPACE_MAIN
 		}
 
 
-        if (!(
-            beginRead(textIn) &&
-            beginRead(nameIn1) &&
-            beginRead(nameIn2) &&
-            beginRead(nameIn4) &&
-            beginWrite(out0) &&
-            beginWrite(out3) &&
-            beginWrite(out5) &&
-            beginWrite(out6) &&
-            beginWrite(out124))) return false;
+    if (!(
+        beginRead(textIn) &&
+        beginRead(nameIn1) &&
+        beginRead(nameIn2) &&
+        beginRead(nameIn4) &&
+        beginWrite(out0) &&
+        beginWrite(out3) &&
+        beginWrite(out5) &&
+        beginWrite(out6) &&
+        beginWrite(out124))) return false;
 
 		typename Value<TOut0>::Type   o0 = typename Value<TOut0>::Type();
 		typename Value<TOut124>::Type o1 = typename Value<TOut124>::Type();
@@ -339,25 +339,25 @@ namespace SEQAN_NAMESPACE_MAIN
 
 			switch (r) {
 			case 6:
-	/* 6 */                                                                    __cp_(o6,0,    *textIn); ++textIn; o6.i1 = p; ++p;
+	/* 6 */                                    __cp_(o6,0,    *textIn); ++textIn; o6.i1 = p; ++p;
 
 			case 5:
-	/* 5 */                                                         __cp_(o5,0,__cp_(o6,1,    *textIn)); ++textIn; o5.i1 = p; ++p;
+	/* 5 */                             __cp_(o5,0,__cp_(o6,1,    *textIn)); ++textIn; o5.i1 = p; ++p;
 
 			case 4:
-	/* 4 */                                                 o4.i2[0] = o5.i2[0] = o6.i2[0] = (*nameIn4).i2; ++nameIn4; o4.i1 = p; ++p;
+	/* 4 */                         o4.i2[0] = o5.i2[0] = o6.i2[0] = (*nameIn4).i2; ++nameIn4; o4.i1 = p; ++p;
 														__cp_(o4,0,__cp_(o5,1,__cp_(o6,2,    *textIn))); ++textIn;
-	            
+	        
 			case 3:
-	/* 3 */                                   __cp_(o3,0,__cp_(o4,1,__cp_(o5,2,__cp_(o6,3,   *textIn)))); ++textIn; o3.i1 = p; ++p;
-	                
+	/* 3 */                   __cp_(o3,0,__cp_(o4,1,__cp_(o5,2,__cp_(o6,3,   *textIn)))); ++textIn; o3.i1 = p; ++p;
+	        
 			case 2:
-	/* 2 */                           o2.i2[0] = o3.i2[0] = o4.i2[1] = o5.i2[1] = o6.i2[1] = (*nameIn2).i2; ++nameIn2; o2.i1 = p; ++p;
+	/* 2 */               o2.i2[0] = o3.i2[0] = o4.i2[1] = o5.i2[1] = o6.i2[1] = (*nameIn2).i2; ++nameIn2; o2.i1 = p; ++p;
 								__cp_(o2,0,__cp_(o3,1,__cp_(o4,2,__cp_(o5,3,__cp_(o6,4,    *textIn))))); ++textIn;
-	                
+	        
 			case 1:
-	/* 1 */                o1.i2[0] = o2.i2[1] = o3.i2[1] = o4.i2[2] = o5.i2[2] = o6.i2[2] = (*nameIn1).i2; ++nameIn1; o1.i1 = p; ++p;
-						__cp_(o1,0,__cp_(o2,1,__cp_(o3,2,                                     *textIn))); ++textIn;
+	/* 1 */        o1.i2[0] = o2.i2[1] = o3.i2[1] = o4.i2[2] = o5.i2[2] = o6.i2[2] = (*nameIn1).i2; ++nameIn1; o1.i1 = p; ++p;
+						__cp_(o1,0,__cp_(o2,1,__cp_(o3,2,                     *textIn))); ++textIn;
 				if (r >= 6) push(out6, o6);
 				if (r >= 5) push(out5, o5);
 				if (r >= 4) push(out124, o4);
@@ -368,25 +368,25 @@ namespace SEQAN_NAMESPACE_MAIN
 				// BEGIN II: PREFILL AND PUSH FULLY FILLED TRIPLES
 
 			if (rounds != 0) {
-	/* 0 */  __cp_(o0,0,__cp_(o1,1,__cp_(o2,2,__cp_(o3,3,                                     *textIn)))); ++textIn; o0.i1 = p; ++p;
-	                
-	/* 6 */  __cp_(o0,1,__cp_(o1,2,__cp_(o2,3,__cp_(o3,4,                      __cp_(o6,0,    *textIn))))); ++textIn; o6.i1 = p; ++p;
-	                
-	/* 5 */  __cp_(o0,2,__cp_(o1,3,__cp_(o2,4,__cp_(o3,5,           __cp_(o5,0,__cp_(o6,1,    *textIn)))))); ++textIn; o5.i1 = p; ++p;
+	/* 0 */  __cp_(o0,0,__cp_(o1,1,__cp_(o2,2,__cp_(o3,3,                     *textIn)))); ++textIn; o0.i1 = p; ++p;
+	        
+	/* 6 */  __cp_(o0,1,__cp_(o1,2,__cp_(o2,3,__cp_(o3,4,              __cp_(o6,0,    *textIn))))); ++textIn; o6.i1 = p; ++p;
+	        
+	/* 5 */  __cp_(o0,2,__cp_(o1,3,__cp_(o2,4,__cp_(o3,5,       __cp_(o5,0,__cp_(o6,1,    *textIn)))))); ++textIn; o5.i1 = p; ++p;
 
 	/* 4 */     o0.i2[0] = o1.i2[1] = o2.i2[2] = o3.i2[2] = o4.i2[0] = o5.i2[0] = o6.i2[0] = (*nameIn4).i2; ++nameIn4; o4.i1 = p; ++p;
-			__cp_(o0,3,__cp_(o1,4,                      __cp_(o4,0,__cp_(o5,1,__cp_(o6,2,    *textIn))))); ++textIn;
+			__cp_(o0,3,__cp_(o1,4,              __cp_(o4,0,__cp_(o5,1,__cp_(o6,2,    *textIn))))); ++textIn;
 				if (r >= 3) push(out3, o3);
 				if (r >= 2) push(out124, o2);
-	                
-	/* 3 */  __cp_(o0,4,__cp_(o1,5,           __cp_(o3,0,__cp_(o4,1,__cp_(o5,2,__cp_(o6,3,    *textIn)))))); ++textIn; o3.i1 = p; ++p;
-	                
+	        
+	/* 3 */  __cp_(o0,4,__cp_(o1,5,       __cp_(o3,0,__cp_(o4,1,__cp_(o5,2,__cp_(o6,3,    *textIn)))))); ++textIn; o3.i1 = p; ++p;
+	        
 	/* 2 */     o0.i2[1] = o1.i2[2] = o2.i2[0] = o3.i2[0] = o4.i2[1] = o5.i2[1] = o6.i2[1] = (*nameIn2).i2; ++nameIn2; o2.i1 = p; ++p;
-			__cp_(o0,5,           __cp_(o2,0,__cp_(o3,1,__cp_(o4,2,__cp_(o5,3,__cp_(o6,4,    *textIn)))))); ++textIn;
+			__cp_(o0,5,       __cp_(o2,0,__cp_(o3,1,__cp_(o4,2,__cp_(o5,3,__cp_(o6,4,    *textIn)))))); ++textIn;
 				if (r >= 1) push(out124, o1);
-	                
+	        
 	/* 1 */     o0.i2[2] = o1.i2[0] = o2.i2[1] = o3.i2[1] = o4.i2[2] = o5.i2[2] = o6.i2[2] = (*nameIn1).i2; ++nameIn1; o1.i1 = p; ++p;
-						__cp_(o1,0,__cp_(o2,1,__cp_(o3,2,                                     *textIn))); ++textIn;
+						__cp_(o1,0,__cp_(o2,1,__cp_(o3,2,                     *textIn))); ++textIn;
 				push(out0, o0);
 				push(out6, o6);
 				push(out5, o5);
@@ -396,27 +396,27 @@ namespace SEQAN_NAMESPACE_MAIN
 			}
 
 			// MAIN LOOP: PUSH FULLY FILLED TRIPLES
-	        
+	    
 			while (rounds != 0) {
-	/* 0 */  __cp_(o0,0,__cp_(o1,1,__cp_(o2,2,__cp_(o3,3,                                     *textIn)))); ++textIn; o0.i1 = p; ++p;
-	                
-	/* 6 */  __cp_(o0,1,__cp_(o1,2,__cp_(o2,3,__cp_(o3,4,                      __cp_(o6,0,    *textIn))))); ++textIn; o6.i1 = p; ++p;
-	                
-	/* 5 */  __cp_(o0,2,__cp_(o1,3,__cp_(o2,4,__cp_(o3,5,           __cp_(o5,0,__cp_(o6,1,    *textIn)))))); ++textIn; o5.i1 = p; ++p;
+	/* 0 */  __cp_(o0,0,__cp_(o1,1,__cp_(o2,2,__cp_(o3,3,                     *textIn)))); ++textIn; o0.i1 = p; ++p;
+	        
+	/* 6 */  __cp_(o0,1,__cp_(o1,2,__cp_(o2,3,__cp_(o3,4,              __cp_(o6,0,    *textIn))))); ++textIn; o6.i1 = p; ++p;
+	        
+	/* 5 */  __cp_(o0,2,__cp_(o1,3,__cp_(o2,4,__cp_(o3,5,       __cp_(o5,0,__cp_(o6,1,    *textIn)))))); ++textIn; o5.i1 = p; ++p;
 
 	/* 4 */     o0.i2[0] = o1.i2[1] = o2.i2[2] = o3.i2[2] = o4.i2[0] = o5.i2[0] = o6.i2[0] = (*nameIn4).i2; ++nameIn4; o4.i1 = p; ++p;
-			__cp_(o0,3,__cp_(o1,4,                      __cp_(o4,0,__cp_(o5,1,__cp_(o6,2,    *textIn))))); ++textIn;
+			__cp_(o0,3,__cp_(o1,4,              __cp_(o4,0,__cp_(o5,1,__cp_(o6,2,    *textIn))))); ++textIn;
 				push(out3, o3);
 				push(out124, o2);
-	                
-	/* 3 */  __cp_(o0,4,__cp_(o1,5,           __cp_(o3,0,__cp_(o4,1,__cp_(o5,2,__cp_(o6,3,    *textIn)))))); ++textIn; o3.i1 = p; ++p;
-	                
+	        
+	/* 3 */  __cp_(o0,4,__cp_(o1,5,       __cp_(o3,0,__cp_(o4,1,__cp_(o5,2,__cp_(o6,3,    *textIn)))))); ++textIn; o3.i1 = p; ++p;
+	        
 	/* 2 */     o0.i2[1] = o1.i2[2] = o2.i2[0] = o3.i2[0] = o4.i2[1] = o5.i2[1] = o6.i2[1] = (*nameIn2).i2; ++nameIn2; o2.i1 = p; ++p;
-			__cp_(o0,5,           __cp_(o2,0,__cp_(o3,1,__cp_(o4,2,__cp_(o5,3,__cp_(o6,4,    *textIn)))))); ++textIn;
+			__cp_(o0,5,       __cp_(o2,0,__cp_(o3,1,__cp_(o4,2,__cp_(o5,3,__cp_(o6,4,    *textIn)))))); ++textIn;
 				push(out124, o1);
-	                
+	        
 	/* 1 */     o0.i2[2] = o1.i2[0] = o2.i2[1] = o3.i2[1] = o4.i2[2] = o5.i2[2] = o6.i2[2] = (*nameIn1).i2; ++nameIn1; o1.i1 = p; ++p;
-						__cp_(o1,0,__cp_(o2,1,__cp_(o3,2,                                     *textIn))); ++textIn;
+						__cp_(o1,0,__cp_(o2,1,__cp_(o3,2,                     *textIn))); ++textIn;
 				push(out0, o0);
 				push(out6, o6);
 				push(out5, o5);
@@ -427,35 +427,35 @@ namespace SEQAN_NAMESPACE_MAIN
 			// END: FLUSH PARTIALLY FILLED TRIPLES
 
 			{
-	/* 0 */             __cp_(o1,1,__cp_(o2,2,__cp_(o3,3,   0)));
-	                
-	/* 6 */             __cp_(o1,2,__cp_(o2,3,__cp_(o3,4,   0)));
+	/* 0 */         __cp_(o1,1,__cp_(o2,2,__cp_(o3,3,   0)));
+	        
+	/* 6 */         __cp_(o1,2,__cp_(o2,3,__cp_(o3,4,   0)));
 
-	/* 5 */             __cp_(o1,3,__cp_(o2,4,__cp_(o3,5,   0)));
+	/* 5 */         __cp_(o1,3,__cp_(o2,4,__cp_(o3,5,   0)));
 
-	/* 4 */                o1.i2[1] = o2.i2[2] = o3.i2[2] = 0;
-						__cp_(o1,4,                         0);
+	/* 4 */        o1.i2[1] = o2.i2[2] = o3.i2[2] = 0;
+						__cp_(o1,4,             0);
 				if (r >= 3) push(out3, o3);
 				if (r >= 2) push(out124, o2);
 
-	/* 3 */             __cp_(o1,5,                         0);
+	/* 3 */         __cp_(o1,5,             0);
 
-	/* 2 */                o1.i2[2] =						0;
+	/* 2 */        o1.i2[2] =						0;
 				if (r >= 1) push(out124, o1);
-	        
+	    
 			}
 		}
-	                
-        endWrite(out124);
-        endWrite(out6);
-        endWrite(out5);
-        endWrite(out3);
-        endWrite(out0);
-        endRead(nameIn4);
-        endRead(nameIn2);
-        endRead(nameIn1);
-        endRead(textIn);
-        return false;
+	        
+    endWrite(out124);
+    endWrite(out6);
+    endWrite(out5);
+    endWrite(out3);
+    endWrite(out0);
+    endRead(nameIn4);
+    endRead(nameIn2);
+    endRead(nameIn1);
+    endRead(textIn);
+    return false;
     }
 
 

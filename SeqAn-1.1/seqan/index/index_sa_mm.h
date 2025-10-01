@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -32,13 +32,13 @@ namespace SEQAN_NAMESPACE_MAIN
     //////////////////////////////////////////////////////////////////////////////
 
     template < typename TSA,
-               typename TText >
+           typename TText >
     void createSuffixArray(
 		TSA &SA,
 		TText &s,
 		ManberMyers const &,
 		unsigned K,
-        unsigned maxdepth)
+    unsigned maxdepth)
 	{
 		typedef typename Value<TSA>::Type	TSize;
 		typedef typename Value<TText>::Type	TValue;
@@ -50,9 +50,9 @@ namespace SEQAN_NAMESPACE_MAIN
 
 		TSize n = length(s);
 
-        TString ISA;        resize(ISA, n, Exact());
-        TString count;
-        TBoolString Bh;		resize(Bh, n, Exact());
+    TString ISA;    resize(ISA, n, Exact());
+    TString count;
+    TBoolString Bh;		resize(Bh, n, Exact());
 		TBoolString B2h;	resize(B2h, n, Exact());
 
 		// sort the first character (h=1)
@@ -148,20 +148,20 @@ namespace SEQAN_NAMESPACE_MAIN
 				}
 			}
 		}
-        SEQAN_PROSET(SEQAN_PRODEPTH, 0);
-        #ifdef SEQAN_DEBUG_INDEX
+    SEQAN_PROSET(SEQAN_PRODEPTH, 0);
+    #ifdef SEQAN_DEBUG_INDEX
 			::std::cerr << ::std::endl;
-        #endif
+    #endif
 	}
 
     template < typename TSA,
-               typename TText,
-               typename TSize >
+           typename TText,
+           typename TSize >
     inline void createSuffixArrayPart(
 		TSA &SA,
 		TText &s,
 		ManberMyers const &alg,
-        TSize maxLCP,
+    TSize maxLCP,
 		unsigned K);
 
 	// Overload without explicit K parameter to provide the former default value.
@@ -179,18 +179,18 @@ namespace SEQAN_NAMESPACE_MAIN
 
     // creates suffix array sorted by the first maxLCP chars of suffixes
     template < typename TSA,
-               typename TText,
-               typename TSize >
+           typename TText,
+           typename TSize >
     inline void createSuffixArrayPart(
 		TSA &SA,
 		TText &s,
 		ManberMyers const &alg,
-        TSize maxLCP,
-        unsigned K)
+    TSize maxLCP,
+    unsigned K)
     {
-        unsigned depth = 0;
-        for(TSize i = 1; i < maxLCP; i*=2) ++depth;
-        createSuffixArray(SA, s, alg, K, depth);
+    unsigned depth = 0;
+    for(TSize i = 1; i < maxLCP; i*=2) ++depth;
+    createSuffixArray(SA, s, alg, K, depth);
     }
 
 }

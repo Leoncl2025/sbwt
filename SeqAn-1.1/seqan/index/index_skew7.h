@@ -1,6 +1,6 @@
 	/*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -44,128 +44,128 @@ namespace SEQAN_NAMESPACE_MAIN
 
 
 	// *** COMPARATORS & MAPS ***
-        
+    
     template <typename InType, typename Result = int>
     struct skew7_ncomp : public ::std::binary_function<InType,InType,Result> {
-        inline Result operator()(const InType &a, const InType &b) const
-        {
+    inline Result operator()(const InType &a, const InType &b) const
+    {
 			typedef typename InType::T1 SizeType;
-            typedef typename InType::T2 Septet;
-            const typename Septet::T *sa = a.i2.i;
-            const typename Septet::T *sb = b.i2.i;
+        typedef typename InType::T2 Septet;
+        const typename Septet::T *sa = a.i2.i;
+        const typename Septet::T *sb = b.i2.i;
 
-            SizeType n = Septet::size;
-            if (a.i1 < n) n = a.i1;
-            if (b.i1 < n) n = b.i1;
-            for(SizeType i = 0; i < n; i++, ++sa, ++sb) {
-                if (*sa == *sb) continue;
-                return (*sa < *sb)? -1 : 1;
-            }
-            if (n < Septet::size) {
-                return (a.i1 < b.i1)? -1 : 1;
-            } else
-                return 0;
+        SizeType n = Septet::size;
+        if (a.i1 < n) n = a.i1;
+        if (b.i1 < n) n = b.i1;
+        for(SizeType i = 0; i < n; i++, ++sa, ++sb) {
+        if (*sa == *sb) continue;
+        return (*sa < *sb)? -1 : 1;
         }
+        if (n < Septet::size) {
+        return (a.i1 < b.i1)? -1 : 1;
+        } else
+        return 0;
+    }
     };
 
     // optimized for bitvectors
     template <typename T1, typename TValue, typename Result>
     struct skew7_ncomp< Pair<T1, Tuple<TValue, 7, Compressed>, Compressed >, Result > :
-        public ::std::binary_function<
-            Pair<T1, Tuple<TValue, 7, Compressed>, Compressed >,
-            Pair<T1, Tuple<TValue, 7, Compressed>, Compressed >,
-            Result> {       
-        inline Result operator()(
-            const Pair<T1, Tuple<TValue, 7, Compressed>, Compressed > &a,
-            const Pair<T1, Tuple<TValue, 7, Compressed>, Compressed > &b) const
-        {
-            if (a.i2 < b.i2) return -1;
-            if (a.i2 > b.i2) return 1;
-            if (a.i1 < 7 || b.i1 < 7) 
-                return (a.i1 < b.i1)? -1 : 1;
-            return 0;
-        }
+    public ::std::binary_function<
+        Pair<T1, Tuple<TValue, 7, Compressed>, Compressed >,
+        Pair<T1, Tuple<TValue, 7, Compressed>, Compressed >,
+        Result> {       
+    inline Result operator()(
+        const Pair<T1, Tuple<TValue, 7, Compressed>, Compressed > &a,
+        const Pair<T1, Tuple<TValue, 7, Compressed>, Compressed > &b) const
+    {
+        if (a.i2 < b.i2) return -1;
+        if (a.i2 > b.i2) return 1;
+        if (a.i1 < 7 || b.i1 < 7) 
+        return (a.i1 < b.i1)? -1 : 1;
+        return 0;
+    }
     };
 
     template <typename InType, typename Result = typename InType::T1>
     struct skew7_nmap_linear : public ::std::unary_function<InType,Result> {
-        Result BN4, BN;
-        skew7_nmap_linear(Result _BN):BN4(_BN+1),BN(_BN) { }
-        inline Result operator()(const InType& x) const
+    Result BN4, BN;
+    skew7_nmap_linear(Result _BN):BN4(_BN+1),BN(_BN) { }
+    inline Result operator()(const InType& x) const
 		{ Result i = x.i1; return (i%7 == 4)? BN4-(i-(i/7)*4): BN-(i-(i/7)*4); }
     };
 
     template <typename InType, typename Result = typename InType::T1>
     struct skew7_nmap_sliced : public ::std::unary_function<InType,Result> {
-        Result off[5];
-        skew7_nmap_sliced(Result _BN)
-        { 
+    Result off[5];
+    skew7_nmap_sliced(Result _BN)
+    { 
 			off[0] = 0;
 			off[1] = _BN - 1; 
 			off[2] = (2*_BN)/3 - 1; 
 			off[3] = 0;
 			off[4] = _BN/3 - 1; 
 		}
-        inline Result operator()(const InType& x) const
-        { return off[x.i1 % 7] - x.i1/7; }
+    inline Result operator()(const InType& x) const
+    { return off[x.i1 % 7] - x.i1/7; }
     };
 
 
     template <typename InType, typename Result = InType>
     struct skew7_unslicer_func : public ::std::unary_function<InType,Result> {
-        Result o1, o2, o4, n4, n24;
-        skew7_unslicer_func(Result N):
-            o1(N - (N + 6) % 7),
-            o2(N - (N + 5) % 7),
-            o4(N - (N + 3) % 7),
-            n4((N + 3) / 7),
-            n24((N + 5) / 7 + n4) { }
-        
-        inline Result operator()(const InType& x) const
-        { return (x < n4)  ? o4 -  x        * 7:
-                 (x < n24) ? o2 - (x - n4)  * 7: 
-                             o1 - (x - n24) * 7; }
+    Result o1, o2, o4, n4, n24;
+    skew7_unslicer_func(Result N):
+        o1(N - (N + 6) % 7),
+        o2(N - (N + 5) % 7),
+        o4(N - (N + 3) % 7),
+        n4((N + 3) / 7),
+        n24((N + 5) / 7 + n4) { }
+    
+    inline Result operator()(const InType& x) const
+    { return (x < n4)  ? o4 -  x    * 7:
+         (x < n24) ? o2 - (x - n4)  * 7: 
+                 o1 - (x - n24) * 7; }
     };
 
     template <typename InType, typename Result = typename InType::T2::T>
     struct skew7_nmap_extended : public ::std::unary_function<InType,Result> {
-        inline Result operator()(const InType& x) const
-        { return x.i2[0]; }
+    inline Result operator()(const InType& x) const
+    { return x.i2[0]; }
     };
 
     template <typename InType, const int EXT_LENGTH, typename Result = int>
     struct skew7_extend_comp : public ::std::binary_function<InType,InType,Result> {
-        inline Result operator()(const InType &a, const InType &b) const
-        {
-            for(unsigned int i = 0; i < EXT_LENGTH; i++) {
-                if (a.i3[i] == b.i3[i]) continue;
-                return (a.i3[i] <  b.i3[i])? -1 : 1;
-            }
-            return (a.i2[0] < b.i2[0])? -1 : 1;
+    inline Result operator()(const InType &a, const InType &b) const
+    {
+        for(unsigned int i = 0; i < EXT_LENGTH; i++) {
+        if (a.i3[i] == b.i3[i]) continue;
+        return (a.i3[i] <  b.i3[i])? -1 : 1;
         }
+        return (a.i2[0] < b.i2[0])? -1 : 1;
+    }
     };
 
     // optimized for bitvectors
     template <typename T1, typename T2, typename T, const int _size, const int EXT_LENGTH, typename Result>
     struct skew7_extend_comp< Triple<T1,T2,Tuple<T,_size,Compressed>, Compressed>, EXT_LENGTH, Result> :
-        public ::std::binary_function<
-            Triple<T1,T2,Tuple<T,_size,Compressed>,Compressed>,
-            Triple<T1,T2,Tuple<T,_size,Compressed>,Compressed>,
-            Result> 
+    public ::std::binary_function<
+        Triple<T1,T2,Tuple<T,_size,Compressed>,Compressed>,
+        Triple<T1,T2,Tuple<T,_size,Compressed>,Compressed>,
+        Result> 
     {
-        inline Result operator()(
-            const Triple<T1,T2,Tuple<T,_size,Compressed>,Compressed> &a,
-            const Triple<T1,T2,Tuple<T,_size,Compressed>,Compressed> &b) const
-        {
-            if (a.i3 < b.i3) return -1;
-            if (a.i3 > b.i3) return 1;
-            return (a.i2[0] < b.i2[0])? -1 : 1;
-        }
+    inline Result operator()(
+        const Triple<T1,T2,Tuple<T,_size,Compressed>,Compressed> &a,
+        const Triple<T1,T2,Tuple<T,_size,Compressed>,Compressed> &b) const
+    {
+        if (a.i3 < b.i3) return -1;
+        if (a.i3 > b.i3) return 1;
+        return (a.i2[0] < b.i2[0])? -1 : 1;
+    }
     };
 
 	template < typename TInput >
     struct Value< Pipe< TInput, Skew7 > > {
-        typedef typename Size<TInput>::Type Type;
+    typedef typename Size<TInput>::Type Type;
     };
 
 
@@ -175,33 +175,33 @@ namespace SEQAN_NAMESPACE_MAIN
     struct Pipe< TInput, Skew7 >
     {
   
-        // *** SPECIALIZATION ***
+    // *** SPECIALIZATION ***
 
-        // use compression if lessorequal 16 different values per char
-        typedef typename IF< 
-            (BitsPerValue<_TypeOf(TInput)>::VALUE > 0) && 
-            (BitsPerValue<_TypeOf(TInput)>::VALUE <= 4), 
-            Compressed, 
-            void>::Type compress;
-//        typedef void compress;
+    // use compression if lessorequal 16 different values per char
+    typedef typename IF< 
+        (BitsPerValue<_TypeOf(TInput)>::VALUE > 0) && 
+        (BitsPerValue<_TypeOf(TInput)>::VALUE <= 4), 
+        Compressed, 
+        void>::Type compress;
+//    typedef void compress;
 
-        // use skew7 for recursion (more I/O-efficient)
-        typedef Skew7 recurseSpec;
+    // use skew7 for recursion (more I/O-efficient)
+    typedef Skew7 recurseSpec;
 
-        // step 1
-		typedef Pipe< TInput, Sampler<7, compress> >  TSamplerDC7;          
-                                        typedef skew7_ncomp<_TypeOf(TSamplerDC7)> ncomp_t;
-        typedef Pool< _TypeOf(TSamplerDC7), SorterSpec< SorterConfigSize<ncomp_t, _TSizeOf(TSamplerDC7) > > > TSortTuples;
+    // step 1
+		typedef Pipe< TInput, Sampler<7, compress> >  TSamplerDC7;      
+                    typedef skew7_ncomp<_TypeOf(TSamplerDC7)> ncomp_t;
+    typedef Pool< _TypeOf(TSamplerDC7), SorterSpec< SorterConfigSize<ncomp_t, _TSizeOf(TSamplerDC7) > > > TSortTuples;
 		typedef Pipe< TSortTuples, Namer<ncomp_t> > TNamer;
-                                        typedef skew7_nmap_sliced<_TypeOf(TNamer)> nmap_sliced_t;
-                                        typedef skew7_nmap_linear<_TypeOf(TNamer)> nmap_linear_t;
-        typedef Pool< _TypeOf(TNamer), MapperSpec< MapperConfigSize< nmap_sliced_t, _TSizeOf(TNamer) > > > TNames_Sliced;
+                    typedef skew7_nmap_sliced<_TypeOf(TNamer)> nmap_sliced_t;
+                    typedef skew7_nmap_linear<_TypeOf(TNamer)> nmap_linear_t;
+    typedef Pool< _TypeOf(TNamer), MapperSpec< MapperConfigSize< nmap_sliced_t, _TSizeOf(TNamer) > > > TNames_Sliced;
 
-        // unique names - shortcut
-        typedef Pool< _TypeOf(TNames_Sliced), MapperSpec< MapperConfigSize< nmap_linear_t, _TSizeOf(TNames_Sliced) > > > TNames_Linear_Unique;
+    // unique names - shortcut
+    typedef Pool< _TypeOf(TNames_Sliced), MapperSpec< MapperConfigSize< nmap_linear_t, _TSizeOf(TNames_Sliced) > > > TNames_Linear_Unique;
 
-        // non-unique names
-        typedef Pipe< TNames_Sliced, Filter< filterI2<_TypeOf(TNames_Sliced)> > > TFilter;
+    // non-unique names
+    typedef Pipe< TNames_Sliced, Filter< filterI2<_TypeOf(TNames_Sliced)> > > TFilter;
 
 			// recursion
 			typedef Pipe< TFilter, recurseSpec > TRecurse;
@@ -214,32 +214,32 @@ namespace SEQAN_NAMESPACE_MAIN
 			typedef Pipe< TInMem, Filter<unslicer_func_t> > TUnslicerInMem;
 			typedef Pipe< TUnslicerInMem, Counter > TRenamerInMem;
 
-        typedef Pool< _TypeOf(TRenamer), MapperSpec< MapperConfigSize< nmap_linear_t, _TSizeOf(TRenamer) > > > TNames_Linear;
-        
-        // step 2
-        typedef Pipe< Bundle2< TInput, TNames_Linear >, Extender7<compress> > TExtender;
-                                        typedef skew7_extend_comp<_TypeOf(typename TExtender::Out0),3> extend0_comp_t;
-                                        typedef skew7_extend_comp<_TypeOf(typename TExtender::Out6),2> extend6_comp_t;
-                                        typedef skew7_extend_comp<_TypeOf(typename TExtender::Out5),1> extend5_comp_t;
-                                        typedef skew7_extend_comp<_TypeOf(typename TExtender::Out3),1> extend3_comp_t;
-        typedef Pool< _TypeOf(typename TExtender::Out0), SorterSpec< SorterConfigSize< extend0_comp_t, _TSizeOf(typename TExtender::Out0) > > > TSorterS0;
-        typedef Pool< _TypeOf(typename TExtender::Out6), SorterSpec< SorterConfigSize< extend6_comp_t, _TSizeOf(typename TExtender::Out6) > > > TSorterS6;
-        typedef Pool< _TypeOf(typename TExtender::Out5), SorterSpec< SorterConfigSize< extend5_comp_t, _TSizeOf(typename TExtender::Out5) > > > TSorterS5;
-        typedef Pool< _TypeOf(typename TExtender::Out3), SorterSpec< SorterConfigSize< extend3_comp_t, _TSizeOf(typename TExtender::Out3) > > > TSorterS3;
+    typedef Pool< _TypeOf(TRenamer), MapperSpec< MapperConfigSize< nmap_linear_t, _TSizeOf(TRenamer) > > > TNames_Linear;
+    
+    // step 2
+    typedef Pipe< Bundle2< TInput, TNames_Linear >, Extender7<compress> > TExtender;
+                    typedef skew7_extend_comp<_TypeOf(typename TExtender::Out0),3> extend0_comp_t;
+                    typedef skew7_extend_comp<_TypeOf(typename TExtender::Out6),2> extend6_comp_t;
+                    typedef skew7_extend_comp<_TypeOf(typename TExtender::Out5),1> extend5_comp_t;
+                    typedef skew7_extend_comp<_TypeOf(typename TExtender::Out3),1> extend3_comp_t;
+    typedef Pool< _TypeOf(typename TExtender::Out0), SorterSpec< SorterConfigSize< extend0_comp_t, _TSizeOf(typename TExtender::Out0) > > > TSorterS0;
+    typedef Pool< _TypeOf(typename TExtender::Out6), SorterSpec< SorterConfigSize< extend6_comp_t, _TSizeOf(typename TExtender::Out6) > > > TSorterS6;
+    typedef Pool< _TypeOf(typename TExtender::Out5), SorterSpec< SorterConfigSize< extend5_comp_t, _TSizeOf(typename TExtender::Out5) > > > TSorterS5;
+    typedef Pool< _TypeOf(typename TExtender::Out3), SorterSpec< SorterConfigSize< extend3_comp_t, _TSizeOf(typename TExtender::Out3) > > > TSorterS3;
 
-        // step 3
-                                        typedef skew7_nmap_extended<_TypeOf(typename TExtender::Out124)> nmap_extended_t;
+    // step 3
+                    typedef skew7_nmap_extended<_TypeOf(typename TExtender::Out124)> nmap_extended_t;
 		typedef Pool< _TypeOf(typename TExtender::Out124), MapperSpec< MapperConfigSize< nmap_extended_t, _TSizeOf(typename TExtender::Out124) > > > TSorterS124;
-        typedef Pipe< Bundle5< TSorterS0, TSorterS3, TSorterS5, TSorterS6, TSorterS124 >, Merger7 > TMerger;
+    typedef Pipe< Bundle5< TSorterS0, TSorterS3, TSorterS5, TSorterS6, TSorterS124 >, Merger7 > TMerger;
 
-        TSorterS0   sortedS0;
-        TSorterS3   sortedS3;
-        TSorterS5   sortedS5;
-        TSorterS6   sortedS6;
-        TSorterS124 sortedS124;
-        TMerger     in;
-            
-        Pipe():
+    TSorterS0   sortedS0;
+    TSorterS3   sortedS3;
+    TSorterS5   sortedS5;
+    TSorterS6   sortedS6;
+    TSorterS124 sortedS124;
+    TMerger     in;
+        
+    Pipe():
 			in(bundle5(sortedS0, sortedS3, sortedS5, sortedS6, sortedS124)) {}
 
 		Pipe(TInput& _textIn):
@@ -247,69 +247,69 @@ namespace SEQAN_NAMESPACE_MAIN
 		{
 			process(_textIn);
 		}
-        
+    
 	    template < typename _TInput >
-        bool process(_TInput &textIn) {
+    bool process(_TInput &textIn) {
 
-            SEQAN_PROADD(SEQAN_PRODEPTH, 1);
-            SEQAN_PROMARK("Rekursionsabstieg");
-            #ifdef SEQAN_DEBUG_INDEX
-                ::std::cerr << "enter level " << SEQAN_PROVAL(SEQAN_PRODEPTH) << " compression: ";
+        SEQAN_PROADD(SEQAN_PRODEPTH, 1);
+        SEQAN_PROMARK("Rekursionsabstieg");
+        #ifdef SEQAN_DEBUG_INDEX
+        ::std::cerr << "enter level " << SEQAN_PROVAL(SEQAN_PRODEPTH) << " compression: ";
 				::std::cerr << TYPECMP<compress, Compressed>::VALUE << " " << BitsPerValue<_TypeOf(TInput)>::VALUE << ::std::endl;
-            #endif
-            {
+        #endif
+        {
 
 
-            // *** INSTANTIATION ***
+        // *** INSTANTIATION ***
 
-            // step 1
-            TSamplerDC7                 sampler(textIn);
-            TSortTuples                 sorter;
-            #ifdef SEQAN_DEBUG_INDEX
-                ::std::cerr << "  sort names (" << length(sampler)<< ")" << ::std::endl;
-            #endif
-            sorter << sampler;
-            SEQAN_PROMARK("Sorter (2) - 7-lets sortieren");
+        // step 1
+        TSamplerDC7         sampler(textIn);
+        TSortTuples         sorter;
+        #ifdef SEQAN_DEBUG_INDEX
+        ::std::cerr << "  sort names (" << length(sampler)<< ")" << ::std::endl;
+        #endif
+        sorter << sampler;
+        SEQAN_PROMARK("Sorter (2) - 7-lets sortieren");
 
-            TNamer                      namer(sorter);
-            nmap_sliced_t               map_sliced(length(namer));
-            nmap_linear_t               map_linear(length(namer));
-            TNames_Sliced               names_sliced(map_sliced);
-            #ifdef SEQAN_DEBUG_INDEX
-                ::std::cerr << "  slice names" << ::std::endl;
-            #endif
-            names_sliced << namer;
+        TNamer              namer(sorter);
+        nmap_sliced_t           map_sliced(length(namer));
+        nmap_linear_t           map_linear(length(namer));
+        TNames_Sliced           names_sliced(map_sliced);
+        #ifdef SEQAN_DEBUG_INDEX
+        ::std::cerr << "  slice names" << ::std::endl;
+        #endif
+        names_sliced << namer;
 
-            if (namer.unique() || empty(names_sliced)) {
-                // unique names
+        if (namer.unique() || empty(names_sliced)) {
+        // unique names
 
-                clear(sorter);
-                SEQAN_PROMARK("Mapper (4) - s124 konstruieren");
-                TNames_Linear_Unique        names_linear(map_linear);
+        clear(sorter);
+        SEQAN_PROMARK("Mapper (4) - s124 konstruieren");
+        TNames_Linear_Unique    names_linear(map_linear);
 
-                #ifdef SEQAN_DEBUG_INDEX
-                    ::std::cerr << "  make names linear" << ::std::endl;
-                #endif
-                names_linear << names_sliced;
+        #ifdef SEQAN_DEBUG_INDEX
+            ::std::cerr << "  make names linear" << ::std::endl;
+        #endif
+        names_linear << names_sliced;
 				clear(names_sliced);
-                SEQAN_PROMARK("Mapper (10) - ISA124 konstruieren");
+        SEQAN_PROMARK("Mapper (10) - ISA124 konstruieren");
 
-                // step 2
-                skew7_extend(textIn, names_linear, sortedS0, sortedS3, sortedS5, sortedS6, sortedS124);
+        // step 2
+        skew7_extend(textIn, names_linear, sortedS0, sortedS3, sortedS5, sortedS6, sortedS124);
 
-            } else {
-                // non-unique names
+        } else {
+        // non-unique names
 
-                clear(sorter);
-                SEQAN_PROMARK("Mapper (4) - s124 konstruieren");
+        clear(sorter);
+        SEQAN_PROMARK("Mapper (4) - s124 konstruieren");
 
-                TFilter                     filter(names_sliced);
-				TNames_Linear               names_linear(map_linear);
+        TFilter             filter(names_sliced);
+				TNames_Linear           names_linear(map_linear);
 
 				if (length(filter) > 128*1024*1024) 
 				{
 					// recursion
-					TRecurse                    recurse(filter);
+					TRecurse            recurse(filter);
 
 					#ifdef SEQAN_TEST_SKEW7
 					{
@@ -320,9 +320,9 @@ namespace SEQAN_NAMESPACE_MAIN
 					#endif
 
 					clear(filter);
-					unslicer_func_t             func(length(textIn));
-					TUnslicer                   unslicer(recurse, func);
-					TRenamer                    renamer(unslicer);
+					unslicer_func_t         func(length(textIn));
+					TUnslicer           unslicer(recurse, func);
+					TRenamer            renamer(unslicer);
 
 					#ifdef SEQAN_DEBUG_INDEX
 						::std::cerr << "  rename names" << ::std::endl;
@@ -336,8 +336,8 @@ namespace SEQAN_NAMESPACE_MAIN
 
 					clear(filter);
 					unslicer_func_t				func(length(textIn));
-					TUnslicerInMem              unslicer(inMem, func);
-					TRenamerInMem               renamer(unslicer);
+					TUnslicerInMem          unslicer(inMem, func);
+					TRenamerInMem           renamer(unslicer);
 
 					#ifdef SEQAN_DEBUG_INDEX
 						::std::cerr << "  rename names" << ::std::endl;
@@ -346,36 +346,36 @@ namespace SEQAN_NAMESPACE_MAIN
 					names_linear << renamer;
 				} 
 
-                SEQAN_PROMARK("Mapper (10) - ISA124 konstruieren");
-               
-                // step 2
-                #ifdef SEQAN_DEBUG_INDEX
-                    ::std::cerr << "  prepare merge" << ::std::endl;
-                #endif
-                skew7_extend(textIn, names_linear, sortedS0, sortedS3, sortedS5, sortedS6, sortedS124);
-                SEQAN_PROMARK("Mapper (12), Sorter (13-16) - SA124, SA3, SA5, SA6, SA0 verschmelzen");
-            }
-            
-            // step 3
-            // ... is done on-demand by merger
-            }
-            #ifdef SEQAN_DEBUG_INDEX
-                ::std::cerr << "left level " << SEQAN_PROVAL(SEQAN_PRODEPTH) << ::std::endl;
-            #endif
-            SEQAN_PROMARK("Rekursionsaufstieg");
-            SEQAN_PROSUB(SEQAN_PRODEPTH, 1);
-
-            return true;
-        }
-
-        inline typename Value<Pipe>::Type const operator*() {
-            return *in;
+        SEQAN_PROMARK("Mapper (10) - ISA124 konstruieren");
+           
+        // step 2
+        #ifdef SEQAN_DEBUG_INDEX
+            ::std::cerr << "  prepare merge" << ::std::endl;
+        #endif
+        skew7_extend(textIn, names_linear, sortedS0, sortedS3, sortedS5, sortedS6, sortedS124);
+        SEQAN_PROMARK("Mapper (12), Sorter (13-16) - SA124, SA3, SA5, SA6, SA0 verschmelzen");
         }
         
-        inline Pipe& operator++() {
-            ++in;
-            return *this;
-        }        
+        // step 3
+        // ... is done on-demand by merger
+        }
+        #ifdef SEQAN_DEBUG_INDEX
+        ::std::cerr << "left level " << SEQAN_PROVAL(SEQAN_PRODEPTH) << ::std::endl;
+        #endif
+        SEQAN_PROMARK("Rekursionsaufstieg");
+        SEQAN_PROSUB(SEQAN_PRODEPTH, 1);
+
+        return true;
+    }
+
+    inline typename Value<Pipe>::Type const operator*() {
+        return *in;
+    }
+    
+    inline Pipe& operator++() {
+        ++in;
+        return *this;
+    }    
     };
 
     // not sure which interface is more intuitive, we support both
@@ -383,7 +383,7 @@ namespace SEQAN_NAMESPACE_MAIN
     // for the first we would need no _in member
 	template < typename TInput, typename TObject >
     inline bool operator<<(Pipe< TInput, Skew7 > &me, TObject &textIn) {
-        return me.process(textIn);
+    return me.process(textIn);
     }
 
 	template < 
@@ -395,9 +395,9 @@ namespace SEQAN_NAMESPACE_MAIN
 		String< TValue, External<TConfig> > &s,
 		Skew7 const &spec,
 		unsigned K,
-        unsigned maxdepth)
+    unsigned maxdepth)
 	{
-        createSuffixArrayExt(SA, s, spec);
+    createSuffixArrayExt(SA, s, spec);
 	}
 
 
@@ -412,39 +412,39 @@ namespace SEQAN_NAMESPACE_MAIN
     template <typename TTextIter, typename TSize> inline
     bool _leqSkew7(TTextIter a1, TSize a2,   TTextIter b1, TSize b2,   TSize n)
     { // lexic. order for n-tupels
-        for (; n != 0; --n, ++a1, ++b1) {
-            if (lexLess(*a1, *b1)) return true;
-            if (lexLess(*b1, *a1)) return false;
-        }
-        return (a2 <= b2);
+    for (; n != 0; --n, ++a1, ++b1) {
+        if (lexLess(*a1, *b1)) return true;
+        if (lexLess(*b1, *a1)) return false;
+    }
+    return (a2 <= b2);
     }
 
 	// compares at most the last n characters (a) with b (clipping)
     template <typename TTextIter, typename TSize> inline
     bool _leqSkew7(TTextIter a,   TTextIter b,   TSize n)
     { // lexic. order for n-tupels
-        for (; n != 0; --n, ++a, ++b) {
-            if (lexLess(*a, *b)) return true;
-            if (lexLess(*b, *a)) return false;
-        }
-        return true;	// a is shorter than b
+    for (; n != 0; --n, ++a, ++b) {
+        if (lexLess(*a, *b)) return true;
+        if (lexLess(*b, *a)) return false;
+    }
+    return true;	// a is shorter than b
     }
 
 	// compares two suffixes of residue classes a and b
     template <typename TTextIter, typename TSize, typename TString> inline
     bool _leqSkew7(unsigned a, unsigned b,   TTextIter spos[], const TSize tpos[], const bool islast[], const TString &s124, const long adjust[7][7])
     {
-        TTextIter sa = spos[a];
-        TTextIter sb = spos[b];
+    TTextIter sa = spos[a];
+    TTextIter sb = spos[b];
 		TSize shft = _SkewShift<7>::VALUE[a][b];
-        if (sa > sb) {
-            if ((a != 0) && (a < shft) && islast[a]) // do we need to clip?
-                return _leqSkew7 (sa,   sb,   a);
-        } else {
-            if ((b != 0) && (b < shft) && islast[b]) // do we need to clip?
-                return !_leqSkew7 (sb,   sa,   b);
-        }
-        return _leqSkew7 (sa, s124[tpos[a] + adjust[a][b]],   sb, s124[tpos[b] + adjust[b][a]],   shft);
+    if (sa > sb) {
+        if ((a != 0) && (a < shft) && islast[a]) // do we need to clip?
+        return _leqSkew7 (sa,   sb,   a);
+    } else {
+        if ((b != 0) && (b < shft) && islast[b]) // do we need to clip?
+        return !_leqSkew7 (sb,   sa,   b);
+    }
+    return _leqSkew7 (sa, s124[tpos[a] + adjust[a][b]],   sb, s124[tpos[b] + adjust[b][a]],   shft);
     }
 
 
@@ -461,13 +461,13 @@ namespace SEQAN_NAMESPACE_MAIN
 	// * no dummy triples in special cases
 
     template < typename TSA,
-               typename TText >
+           typename TText >
     void createSuffixArray(
 		TSA &SA,
 		TText &s,
 		Skew7 const &,
 		unsigned K,
-        unsigned maxdepth,
+    unsigned maxdepth,
 		unsigned depth)
     {
 		typedef typename Value<TSA>::Type TSize;
@@ -481,10 +481,10 @@ namespace SEQAN_NAMESPACE_MAIN
 		#ifdef SEQAN_DEBUG_INDEX
 			if (sizeof(TSize) > 4)
 				::std::cerr << "WARNING: TSize is more than 32 bit long (Skew3). This is probably not what you want." << ::std::endl;
-        #endif
+    #endif
 
 		TSize n = length(s);
-        if (n < 1) return;
+    if (n < 1) return;
 
 		TSize _n[7];
 		TSize _o[7];
@@ -500,15 +500,15 @@ namespace SEQAN_NAMESPACE_MAIN
 		TSize _n24  = _n[2]+_n[4];
 		TSize _n124 = _n[1]+_n24;
 
-        SEQAN_PROSET(SEQAN_PRODEPTH, depth);
-        SEQAN_PROSET(SEQAN_PROEXTRA1, K);
-        SEQAN_PROMARK("Rekursionsabstieg");
-        #ifdef SEQAN_DEBUG_INDEX
+    SEQAN_PROSET(SEQAN_PRODEPTH, depth);
+    SEQAN_PROSET(SEQAN_PROEXTRA1, K);
+    SEQAN_PROMARK("Rekursionsabstieg");
+    #ifdef SEQAN_DEBUG_INDEX
 			::std::cerr << "enter level " << depth << " (" << n << ")" << ::std::endl;
-        #endif
+    #endif
 
-        String<TSize, Alloc<> > s124;
-        resize(s124, _n124, Exact());
+    String<TSize, Alloc<> > s124;
+    resize(s124, _n124, Exact());
 		// we use SA[n-n124..n-1] as a temporary buffer instead of allocating one
 		typename Suffix<TSA>::Type SA124 = suffix(SA, n - _n124);
 
@@ -540,7 +540,7 @@ namespace SEQAN_NAMESPACE_MAIN
 			radixPass(s124,  SA124, s, cnt, K, 1);
 			radixPass(SA124, s124,  s, cnt, K);
 		}
-        SEQAN_PROMARK("7-lets sortiert");
+    SEQAN_PROMARK("7-lets sortiert");
 
 		// find lexicographic names of 7-tupel
 		TSize name = 0;
@@ -564,17 +564,17 @@ namespace SEQAN_NAMESPACE_MAIN
 				s124[(l/7) + ofs[(n-l) % 7]] = name - 1;   // select a third
 			}
 		}
-        SEQAN_PROMARK("s12 konstruiert");
+    SEQAN_PROMARK("s12 konstruiert");
 
 		// recurse if names are not yet unique
 		if (name < _n124) {
-            if (depth != maxdepth)
-            {
+        if (depth != maxdepth)
+        {
 			    createSuffixArray(SA124, s124, Skew7(), name, maxdepth, depth + 1);
 			    #ifdef SEQAN_TEST_SKEW7
 				    SEQAN_DO(isSuffixArray(SA124, s124));
 			    #endif
-            }
+        }
 			// store unique names in s124 using the suffix array
 			for (TSize i = 0;  i < _n124;  i++) s124[SA124[i]] = i;
 		} else // generate the suffix array of s124 directly
@@ -610,22 +610,22 @@ namespace SEQAN_NAMESPACE_MAIN
 					resize(cnt, K, Exact());	// counter array
 
 					radixPass(SA3, s3, s, cnt, K);
-                    SEQAN_PROMARK("SA3 konstruiert");
+            SEQAN_PROMARK("SA3 konstruiert");
 
 					radixPass(SA5, s5, s, cnt, K);
-                    SEQAN_PROMARK("SA5 konstruiert");
+            SEQAN_PROMARK("SA5 konstruiert");
 	    
 					// stably sort the mod 6 suffixes from SA5 by their first character
 
 					if (_n[5] == _n[6]) radixExtend    (SA6, SA5, s, cnt, K);
-					else                radixExtendClip(SA6, SA5, s, cnt, K);
-                    SEQAN_PROMARK("SA6 konstruiert");
+					else        radixExtendClip(SA6, SA5, s, cnt, K);
+            SEQAN_PROMARK("SA6 konstruiert");
 
 					// stably sort the mod 0 suffixes from SA6 by their first character
 
 					if (_n[6] == _n[0]) radixExtend    (SA0, SA6, s, cnt, K);
-					else                radixExtendClip(SA0, SA6, s, cnt, K);	    
-                    SEQAN_PROMARK("SA0 konstruiert");
+					else        radixExtendClip(SA0, SA6, s, cnt, K);	    
+            SEQAN_PROMARK("SA0 konstruiert");
 				}
 			}
 
@@ -633,17 +633,17 @@ namespace SEQAN_NAMESPACE_MAIN
 			{
 				// a helper matrix to lex-name-compare every combination of suffixes
 				long adjust[7][7] = // we use long instead of TSize because we need a sign
-					//      0               1              2             3             4              5               6
-				   {{0             , _n124-_n[0]   , _n24-_n[0]  , _n124-_n[0] , _n[4]-_n[0] , _n[4]-_n[0]   , _n24-_n[0]    },  // 0
-					{1-_n[1]       , 0             , 0           , 1-_n[1]     , 0           , 1-_n[1]-_n[2] , 1-_n[1]-_n[2] },  // 1*
-					{1-_n[2]       , 0             , 0           , _n[1]       , 0           , _n[1]         , 1-_n[2]       },  // 2*
-					{1+_n[4]-_n[3] , 1+_n[4]-_n[3] , _n24-_n[3]  , 0           , _n124-_n[3] , _n24-_n[3]    , _n124-_n[3]   },  // 3
-					{_n[1]+_n[2]   , 0             , 0           ,_n[2]        , 0           , _n[1]+_n[2]   , _n[2]         },  // 4*
-					{_n24-_n[5]    , _n124-_n[5]   , _n[4]-_n[5] , _n[4]-_n[5] , _n24-_n[5]  , 0             , _n124-_n[5]   },  // 5
-					{_n124-_n[6]   , _n24-_n[6]    , _n124-_n[6] , _n[4]-_n[6] , _n[4]-_n[6] , _n24-_n[6]    , 0             }}; // 6
+					//      0           1          2         3         4          5           6
+				   {{0         , _n124-_n[0]   , _n24-_n[0]  , _n124-_n[0] , _n[4]-_n[0] , _n[4]-_n[0]   , _n24-_n[0]    },  // 0
+					{1-_n[1]       , 0         , 0       , 1-_n[1]     , 0       , 1-_n[1]-_n[2] , 1-_n[1]-_n[2] },  // 1*
+					{1-_n[2]       , 0         , 0       , _n[1]       , 0       , _n[1]     , 1-_n[2]       },  // 2*
+					{1+_n[4]-_n[3] , 1+_n[4]-_n[3] , _n24-_n[3]  , 0       , _n124-_n[3] , _n24-_n[3]    , _n124-_n[3]   },  // 3
+					{_n[1]+_n[2]   , 0         , 0       ,_n[2]    , 0       , _n[1]+_n[2]   , _n[2]     },  // 4*
+					{_n24-_n[5]    , _n124-_n[5]   , _n[4]-_n[5] , _n[4]-_n[5] , _n24-_n[5]  , 0         , _n124-_n[5]   },  // 5
+					{_n124-_n[6]   , _n24-_n[6]    , _n124-_n[6] , _n[4]-_n[6] , _n[4]-_n[6] , _n24-_n[6]    , 0         }}; // 6
 
 				TSAIter pos[7] = {begin(SA0)      , begin(SA124)      , begin(SA124)      , 
-								  begin(SA3)      , begin(SA124)      , begin(SA5)        , begin(SA6)      };
+								  begin(SA3)      , begin(SA124)      , begin(SA5)    , begin(SA6)      };
 				TSAIter max[7] = {begin(SA0)+_n[0], begin(SA124)+_n124, begin(SA124)+_n124,
 								  begin(SA3)+_n[3], begin(SA124)+_n124, begin(SA5)+_n[5]  , begin(SA6)+_n[6]};
 				TValueIter spos[7];
@@ -665,7 +665,7 @@ namespace SEQAN_NAMESPACE_MAIN
 					if (i == 1) {
 
 						TSize ii  = *(pos[1]);
-						a         = SEQAN_GET_ASKEW7(ii);
+						a     = SEQAN_GET_ASKEW7(ii);
 						TSize j	  = SEQAN_GET_ISKEW7(ii);
 
 						tpos[a]   = ii;
@@ -776,41 +776,41 @@ namespace SEQAN_NAMESPACE_MAIN
 					for (;  k < n;  ++k) SA[k] = *(pos[a]++);
 			}	    
 		}
-        SEQAN_PROMARK("SA124, SA3, SA5, SA6, SA0 verschmolzen");
+    SEQAN_PROMARK("SA124, SA3, SA5, SA6, SA0 verschmolzen");
 
-        #ifdef SEQAN_DEBUG_INDEX
-            ::std::cerr << "left level " << depth << ::std::endl;
-        #endif
-        SEQAN_PROMARK("Rekursionsaufstieg");
-        SEQAN_PROSUB(SEQAN_PRODEPTH, 1);
+    #ifdef SEQAN_DEBUG_INDEX
+        ::std::cerr << "left level " << depth << ::std::endl;
+    #endif
+    SEQAN_PROMARK("Rekursionsaufstieg");
+    SEQAN_PROSUB(SEQAN_PRODEPTH, 1);
 	}
 
     template < typename TSA,
-               typename TText >
+           typename TText >
     inline void createSuffixArray(
 		TSA &SA,
 		TText &s,
 		Skew7 const &alg,
 		unsigned K,
-        unsigned maxdepth)
+    unsigned maxdepth)
 	{
 		createSuffixArray(SA, s, alg, K, maxdepth, 1);
 	}
 
     // creates suffix array sorted by the first maxLCP chars of suffixes
     template < typename TSA,
-               typename TText,
-               typename TSize >
+           typename TText,
+           typename TSize >
     inline void createSuffixArrayPart(
 		TSA &SA,
 		TText &s,
 		Skew7 const &_dummy,
-        TSize maxLCP,
+    TSize maxLCP,
 		unsigned K)
     {
-        unsigned depth = 0;
-        for(TSize i = 1; i < maxLCP; i*=7) ++depth;
-        createSuffixArray(SA, s, _dummy, K, depth);
+    unsigned depth = 0;
+    for(TSize i = 1; i < maxLCP; i*=7) ++depth;
+    createSuffixArray(SA, s, _dummy, K, depth);
     }
 
 	// Overload supplying former default value for K.

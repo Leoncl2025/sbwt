@@ -1,6 +1,6 @@
 if [ $# -ne 3 ];then
-        echo "usage: [xx.fastq.gz] [xx.fa]"
-        exit 1
+    echo "usage: [xx.fastq.gz] [xx.fa]"
+    exit 1
 fi
 fastq_gz=$1
 fasta=$2

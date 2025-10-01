@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -32,8 +32,8 @@ namespace SEQAN_NAMESPACE_MAIN
 
 	template < typename TInput, typename TCompare >
     struct Value< Pipe< TInput, Namer<TCompare> > > {
-        typedef Pair<
-            typename Value<TInput>::Type::T1,
+    typedef Pair<
+        typename Value<TInput>::Type::T1,
 			typename Size<TInput>::Type,
 			Compressed
 		> Type;
@@ -59,10 +59,10 @@ namespace SEQAN_NAMESPACE_MAIN
     template < typename TInput, typename TCompare >
     struct Pipe< TInput, Namer<TCompare> >
     {
-		TInput                          &in;
-        TCompare                        C;
-        typename Value<Pipe>::Type      tmp;
-        typename Value<TInput>::Type    last;
+		TInput              &in;
+    TCompare            C;
+    typename Value<Pipe>::Type      tmp;
+    typename Value<TInput>::Type    last;
 
 /**
 .Memfunc.Namer#Pipe:
@@ -73,33 +73,33 @@ namespace SEQAN_NAMESPACE_MAIN
 ..param.in:Reference to an input pipe.
 ..param.comp:A $TCompare$ object (copy constructor).
 */
-        Pipe(TInput& _in):
-            in(_in) {}
-        
-        Pipe(TInput& _in, const TCompare& CC) :
-            in(_in),
-            C(CC) {}
-        
-        inline typename Value<Pipe>::Type const & operator*() {
-            tmp.i1 = getValueI1(*in);
-            return tmp;
-        }
+    Pipe(TInput& _in):
+        in(_in) {}
+    
+    Pipe(TInput& _in, const TCompare& CC) :
+        in(_in),
+        C(CC) {}
+    
+    inline typename Value<Pipe>::Type const & operator*() {
+        tmp.i1 = getValueI1(*in);
+        return tmp;
+    }
 
-        inline Pipe& operator++() {
-            ++in;
-            if (!eof(in) && C(last, *in) != 0) {
-                #ifdef SEQAN_TEST
-                    SEQAN_ASSERT(C(last, *in) < 0);
-                #endif
-                last = *in;
-                ++tmp.i2;
-            }
+    inline Pipe& operator++() {
+        ++in;
+        if (!eof(in) && C(last, *in) != 0) {
+        #ifdef SEQAN_TEST
+            SEQAN_ASSERT(C(last, *in) < 0);
+        #endif
+        last = *in;
+        ++tmp.i2;
+        }
 			return *this;
-        }
+    }
 
-        bool unique() const {
-            return tmp.i2 == (length(in) - 1);
-        }
+    bool unique() const {
+        return tmp.i2 == (length(in) - 1);
+    }
     };
     
 
@@ -107,12 +107,12 @@ namespace SEQAN_NAMESPACE_MAIN
     // global pipe functions
     template < typename TInput, typename TCompare >
 	inline bool control(Pipe< TInput, Namer<TCompare> > &me, ControlBeginRead const &command) {
-        if (!control(me.in, command)) return false;
-        if (!eof(me.in)) {
-            me.last = *me.in;
-            me.tmp.i1 = me.last.i1;
-        }
-        me.tmp.i2 = 0;
+    if (!control(me.in, command)) return false;
+    if (!eof(me.in)) {
+        me.last = *me.in;
+        me.tmp.i1 = me.last.i1;
+    }
+    me.tmp.i2 = 0;
 		return true;
 	}
     

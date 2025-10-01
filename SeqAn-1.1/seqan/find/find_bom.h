@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -50,34 +50,34 @@ template <typename TNeedle>
 class Pattern<TNeedle, BomAlgo> {
 //____________________________________________________________________________
 private:
-	Pattern(Pattern const& other);
-	Pattern const& operator=(Pattern const & other);
+    Pattern(Pattern const& other);
+    Pattern const& operator=(Pattern const & other);
 
 //____________________________________________________________________________
 public:
-	typedef typename Value<TNeedle>::Type TAlphabet;
-	typedef typename Size<TNeedle>::Type TSize;
-	Holder<TNeedle> data_needle;
-	TSize needleLength;		
-	TSize haystackLength;
-	TSize step;
-	Graph<Automaton<TAlphabet> > oracle;
+    typedef typename Value<TNeedle>::Type TAlphabet;
+    typedef typename Size<TNeedle>::Type TSize;
+    Holder<TNeedle> data_needle;
+    TSize needleLength;        
+    TSize haystackLength;
+    TSize step;
+    Graph<Automaton<TAlphabet> > oracle;
 
 //____________________________________________________________________________
 
-	Pattern() {	
-	}
+    Pattern() {    
+    }
 
-	template <typename TNeedle2>
-	Pattern(TNeedle2 const & ndl)
-	{
+    template <typename TNeedle2>
+    Pattern(TNeedle2 const & ndl)
+    {
 SEQAN_CHECKPOINT
-		setHost(*this, ndl);
-	}
+        setHost(*this, ndl);
+    }
 
-	~Pattern() {
-		SEQAN_CHECKPOINT
-	}
+    ~Pattern() {
+        SEQAN_CHECKPOINT
+    }
 //____________________________________________________________________________
 };
 
@@ -88,13 +88,13 @@ SEQAN_CHECKPOINT
 template <typename TNeedle>
 struct Host< Pattern<TNeedle, BomAlgo> >
 {
-	typedef TNeedle Type;
+    typedef TNeedle Type;
 };
 
 template <typename TNeedle>
 struct Host< Pattern<TNeedle, BomAlgo> const>
 {
-	typedef TNeedle const Type;
+    typedef TNeedle const Type;
 };
 
 
@@ -106,19 +106,19 @@ template <typename TNeedle, typename TNeedle2>
 inline void 
 setHost (Pattern<TNeedle, BomAlgo> & me, TNeedle2 const& needle) 
 {
-	SEQAN_CHECKPOINT
-	me.needleLength = length(needle);
-	clear(me.oracle);
-	createOracleOnReverse(me.oracle,needle);
-	assignRoot(me.oracle,0);
-	setValue(me.data_needle, needle);
+    SEQAN_CHECKPOINT
+    me.needleLength = length(needle);
+    clear(me.oracle);
+    createOracleOnReverse(me.oracle,needle);
+    assignRoot(me.oracle,0);
+    setValue(me.data_needle, needle);
 }
 
 template <typename TNeedle, typename TNeedle2>
 inline void 
 setHost (Pattern<TNeedle, BomAlgo> & me, TNeedle2 & needle)
 {
-	setHost(me, reinterpret_cast<TNeedle2 const &>(needle));
+    setHost(me, reinterpret_cast<TNeedle2 const &>(needle));
 }
 
 //____________________________________________________________________________
@@ -128,7 +128,7 @@ template <typename TNeedle>
 inline void _patternInit (Pattern<TNeedle, BomAlgo> & me) 
 {
 SEQAN_CHECKPOINT
-	me.step = 0;
+    me.step = 0;
 }
 
 
@@ -139,7 +139,7 @@ inline typename Host<Pattern<TNeedle, BomAlgo>const>::Type &
 host(Pattern<TNeedle, BomAlgo> & me)
 {
 SEQAN_CHECKPOINT
-	return value(me.data_needle);
+    return value(me.data_needle);
 }
 
 template <typename TNeedle>
@@ -147,7 +147,7 @@ inline typename Host<Pattern<TNeedle, BomAlgo>const>::Type &
 host(Pattern<TNeedle, BomAlgo> const & me)
 {
 SEQAN_CHECKPOINT
-	return value(me.data_needle);
+    return value(me.data_needle);
 }
 
 //____________________________________________________________________________
@@ -157,39 +157,39 @@ template <typename TFinder, typename TNeedle>
 inline bool 
 find(TFinder & finder, Pattern<TNeedle, BomAlgo> & me) 
 {
-	SEQAN_CHECKPOINT
-	
-	if (empty(finder)) {
-		_patternInit(me);
-		_finderSetNonEmpty(finder);
-		me.haystackLength = length(container(finder));
-	} else
-		finder+=me.step;
+    SEQAN_CHECKPOINT
+    
+    if (empty(finder)) {
+        _patternInit(me);
+        _finderSetNonEmpty(finder);
+        me.haystackLength = length(container(finder));
+    } else
+        finder+=me.step;
 
-	if (me.haystackLength < me.needleLength) return false;
-	typedef typename Value<TNeedle>::Type TAlphabet;
-	typedef Graph<Automaton<TAlphabet> > TOracle;
-	typedef typename Size<TNeedle>::Type TSize;
-	typedef typename VertexDescriptor<TOracle>::Type TVertexDescriptor;
-	typedef typename EdgeDescriptor<TOracle>::Type TEdgeDescriptor;
-	TVertexDescriptor nilVal = getNil<TVertexDescriptor>();
-	while (position(finder) <= me.haystackLength - me.needleLength) {
-		TVertexDescriptor current = getRoot(me.oracle);
-		TSize j = me.needleLength;
-		while ((j>0) &&
-				(current != nilVal))
-		{
-			TAlphabet c = *(finder+(j-1));
-			current = targetVertex(me.oracle, findEdge(me.oracle, current, c));
-			--j;
-		}
-		if (current != nilVal) {
-			me.step = j + 1;
-			return true;
-		}
-		finder += j + 1;
-	}
-	return false;
+    if (me.haystackLength < me.needleLength) return false;
+    typedef typename Value<TNeedle>::Type TAlphabet;
+    typedef Graph<Automaton<TAlphabet> > TOracle;
+    typedef typename Size<TNeedle>::Type TSize;
+    typedef typename VertexDescriptor<TOracle>::Type TVertexDescriptor;
+    typedef typename EdgeDescriptor<TOracle>::Type TEdgeDescriptor;
+    TVertexDescriptor nilVal = getNil<TVertexDescriptor>();
+    while (position(finder) <= me.haystackLength - me.needleLength) {
+        TVertexDescriptor current = getRoot(me.oracle);
+        TSize j = me.needleLength;
+        while ((j>0) &&
+                (current != nilVal))
+        {
+            TAlphabet c = *(finder+(j-1));
+            current = targetVertex(me.oracle, findEdge(me.oracle, current, c));
+            --j;
+        }
+        if (current != nilVal) {
+            me.step = j + 1;
+            return true;
+        }
+        finder += j + 1;
+    }
+    return false;
 }
 
 }// namespace SEQAN_NAMESPACE_MAIN

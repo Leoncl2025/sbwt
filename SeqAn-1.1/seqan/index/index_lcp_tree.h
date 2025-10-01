@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -31,14 +31,14 @@ namespace SEQAN_NAMESPACE_MAIN
 		LCPFwdIt _First, LCPFwdIt _Last,
 		FlatOutIt _Dest)
 	{
-        typedef typename Value<LCPFwdIt>::Type  TValue;
-        typedef typename Size<LCPFwdIt>::Type   TSize;
+    typedef typename Value<LCPFwdIt>::Type  TValue;
+    typedef typename Size<LCPFwdIt>::Type   TSize;
 
-        TSize size = difference(_First, _Last);
-        if (size <= 1) return _Dest;
+    TSize size = difference(_First, _Last);
+    if (size <= 1) return _Dest;
 		--size;
 
-        // calculate the depth of the lcp tree
+    // calculate the depth of the lcp tree
 		unsigned treeLevels = 1;
 		TSize _xSize = 1;
 		for(; size > _xSize; _xSize *= 2, ++treeLevels);
@@ -137,7 +137,7 @@ namespace SEQAN_NAMESPACE_MAIN
 
     template < typename TLCPE, typename TLCP >
     inline void createLCPBinTree(TLCPE &lcp_enhanced, TLCP &lcp) {
-        createLCPBinTree(begin(lcp), end(lcp), begin(lcp_enhanced));
+    createLCPBinTree(begin(lcp), end(lcp), begin(lcp_enhanced));
     }
 
 
@@ -148,15 +148,15 @@ namespace SEQAN_NAMESPACE_MAIN
 		--lcpSize;
 		TSize _xSize = 1;
 		for(; lcpSize > _xSize; _xSize *= 2, ++treeLevels);
-        return treeLevels;
+    return treeLevels;
     }
 
     template < typename TValue, typename TConfig, typename TLCP >
     inline void createLCPBinTree(String<TValue, External<TConfig> > &lcp_enhanced, TLCP &lcp) {
-        unsigned writeHeads = _treeLevels(length(lcp)) + 1;   // plus 1 write back buffer
-        if (lcp_enhanced.cache.size() < writeHeads)
-            lcp_enhanced.resizeCache(writeHeads);
-        createLCPBinTree(begin(lcp), end(lcp), begin(lcp_enhanced));
+    unsigned writeHeads = _treeLevels(length(lcp)) + 1;   // plus 1 write back buffer
+    if (lcp_enhanced.cache.size() < writeHeads)
+        lcp_enhanced.resizeCache(writeHeads);
+    createLCPBinTree(begin(lcp), end(lcp), begin(lcp_enhanced));
     }
 
 }

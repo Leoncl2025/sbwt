@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -31,73 +31,73 @@ namespace SEQAN_NAMESPACE_MAIN
 #ifdef PLATFORM_WINDOWS
 
     static SECURITY_ATTRIBUTES EventDefaultAttributes = {
-        sizeof(SECURITY_ATTRIBUTES),
-        NULL,
-        true
+    sizeof(SECURITY_ATTRIBUTES),
+    NULL,
+    true
     };
 
     struct Event    // this class mustn't exceed the size of HANDLE (needed by waitForAll/Any)
     {
-        typedef HANDLE Handle;
+    typedef HANDLE Handle;
 		enum { Infinite = INFINITE };
-        Handle hEvent;
+    Handle hEvent;
 
-        Event():
-            hEvent(NULL) {}
+    Event():
+        hEvent(NULL) {}
 
-        Event(BOOL initial) {
-            SEQAN_DO_SYS2(open(initial), "Could not create Event")
-        }
+    Event(BOOL initial) {
+        SEQAN_DO_SYS2(open(initial), "Could not create Event")
+    }
 
-        ~Event() {
-            if (*this) SEQAN_DO_SYS2(close(), "Could not destroy Event")
-        }
+    ~Event() {
+        if (*this) SEQAN_DO_SYS2(close(), "Could not destroy Event")
+    }
 
-        Event(Event const &origin) {
-            // resource sharing is not yet supported (performance reason)
-            // it needs a reference counting technique
-            if (origin) {
-                hEvent = origin.hEvent;
-                const_cast<Event&>(origin).hEvent = NULL;
-            } else
-                hEvent = NULL;
-        }
+    Event(Event const &origin) {
+        // resource sharing is not yet supported (performance reason)
+        // it needs a reference counting technique
+        if (origin) {
+        hEvent = origin.hEvent;
+        const_cast<Event&>(origin).hEvent = NULL;
+        } else
+        hEvent = NULL;
+    }
 
-        inline Event& operator=(Event const &origin) {
-            // resource sharing is not yet supported (performance reason)
-            // it needs a reference counting technique
-            if (origin) {
-                hEvent = origin.hEvent;
-                const_cast<Event&>(origin).hEvent = NULL;
-            } else
-                hEvent = NULL;
-            return *this;
-        }
+    inline Event& operator=(Event const &origin) {
+        // resource sharing is not yet supported (performance reason)
+        // it needs a reference counting technique
+        if (origin) {
+        hEvent = origin.hEvent;
+        const_cast<Event&>(origin).hEvent = NULL;
+        } else
+        hEvent = NULL;
+        return *this;
+    }
 
-        inline bool open(BOOL initial = FALSE) {
-            return (hEvent = CreateEvent(&EventDefaultAttributes, TRUE, initial, NULL)) != NULL;
-        }
+    inline bool open(BOOL initial = FALSE) {
+        return (hEvent = CreateEvent(&EventDefaultAttributes, TRUE, initial, NULL)) != NULL;
+    }
 
-        inline bool close() {
-            return CloseHandle(hEvent) && !(hEvent = NULL);
-        }
+    inline bool close() {
+        return CloseHandle(hEvent) && !(hEvent = NULL);
+    }
 
-        inline bool wait(DWORD timeout_millis = Infinite) {
-            if (!hEvent) return true;
-            return WaitForSingleObject(hEvent, timeout_millis) != WAIT_TIMEOUT;
-        }
+    inline bool wait(DWORD timeout_millis = Infinite) {
+        if (!hEvent) return true;
+        return WaitForSingleObject(hEvent, timeout_millis) != WAIT_TIMEOUT;
+    }
 
-        inline bool signal() {
-            return SetEvent(hEvent) != 0;
-        }
+    inline bool signal() {
+        return SetEvent(hEvent) != 0;
+    }
 
-        inline bool reset() {
-            return ResetEvent(hEvent) != 0;
-        }
+    inline bool reset() {
+        return ResetEvent(hEvent) != 0;
+    }
 
-        inline operator bool() const {
-            return hEvent != NULL;
-        }
+    inline operator bool() const {
+        return hEvent != NULL;
+    }
     };
 
 
@@ -120,96 +120,96 @@ namespace SEQAN_NAMESPACE_MAIN
     
 	inline int waitForAny(Event eventList[], DWORD count, DWORD timeout_millis)
 	{
-        DWORD result = WaitForMultipleObjects(count, &eventList[0].hEvent, false, timeout_millis = Event::Infinite);
+    DWORD result = WaitForMultipleObjects(count, &eventList[0].hEvent, false, timeout_millis = Event::Infinite);
 
-        if (/*result >= WAIT_OBJECT_0 && */result < WAIT_OBJECT_0 + count)
+    if (/*result >= WAIT_OBJECT_0 && */result < WAIT_OBJECT_0 + count)
     		return result - WAIT_OBJECT_0;
 
-        return -1;
+    return -1;
 	}
     
 #else
 
     struct Event: public Mutex
     {
-        typedef pthread_cond_t* Handle;
+    typedef pthread_cond_t* Handle;
 		enum { Infinite = LONG_MAX };
-        pthread_cond_t data, *hEvent;
+    pthread_cond_t data, *hEvent;
 
-        Event():
-            hEvent(NULL) {}
+    Event():
+        hEvent(NULL) {}
 
-        Event(bool initial) {
-            SEQAN_DO_SYS(open(initial));
-        }
+    Event(bool initial) {
+        SEQAN_DO_SYS(open(initial));
+    }
 
-        ~Event() {
-            if (*this)
-                SEQAN_DO_SYS(close());
-        }
+    ~Event() {
+        if (*this)
+        SEQAN_DO_SYS(close());
+    }
 
 		Event(Event const &origin):
 			Mutex()
 		{
-            // resource sharing is not yet supported (performance reason)
-            // it needs a reference counting technique
-            if (origin) {
-                data = origin.data;
-                const_cast<Event&>(origin).hEvent = NULL;
-                hEvent = &data;
-            } else
-                hEvent = NULL;
-        }
+        // resource sharing is not yet supported (performance reason)
+        // it needs a reference counting technique
+        if (origin) {
+        data = origin.data;
+        const_cast<Event&>(origin).hEvent = NULL;
+        hEvent = &data;
+        } else
+        hEvent = NULL;
+    }
 
-        inline Event& operator=(Event const &origin) {
-            // resource sharing is not yet supported (performance reason)
-            // it needs a reference counting technique
-            if (origin) {
-                data = origin.data;
-                const_cast<Event&>(origin).hEvent = NULL;
-                hEvent = &data;
-            } else
-                hEvent = NULL;
-            return *this;
-        }
+    inline Event& operator=(Event const &origin) {
+        // resource sharing is not yet supported (performance reason)
+        // it needs a reference counting technique
+        if (origin) {
+        data = origin.data;
+        const_cast<Event&>(origin).hEvent = NULL;
+        hEvent = &data;
+        } else
+        hEvent = NULL;
+        return *this;
+    }
 
-        inline bool open(bool initial = false)
-        {
-            if (Mutex::open() && !pthread_cond_init(&data, NULL) && (hEvent = &data)) {
-                if (initial) return signal();
-                return true;
-            } else
-                return false;
-        }
+    inline bool open(bool initial = false)
+    {
+        if (Mutex::open() && !pthread_cond_init(&data, NULL) && (hEvent = &data)) {
+        if (initial) return signal();
+        return true;
+        } else
+        return false;
+    }
 
-        inline bool close() {
-            return !(pthread_cond_destroy(hEvent) || (hEvent = NULL) || !Mutex::close());
-        }
+    inline bool close() {
+        return !(pthread_cond_destroy(hEvent) || (hEvent = NULL) || !Mutex::close());
+    }
 
-        inline bool wait() {
-            if (!hEvent) return true;
-            Mutex::lock();
-            return !pthread_cond_wait(hEvent, Mutex::hMutex);
-        }
+    inline bool wait() {
+        if (!hEvent) return true;
+        Mutex::lock();
+        return !pthread_cond_wait(hEvent, Mutex::hMutex);
+    }
 
-        inline bool wait(long timeout_millis) {
-            if (timeout_millis != Infinite) {
-                timespec ts;
-                ts.tv_sec = timeout_millis / 1000;
-                ts.tv_nsec = (timeout_millis % 1000) * 1000;
-                Mutex::lock();
+    inline bool wait(long timeout_millis) {
+        if (timeout_millis != Infinite) {
+        timespec ts;
+        ts.tv_sec = timeout_millis / 1000;
+        ts.tv_nsec = (timeout_millis % 1000) * 1000;
+        Mutex::lock();
 				return pthread_cond_timedwait(hEvent, Mutex::hMutex, &ts) != ETIMEDOUT;
-            } else
-                return wait();
-        }
+        } else
+        return wait();
+    }
 
-        inline bool signal() {
-            return !pthread_cond_broadcast(hEvent);
-        }
+    inline bool signal() {
+        return !pthread_cond_broadcast(hEvent);
+    }
 
-        inline operator bool() const {
-            return hEvent != NULL;
-        }
+    inline operator bool() const {
+        return hEvent != NULL;
+    }
     };
     
 #endif
@@ -236,16 +236,16 @@ namespace SEQAN_NAMESPACE_MAIN
 
     template < typename TTime >
 	inline bool waitFor(Event &e, TTime timeout_millis) {
-        #ifdef SEQAN_PROFILE
-            double begin = sysTime();
+    #ifdef SEQAN_PROFILE
+        double begin = sysTime();
 		    bool b = e.wait(timeout_millis);
-            double end = sysTime();
-            if (begin != end)
-                ::std::cerr << "waitTime: " << end - begin << ::std::endl;
-            return b;
-        #else
-            return e.wait(timeout_millis);
-        #endif
+        double end = sysTime();
+        if (begin != end)
+        ::std::cerr << "waitTime: " << end - begin << ::std::endl;
+        return b;
+    #else
+        return e.wait(timeout_millis);
+    #endif
 	}
 
 	inline bool signal(Event &e) {

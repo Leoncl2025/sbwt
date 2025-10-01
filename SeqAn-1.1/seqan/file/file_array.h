@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -40,19 +40,19 @@ namespace SEQAN_NAMESPACE_MAIN
     template < __int64 _FileSize, typename TFile >
     struct Size< File< Chained<_FileSize, TFile> > >
     {
-        typedef __int64 Type;
+    typedef __int64 Type;
     };
 
     template < __int64 _FileSize, typename TFile >
     struct Position< File< Chained<_FileSize, TFile> > >
     {
-        typedef __int64 Type;
+    typedef __int64 Type;
     };
 
     template < __int64 _FileSize, typename TFile >
     struct Difference< File< Chained<_FileSize, TFile> > >
     {
-        typedef __int64 Type;
+    typedef __int64 Type;
     };
 
     template < __int64 _FileSize, typename TFile >
@@ -65,19 +65,19 @@ namespace SEQAN_NAMESPACE_MAIN
     template < unsigned _FileCount, typename TFile >
     struct Size< File< Striped<_FileCount, TFile> > >
     {
-        typedef __int64 Type;
+    typedef __int64 Type;
     };
 
     template < unsigned _FileCount, typename TFile >
     struct Position< File< Striped<_FileCount, TFile> > >
     {
-        typedef __int64 Type;
+    typedef __int64 Type;
     };
 
     template < unsigned _FileCount, typename TFile >
     struct Difference< File< Striped<_FileCount, TFile> > >
     {
-        typedef __int64 Type;
+    typedef __int64 Type;
     };
 
     template < unsigned _FileCount, typename TFile >
@@ -207,10 +207,10 @@ namespace SEQAN_NAMESPACE_MAIN
 			}
 		}
 
-        inline void clearInternals() {
+    inline void clearInternals() {
 			clear(*(Base*)this);
-            fileSize = 0;
-            _realign = false;
+        fileSize = 0;
+        _realign = false;
 		}
 	};
 
@@ -254,7 +254,7 @@ namespace SEQAN_NAMESPACE_MAIN
     template < typename TFileArray >
     inline typename Size<TFileArray>::Type
 	_sizeFArray(TFileArray &me) {
-        typename Size<TFileArray>::Type sum = 0;
+    typename Size<TFileArray>::Type sum = 0;
 		for(int i = 0; i < length(me); ++i)
 			sum += size(me[i]);
 		return sum;
@@ -313,9 +313,9 @@ namespace SEQAN_NAMESPACE_MAIN
 
     template < __int64 _FileSize, typename TFile >
 	inline bool close(File< Chained<_FileSize, TFile> > &me) {
-        _closeFArray(me);
-        me.clearInternals();
-        return true;
+    _closeFArray(me);
+    me.clearInternals();
+    return true;
     }
 
     template < unsigned _FileCount, typename TFile >

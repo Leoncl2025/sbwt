@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -254,13 +254,13 @@ This interval is the @Function.value@ of the iterator.
 
 	template < typename TIndex, typename TSpec >
 	inline bool _dfsReversedOrder(Iter<TIndex, VSTree< BottomUp<TSpec> > > &it) {
-        return lcpAt(_dfsRange(it).i2 - 1, container(it)) > top(it.history).i2;
+    return lcpAt(_dfsRange(it).i2 - 1, container(it)) > top(it.history).i2;
 	}
 
 	// standard push/pop handlers of lcp-dfs-traversal
 	template < typename TIndex, typename TSpec, typename TSize >
 	inline void _dfsOnPop(Iter<TIndex, VSTree< BottomUp<TSpec> > > &it, TSize const) {
-        _dfsRange(it).i1 = top(it.history).i1;
+    _dfsRange(it).i1 = top(it.history).i1;
 		_dfsLCP(it) = top(it.history).i2;
 		pop(it.history);
 	}
@@ -313,10 +313,10 @@ This interval is the @Function.value@ of the iterator.
 	// wenn kein Pop, aber Push -> begehe mind. 2. Teilbaum irgendeines Vorfahrs
 	// wenn kein Pop, kein Push -> verlasse mind. zweites Kindblatt
 	// wenn Pop, aber kein Push -> verlasse Wurzel des mind. 2.Teilbaums
-	// wenn Pop und Push        -> verlasse ersten Teilbaum (sieht Vater zum ersten Mal und pusht jenen)
+	// wenn Pop und Push    -> verlasse ersten Teilbaum (sieht Vater zum ersten Mal und pusht jenen)
 
-	// wenn nach Pop ein Pop folgen würde	-> Vater ist Top of Stack
-	// wenn nach Pop ein Push folgen würde	-> Vater erst beim Push auf Stack (-> zwischenspeichern)
+	// wenn nach Pop ein Pop folgen wï¿½rde	-> Vater ist Top of Stack
+	// wenn nach Pop ein Push folgen wï¿½rde	-> Vater erst beim Push auf Stack (-> zwischenspeichern)
 			}
 
 			// last lcp entry (== 0) causes removal of toplevel interval

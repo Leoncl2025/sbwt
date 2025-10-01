@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -54,55 +54,55 @@ namespace SEQAN_NAMESPACE_MAIN
     template < typename TInput, int delta, bool omitBlank >
     struct Pipe< TInput, Shifter<delta, omitBlank, true> >
     {
-        TInput                      &in;
-        typename Size<Pipe>::Type	blankCounter, charCounter;
+    TInput              &in;
+    typename Size<Pipe>::Type	blankCounter, charCounter;
 		typename Value<Pipe>::Type	blank;
-        
-        Pipe(TInput& _in):
-            in(_in),
+    
+    Pipe(TInput& _in):
+        in(_in),
 			blank()	{}
 
-        inline typename Value<Pipe>::Type const & operator*() {
+    inline typename Value<Pipe>::Type const & operator*() {
 			if (blankCounter)	return blank;
 			else				return *in;
-        }
+    }
 
-        inline Pipe& operator++() {
+    inline Pipe& operator++() {
 			if (blankCounter)
 				--blankCounter;
 			else {
 				++in;
 				--charCounter;
 			}
-            return *this;
-        }
+        return *this;
+    }
     };
 
 
 	template < typename TInput, int delta, bool omitBlank >
     struct Pipe< TInput, Shifter<delta, omitBlank, false> >
     {
-        TInput                      &in;
-        typename Size<Pipe>::Type	blankCounter, charCounter;
+    TInput              &in;
+    typename Size<Pipe>::Type	blankCounter, charCounter;
 		typename Value<Pipe>::Type	blank;
-        
-        Pipe(TInput& _in):
-            in(_in),
+    
+    Pipe(TInput& _in):
+        in(_in),
 			blank()	{}
 
-        inline typename Value<Pipe>::Type const & operator*() {
+    inline typename Value<Pipe>::Type const & operator*() {
 			if (charCounter)	return *in;
 			else				return blank;
-        }
+    }
 
-        inline Pipe& operator++() {
+    inline Pipe& operator++() {
 			if (charCounter) {
 				++in;
 				--charCounter;
 			} else
 				--blankCounter;
-            return *this;
-        }
+        return *this;
+    }
     };
 
 
@@ -110,7 +110,7 @@ namespace SEQAN_NAMESPACE_MAIN
     // global pipe functions
     template < typename TInput, int delta, bool omitBlank >
 	inline bool control(Pipe< TInput, Shifter< delta, omitBlank, false > > &me, ControlBeginRead const &command) {
-        if (!control(me.in, command)) return false;
+    if (!control(me.in, command)) return false;
 		for(typename Size<TInput>::Type i = 0; i < delta && !eof(me.in); ++i)
 			++me.in;
 		me.blankCounter = (omitBlank)? 0: delta;
@@ -120,7 +120,7 @@ namespace SEQAN_NAMESPACE_MAIN
 
     template < typename TInput, int delta, bool omitBlank >
 	inline bool control(Pipe< TInput, Shifter< delta, omitBlank, true > > &me, ControlBeginRead const &command) {
-        if (!control(me.in, command)) return false;
+    if (!control(me.in, command)) return false;
 		me.blankCounter = (omitBlank)? 0: -delta;
 		me.charCounter = length(me.in) + delta;
 		return true;
@@ -132,7 +132,7 @@ namespace SEQAN_NAMESPACE_MAIN
     template < typename TInput, int delta, bool _echoing >
     inline Size< Pipe< TInput, Shifter< delta, true, _echoing > > >
     length(Pipe< TInput, Shifter< delta, true, _echoing > > const &me) {
-        return length(me.in) - abs(delta);
+    return length(me.in) - abs(delta);
     }
 
     template < typename TInput, int delta, bool omitBlank, bool _echoing >

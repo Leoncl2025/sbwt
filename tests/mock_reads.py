@@ -14,9 +14,9 @@ def mutation(reads, max_mismatches=7):
     num = random.randrange(0, max_mismatches + 1)
     # num = random.randrange(1, 4)
     for i in range(num):
-        i = idxs[i]
-        c = reads[i]
-        reads = reads[:i] + random.choice(d[c]) + reads[i + 1:]
+    i = idxs[i]
+    c = reads[i]
+    reads = reads[:i] + random.choice(d[c]) + reads[i + 1:]
     return reads, num
 
 
@@ -35,14 +35,14 @@ def generate_reads_ref(file_name_ref, file_name_reads, ref_size, kmer, reads_siz
     ref = gen_reference(ref_size, file_name_ref, seed)
     random.seed(seed)
     with open(file_name_reads, 'w') as f:
-        ref = ref.splitlines()[1]
-        if len(ref) < kmer:
-            raise SystemError("Reference size is smaller than kmer size")
-        for i in range(0, reads_size):
-            startI = random.randint(0, len(ref) - kmer)
-            line, num = mutation(ref[startI:startI + kmer], max_mismatches)
-            f.write(f">r{i}-{num}-{i}{os.linesep}")
-            f.write(f"{line}{os.linesep}")
+    ref = ref.splitlines()[1]
+    if len(ref) < kmer:
+        raise SystemError("Reference size is smaller than kmer size")
+    for i in range(0, reads_size):
+        startI = random.randint(0, len(ref) - kmer)
+        line, num = mutation(ref[startI:startI + kmer], max_mismatches)
+        f.write(f">r{i}-{num}-{i}{os.linesep}")
+        f.write(f"{line}{os.linesep}")
 
 
 def generate_reads_kmer(file_name, kmer, size):
@@ -53,16 +53,16 @@ def generate_reads_kmer(file_name, kmer, size):
 
     ref = ""
     with open(file_name) as mf:
-        for ml in mf:
-            if ml.startswith('>'):
-                continue
-            ref += ml.rstrip(os.linesep).replace("N", "A")
+    for ml in mf:
+        if ml.startswith('>'):
+        continue
+        ref += ml.rstrip(os.linesep).replace("N", "A")
     if len(ref) < kmer or size < kmer:
-        raise SystemExit(1)
+    raise SystemExit(1)
     for i in range(0, size - kmer):
-        line, num = mutation(ref[i:i + kmer])
-        print(f">r{i}-{num}-{i}")
-        print(line)
+    line, num = mutation(ref[i:i + kmer])
+    print(f">r{i}-{num}-{i}")
+    print(line)
 
 
 def cleanN_fasta(file_name):
@@ -71,35 +71,35 @@ def cleanN_fasta(file_name):
     line = ""
 
     with open(file_name) as mf:
-        for ml in mf:
-            if ml.startswith('>'):
-                if line:
-                    print(line)
-                    line = ""
-                # replicate Python2 print with trailing space suppression
-                print(ml.rstrip("\n"))
+    for ml in mf:
+        if ml.startswith('>'):
+        if line:
+            print(line)
+            line = ""
+        # replicate Python2 print with trailing space suppression
+        print(ml.rstrip("\n"))
+        else:
+        for c in ml.strip():
+            if IsDna(c):
+            if len(line) == line_width:
+                print(line)
+                line = c
             else:
-                for c in ml.strip():
-                    if IsDna(c):
-                        if len(line) == line_width:
-                            print(line)
-                            line = c
-                        else:
-                            line += c
+                line += c
     if line:
-        print(line)
+    print(line)
 
 
 def generate_reads_kmer_main():
     """Main function for generating k-mer reads with possible mutations."""
     try:
-        ref_fileName = argv[1]
-        reads_fileName = argv[2]
-        ref_size = int(argv[3])
-        kmer = int(argv[4])
-        reads_size = int(argv[5])
+    ref_fileName = argv[1]
+    reads_fileName = argv[2]
+    ref_size = int(argv[3])
+    kmer = int(argv[4])
+    reads_size = int(argv[5])
     except ValueError:
-        raise SystemExit(f"usage: {argv[0]} [ref.fa name] [reads.fa name] [ref size] [kmer length (150)] [size of reads]{os.linesep}")
+    raise SystemExit(f"usage: {argv[0]} [ref.fa name] [reads.fa name] [ref size] [kmer length (150)] [size of reads]{os.linesep}")
 
     generate_reads_ref(ref_fileName, reads_fileName, ref_size, kmer, reads_size)
 
@@ -110,20 +110,20 @@ def print_hamming_weight(r, f):
 
     c = 0
     for i in range(len(r)):
-        if i % 32 == 0:
-            line0 += str(c)
-            c += 1
-        else:
-            line0 += " "
+    if i % 32 == 0:
+        line0 += str(c)
+        c += 1
+    else:
+        line0 += " "
 
     line = ""
 
     for i, j in zip(f, r):
-        if i != j:
-            num_diff += 1
-            line += "|"
-        else:
-            line += " "
+    if i != j:
+        num_diff += 1
+        line += "|"
+    else:
+        line += " "
     print(str(num_diff))
     print(line0)
     print(r)
@@ -135,10 +135,10 @@ def gen_random_dnas(size, seed=None):
     """Generate a random DNA string containing equal numbers of A,C,G,T.
     """
     if (size / 4) < 1:
-        print("size is too small")
-        return ""
+    print("size is too small")
+    return ""
     if seed is not None:
-        random.seed(seed)
+    random.seed(seed)
     size = int(size / 4)
     a = "A" * size + "C" * size + "G" * size + "T" * size
     a = list(a)
@@ -150,7 +150,7 @@ def gen_reference(size, fileName, seed):
     """Generate a random reference sequence of given size."""
     ref = ">1" + os.linesep + gen_random_dnas(size, seed) + os.linesep
     with open(fileName, 'w') as f:
-        f.write(ref)
+    f.write(ref)
     return ref
 
 

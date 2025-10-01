@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -94,7 +94,7 @@ namespace SEQAN_NAMESPACE_MAIN
 	}
 
 	template < typename TSA,
-               typename TText >
+           typename TText >
     inline void createSuffixArray(
 		TSA &SA,
 		TText &s,
@@ -143,13 +143,13 @@ namespace SEQAN_NAMESPACE_MAIN
 		}
 
 		inline typename Value<TSource>::Type const & operator*() {
-            return *in;
-        }
-        
-        inline Pipe& operator++() {
-            ++in;
-            return *this;
-        }        
+        return *in;
+    }
+    
+    inline Pipe& operator++() {
+        ++in;
+        return *this;
+    }    
 	};
 
 }

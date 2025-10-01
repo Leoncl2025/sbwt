@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -75,36 +75,36 @@ public:
 
     Index(Index& other) : index_handle(0), text() {
 SEQAN_CHECKPOINT
-        // Explicitly request the other's index text.
-        setIndexText(*this, indexText(other));
+    // Explicitly request the other's index text.
+    setIndexText(*this, indexText(other));
     }
 
     Index(Index const& other) : index_handle(0), text() {
 SEQAN_CHECKPOINT
-        // Explicitly request the other's index text.
-        setIndexText(*this, indexText(other));
+    // Explicitly request the other's index text.
+    setIndexText(*this, indexText(other));
     }
 
     template <typename TOtherText>
     Index(TOtherText& txt) : index_handle(0), text() {
 SEQAN_CHECKPOINT
-        setIndexText(*this, txt);
+    setIndexText(*this, txt);
     }
 
     ~Index() {
 SEQAN_CHECKPOINT
-        clear(*this);
+    clear(*this);
     }
 
     Index& operator =(Index const& other) {
 SEQAN_CHECKPOINT
-        if (this == &other)
-            return *this;
-
-        clear(*this);
-        setIndexText(*this, indexText(other));
-
+    if (this == &other)
         return *this;
+
+    clear(*this);
+    setIndexText(*this, indexText(other));
+
+    return *this;
     }
 
 private:
@@ -131,17 +131,17 @@ namespace impl {
     inline void
     clearIndex(Index<TText, PizzaChili<TSpec> >& me) {
 SEQAN_CHECKPOINT
-        typedef typename PizzaChiliCodeProvider<TSpec>::Type TCodeProvider;
+    typedef typename PizzaChiliCodeProvider<TSpec>::Type TCodeProvider;
 
-        if (me.index_handle != 0) {
-            impl::error_t e =
-                TCodeProvider::free_index(me.index_handle);
+    if (me.index_handle != 0) {
+        impl::error_t e =
+        TCodeProvider::free_index(me.index_handle);
 
-            if (e != 0)
-                SEQAN_ABORT(TCodeProvider::error_index(e));
+        if (e != 0)
+        SEQAN_ABORT(TCodeProvider::error_index(e));
 
-            me.index_handle = 0;
-        }
+        me.index_handle = 0;
+    }
     }
 } // namespace impl
 
@@ -161,28 +161,28 @@ namespace impl {
     inline char const*
     getOptionsString(Index<TText, PizzaChili<TSpec> >& /*me*/) {
 SEQAN_CHECKPOINT
-        return "";
+    return "";
     }
 
     template <typename TText>
     inline char const*
     getOptionsString(Index<TText, PizzaChili<PizzaChili_SA> >& /*me*/) {
 SEQAN_CHECKPOINT
-        return "copy_text";
+    return "copy_text";
     }
 
     template <typename TText>
     inline char const*
     getOptionsString(Index<TText, PizzaChili<PizzaChili_FM> >& /*me*/) {
 SEQAN_CHECKPOINT
-        return "-a 0";
+    return "-a 0";
     }
 
     template <typename TText>
     inline char const*
     getOptionsString(Index<TText, PizzaChili<PizzaChili_RSA> >& /*me*/) {
 SEQAN_CHECKPOINT
-        return "copy_text";
+    return "copy_text";
     }
 
 } // namespace impl
@@ -250,26 +250,26 @@ namespace impl {
     template <typename TText, typename TSpec>
     inline bool
     createPizzaChiliIndex(
-        Index<TText, PizzaChili<TSpec> >& me,
-        uchar_t* textstart,
-        ulong_t textlength
+    Index<TText, PizzaChili<TSpec> >& me,
+    uchar_t* textstart,
+    ulong_t textlength
     ) {
-        typedef typename PizzaChiliCodeProvider<TSpec>::Type TCodeProvider;
-        // Read-only access, therefore safe cast.
-        char* options = const_cast<char*>(impl::getOptionsString(me));
-        impl::error_t e =
-            TCodeProvider::build_index(textstart, textlength, options, &me.index_handle);
+    typedef typename PizzaChiliCodeProvider<TSpec>::Type TCodeProvider;
+    // Read-only access, therefore safe cast.
+    char* options = const_cast<char*>(impl::getOptionsString(me));
+    impl::error_t e =
+        TCodeProvider::build_index(textstart, textlength, options, &me.index_handle);
 
-        if (e != 0) {
-            SEQAN_REPORT(TCodeProvider::error_index(e));
-            SEQAN_REPORT(options);
-            me.index_handle = 0;
-            return false;
-        }
+    if (e != 0) {
+        SEQAN_REPORT(TCodeProvider::error_index(e));
+        SEQAN_REPORT(options);
+        me.index_handle = 0;
+        return false;
+    }
 
-        value(me.text) = String<typename Value<TText>::Type, PizzaChili<TSpec> >(me.index_handle);
+    value(me.text) = String<typename Value<TText>::Type, PizzaChili<TSpec> >(me.index_handle);
 
-        return true;
+    return true;
     }
 } // namespace impl
 
@@ -279,9 +279,9 @@ indexCreate(Index<TText, PizzaChili<TSpec> >& me, PizzaChili_Compressed const) {
 SEQAN_CHECKPOINT
     typedef typename PizzaChiliCodeProvider<TSpec>::Type TCodeProvider;
     typedef
-        typename _RemoveConst<
-            typename Index<TText, PizzaChili<TSpec> >::TValue
-        >::Type alph_t;
+    typename _RemoveConst<
+        typename Index<TText, PizzaChili<TSpec> >::TValue
+    >::Type alph_t;
 
     SEQAN_ASSERT(sizeof (alph_t) == 1);
     SEQAN_ASSERT((TYPECMP<typename IsSimple<alph_t>::Type, True>::VALUE));
@@ -289,9 +289,9 @@ SEQAN_CHECKPOINT
     impl::clearIndex(me);
 
     impl::uchar_t* textstart =
-        reinterpret_cast<impl::uchar_t*>(
-            const_cast<alph_t*>(indexText(me).data_begin)
-        );
+    reinterpret_cast<impl::uchar_t*>(
+        const_cast<alph_t*>(indexText(me).data_begin)
+    );
     impl::ulong_t textlength = length(indexText(me));
     return impl::createPizzaChiliIndex(me, textstart, textlength);
 }
@@ -304,9 +304,9 @@ setIndexText(Index<TText, PizzaChili<TSpec> >& me, TOtherText& text) {
 SEQAN_CHECKPOINT
     typedef typename PizzaChiliCodeProvider<TSpec>::Type TCodeProvider;
     typedef
-        typename _RemoveConst<
-            typename Value<TOtherText>::Type
-        >::Type alph_t;
+    typename _RemoveConst<
+        typename Value<TOtherText>::Type
+    >::Type alph_t;
     clear(me);
 
     /*
@@ -316,9 +316,9 @@ SEQAN_CHECKPOINT
 
     String<alph_t, CStyle> cstr = text;
     impl::uchar_t* textstart =
-        reinterpret_cast<impl::uchar_t*>(
-            const_cast<alph_t*>(static_cast<alph_t const*>(cstr))
-        );
+    reinterpret_cast<impl::uchar_t*>(
+        const_cast<alph_t*>(static_cast<alph_t const*>(cstr))
+    );
     impl::ulong_t textlength = length(text);
     impl::createPizzaChiliIndex(me, textstart, textlength);
     */
@@ -336,12 +336,12 @@ SEQAN_CHECKPOINT
     typedef typename PizzaChiliCodeProvider<TSpec>::Type TCodeProvider;
     clear(me);
     impl::error_t e =
-        TCodeProvider::load_index(const_cast<char*>(filename), &me.index_handle);
+    TCodeProvider::load_index(const_cast<char*>(filename), &me.index_handle);
     if (e != 0) {
-        SEQAN_REPORT(TCodeProvider::error_index(e));
+    SEQAN_REPORT(TCodeProvider::error_index(e));
     }
     else
-        value(me.text) = String<typename Value<TText>::Type, PizzaChili<TSpec> >(me.index_handle);
+    value(me.text) = String<typename Value<TText>::Type, PizzaChili<TSpec> >(me.index_handle);
     return e == 0;
 }
 
@@ -356,9 +356,9 @@ SEQAN_CHECKPOINT
     // already constructed.
     indexRequire(me, PizzaChili_Compressed());
     impl::error_t e =
-        TCodeProvider::save_index(me.index_handle, const_cast<char*>(filename));
+    TCodeProvider::save_index(me.index_handle, const_cast<char*>(filename));
     if (e != 0) {
-        SEQAN_REPORT(TCodeProvider::error_index(e));
+    SEQAN_REPORT(TCodeProvider::error_index(e));
     }
     return e == 0;
 }

@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -48,8 +48,8 @@ namespace SEQAN_NAMESPACE_MAIN
 
     template < typename TInput, typename TSpec >
     struct Pipe {
-        TInput &in;
-        Pipe(TInput &_in): in(_in) {}
+    TInput &in;
+    Pipe(TInput &_in): in(_in) {}
     };
 
 	// base class for multiple sequence algorithms
@@ -76,11 +76,11 @@ namespace SEQAN_NAMESPACE_MAIN
     // pipe input adapter 2->1 pipe
     template < typename TInput1, typename TInput2 >
     struct Bundle2 {
-        typedef TInput1 Input1;
-        typedef TInput2 Input2;
-        TInput1 &in1;
-        TInput2 &in2;
-        Bundle2(TInput1 &_in1, TInput2 &_in2): in1(_in1),in2(_in2) {}
+    typedef TInput1 Input1;
+    typedef TInput2 Input2;
+    TInput1 &in1;
+    TInput2 &in2;
+    Bundle2(TInput1 &_in1, TInput2 &_in2): in1(_in1),in2(_in2) {}
     };
 
 /**
@@ -121,13 +121,13 @@ namespace SEQAN_NAMESPACE_MAIN
     // pipe input adapter 3->1 pipe
     template < typename TInput1, typename TInput2, typename TInput3 >
     struct Bundle3 {
-        typedef TInput1 Input1;
-        typedef TInput2 Input2;
-        typedef TInput3 Input3;
-        TInput1 &in1;
-        TInput2 &in2;
-        TInput3 &in3;
-        Bundle3(TInput1 &_in1, TInput2 &_in2, TInput3 &_in3): in1(_in1),in2(_in2),in3(_in3) {}
+    typedef TInput1 Input1;
+    typedef TInput2 Input2;
+    typedef TInput3 Input3;
+    TInput1 &in1;
+    TInput2 &in2;
+    TInput3 &in3;
+    Bundle3(TInput1 &_in1, TInput2 &_in2, TInput3 &_in3): in1(_in1),in2(_in2),in3(_in3) {}
     };
 
 /**
@@ -177,14 +177,14 @@ namespace SEQAN_NAMESPACE_MAIN
     // pipe input adapter 5->1 pipe
     template < typename TIn1, typename TIn2, typename TIn3, typename TIn4, typename TIn5 >
     struct Bundle5 {
-        TIn1 &in1; TIn2 &in2;
-        TIn3 &in3; TIn4 &in4;
-        TIn5 &in5;
-        Bundle5(TIn1& _in1, TIn2& _in2,
-                TIn3& _in3, TIn4& _in4,
-                TIn5& _in5):    in1(_in1),in2(_in2),
-                                in3(_in3),in4(_in4),
-                                in5(_in5) {}
+    TIn1 &in1; TIn2 &in2;
+    TIn3 &in3; TIn4 &in4;
+    TIn5 &in5;
+    Bundle5(TIn1& _in1, TIn2& _in2,
+        TIn3& _in3, TIn4& _in4,
+        TIn5& _in5):    in1(_in1),in2(_in2),
+                in3(_in3),in4(_in4),
+                in5(_in5) {}
     };
 
 /**
@@ -211,12 +211,12 @@ namespace SEQAN_NAMESPACE_MAIN
 
     template < typename TValue, typename TSize >
     struct Value< Pipe<void, AbstractSource<TValue, TSize> > > {
-        typedef TValue Type;
+    typedef TValue Type;
     };
 
     template < typename TValue, typename TSize >
     struct Size< Pipe<void, AbstractSource<TValue, TSize> > > {
-        typedef TSize Type;
+    typedef TSize Type;
     };
 
 
@@ -224,32 +224,32 @@ namespace SEQAN_NAMESPACE_MAIN
     
     template < typename TInput, typename TSpec >
     struct Value< Pipe<TInput, TSpec> > {
-        typedef typename Value<TInput>::Type Type;
+    typedef typename Value<TInput>::Type Type;
     };
 
     template < typename TInput, typename TSpec >
     struct Size< Pipe<TInput, TSpec> > {
-        typedef typename Size<TInput>::Type Type;
+    typedef typename Size<TInput>::Type Type;
     };
 
     template < typename TInput1, typename TInput2 >
     struct Size< Bundle2< TInput1, TInput2 > > {
-        typedef typename Size<TInput1>::Type Type;
+    typedef typename Size<TInput1>::Type Type;
     };
 
     template < typename TInput1, typename TInput2, typename TInput3 >
     struct Size< Bundle3< TInput1, TInput2, TInput3 > > {
-        typedef typename Size<TInput1>::Type Type;
+    typedef typename Size<TInput1>::Type Type;
     };
 
     template < typename TIn1, typename TIn2, typename TIn3, typename TIn4, typename TIn5 >
     struct Size< Bundle5< TIn1, TIn2, TIn3, TIn4, TIn5 > > {
-        typedef typename Size<TIn1>::Type Type;
+    typedef typename Size<TIn1>::Type Type;
     };
 
     template < typename TInput, typename TSpec >
     struct Position< Pipe<TInput, TSpec> > {
-        typedef typename Size<Pipe<TInput, TSpec> >::Type Type;
+    typedef typename Size<Pipe<TInput, TSpec> >::Type Type;
     };
 
     template < typename TInput, typename TSpec >
@@ -278,14 +278,14 @@ namespace SEQAN_NAMESPACE_MAIN
     inline TInput const &
     source(Pipe<TInput, TSpec> const &me) {
 SEQAN_CHECKPOINT
-        return me.in;
+    return me.in;
     }
 
 	template < typename TInput, typename TSpec >
     inline TInput &
     source(Pipe<TInput, TSpec> &me) {
 SEQAN_CHECKPOINT
-        return me.in;
+    return me.in;
     }
 
 
@@ -295,28 +295,28 @@ SEQAN_CHECKPOINT
     inline typename Size< Pipe<TInput, TSpec> >::Type
     length(Pipe<TInput, TSpec> const &me) {
 SEQAN_CHECKPOINT
-        return length(me.in);
+    return length(me.in);
     }
 
     template < typename TInput1, typename TInput2 >
     inline typename Size< Bundle2<TInput1, TInput2> >::Type
     length(Bundle2<TInput1, TInput2> const &me) {
 SEQAN_CHECKPOINT
-        return length(me.in1);
+    return length(me.in1);
     }
 
     template < typename TInput1, typename TInput2, typename TInput3 >
     inline typename Size< Bundle3<TInput1, TInput2, TInput3> >::Type
     length(Bundle3<TInput1, TInput2, TInput3> const &me) {
 SEQAN_CHECKPOINT
-        return length(me.in1);
+    return length(me.in1);
     }
 
     template < typename TIn1, typename TIn2, typename TIn3, typename TIn4, typename TIn5 >
     inline typename Size< Bundle5<TIn1, TIn2, TIn3, TIn4, TIn5> >::Type
     length(Bundle5<TIn1, TIn2, TIn3, TIn4, TIn5> const &me) {
 SEQAN_CHECKPOINT
-        return length(me.in1);
+    return length(me.in1);
     }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -326,28 +326,28 @@ SEQAN_CHECKPOINT
     inline typename Size< Pipe<TInput, TSpec> >::Type
     countSequences(Pipe<TInput, TSpec> const &me) {
 SEQAN_CHECKPOINT
-        return countSequences(me.in);
+    return countSequences(me.in);
     }
 
     template < typename TInput1, typename TInput2 >
     inline typename Size< Bundle2<TInput1, TInput2> >::Type
     countSequences(Bundle2<TInput1, TInput2> const &me) {
 SEQAN_CHECKPOINT
-        return countSequences(me.in1);
+    return countSequences(me.in1);
     }
 
     template < typename TInput1, typename TInput2, typename TInput3 >
     inline typename Size< Bundle3<TInput1, TInput2, TInput3> >::Type
     countSequences(Bundle3<TInput1, TInput2, TInput3> const &me) {
 SEQAN_CHECKPOINT
-        return countSequences(me.in1);
+    return countSequences(me.in1);
     }
 
     template < typename TIn1, typename TIn2, typename TIn3, typename TIn4, typename TIn5 >
     inline typename Size< Bundle5<TIn1, TIn2, TIn3, TIn4, TIn5> >::Type
     countSequences(Bundle5<TIn1, TIn2, TIn3, TIn4, TIn5> const &me) {
 SEQAN_CHECKPOINT
-        return countSequences(me.in1);
+    return countSequences(me.in1);
     }
 /**
 .Function.Pipelining#front:
@@ -366,7 +366,7 @@ Return type is $Value<TObject>::Type$ for $object$ type $TObject$.
     inline Value< Pipe<TInput, TSpec> > const & 
     front(Pipe<TInput, TSpec> &me) {
 SEQAN_CHECKPOINT
-        return *me;
+    return *me;
     }
 
 /**
@@ -386,14 +386,14 @@ SEQAN_CHECKPOINT
     template < typename TInput, typename TSpec, typename TValue >
     inline void pop(Pipe<TInput, TSpec> &me, TValue &_Ref) {
 SEQAN_CHECKPOINT
-        _Ref = *me;
-        ++me;
+    _Ref = *me;
+    ++me;
     }
 
     template < typename TInput, typename TSpec >
     inline void pop(Pipe<TInput, TSpec> &me) {
 SEQAN_CHECKPOINT
-        ++me;
+    ++me;
     }
 
 ///.Function.atEnd.param.iterator.type:Class.Pipe

@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -56,7 +56,7 @@ for @Class.Index@ based substring searches.
 
 	template < typename TText, typename TSpec >
 	struct DefaultFinder< Index<TText, Index_ESA<TSpec> > > {
-        typedef ESA_FIND_MLR Type;	// standard suffix array finder is mlr-heuristic
+    typedef ESA_FIND_MLR Type;	// standard suffix array finder is mlr-heuristic
     };
 
 
@@ -94,11 +94,11 @@ for @Class.Index@ based substring searches.
 			goFurther(_mid, count2);
 		}
 			
-        inline const TValue& operator*() const {
+    inline const TValue& operator*() const {
 			return *_mid;
 		}
 
-        inline const TValue* operator->() const {
+    inline const TValue* operator->() const {
 			return &*_mid;
 		}
 
@@ -117,7 +117,7 @@ for @Class.Index@ based substring searches.
 		}
 
 		// descend right
-        inline SearchTreeIterator & right()
+    inline SearchTreeIterator & right()
 		{
 			first = ++_mid, count -= count2 + 1;
 			count2 = count / 2;
@@ -125,17 +125,17 @@ for @Class.Index@ based substring searches.
 			return *this;
 		}
 
-        inline SearchTreeIterator leftChild() const {
-            return SearchTreeIterator(*this).left();
-        }
+    inline SearchTreeIterator leftChild() const {
+        return SearchTreeIterator(*this).left();
+    }
 
-        inline SearchTreeIterator rightChild() const {
-            return SearchTreeIterator(*this).right();
-        }
+    inline SearchTreeIterator rightChild() const {
+        return SearchTreeIterator(*this).right();
+    }
 
-        inline bool eof() {
-            return !count;
-        }
+    inline bool eof() {
+        return !count;
+    }
 
 		inline operator TIterator & () {
 			return _mid;
@@ -168,21 +168,21 @@ for @Class.Index@ based substring searches.
 		{
 			_left = 0;
 			_lSize = 1;
-            _iSize = size;
+        _iSize = size;
 			for(_xSize = 1; _xSize < size; _xSize <<= 1);
-            if (!size) _xSize = 0;
+        if (!size) _xSize = 0;
 		}
 
 		inline SearchTreeIterator():
 			it(),
-            size(0),
-            _xSize(0) {}
+        size(0),
+        _xSize(0) {}
 
-        inline const TValue& operator*() const {
+    inline const TValue& operator*() const {
 			return *it;
 		}
 
-        inline const TValue* operator->() const {
+    inline const TValue* operator->() const {
 			return &*it;
 		}
 
@@ -199,78 +199,78 @@ for @Class.Index@ based substring searches.
 		}
 
 		// descend left
-        inline SearchTreeIterator & left()
+    inline SearchTreeIterator & left()
 		{
-            if (_xSize <= 1) {
-                _xSize = 0;
-                return *this;
-            }
-            _descendLeft();
-			_iSize = _xSize;	    // = mid();
-            return *this;
+        if (_xSize <= 1) {
+        _xSize = 0;
+        return *this;
         }
+        _descendLeft();
+			_iSize = _xSize;	    // = mid();
+        return *this;
+    }
 
 		// descend right
-        inline SearchTreeIterator & right()
+    inline SearchTreeIterator & right()
 		{
-            if (_xSize <= 1) {
-                _xSize = 0;
-                return *this;
-            }
+        if (_xSize <= 1) {
+        _xSize = 0;
+        return *this;
+        }
 			_iSize -= mid();
-            SEQAN_ASSERT(_iSize != 0);    // _xSize/2 is less than _iSize by invariant
+        SEQAN_ASSERT(_iSize != 0);    // _xSize/2 is less than _iSize by invariant
 
-            // step down right
-            _descendRight();
+        // step down right
+        _descendRight();
 
-            // step down left until we have two sons or are a leaf
-            while (_iSize <= (_xSize >> 1))
-                _descendLeft();
+        // step down left until we have two sons or are a leaf
+        while (_iSize <= (_xSize >> 1))
+        _descendLeft();
 
-            return *this;
-        }
+        return *this;
+    }
 
-        inline SearchTreeIterator leftChild() const {
-            return SearchTreeIterator(*this).left();
-        }
+    inline SearchTreeIterator leftChild() const {
+        return SearchTreeIterator(*this).left();
+    }
 
-        inline SearchTreeIterator rightChild() const {
-            return SearchTreeIterator(*this).right();
-        }
+    inline SearchTreeIterator rightChild() const {
+        return SearchTreeIterator(*this).right();
+    }
 
-        inline SearchTreeIterator& operator--() {
-            --it;
-            return *this;
-        }
+    inline SearchTreeIterator& operator--() {
+        --it;
+        return *this;
+    }
 
-        inline SearchTreeIterator operator--(int) {
-            SearchTreeIterator before = *this;
-            --it;
-            return before;
-        }
+    inline SearchTreeIterator operator--(int) {
+        SearchTreeIterator before = *this;
+        --it;
+        return before;
+    }
 
-        inline SearchTreeIterator & operator++() {
-            ++it;
-            return *this;
-        }
+    inline SearchTreeIterator & operator++() {
+        ++it;
+        return *this;
+    }
 
-        inline SearchTreeIterator operator++(int) {
-            SearchTreeIterator before = *this;
-            ++it;
-            return before;
-        }
+    inline SearchTreeIterator operator++(int) {
+        SearchTreeIterator before = *this;
+        ++it;
+        return before;
+    }
 
-        inline bool operator==(SearchTreeIterator const &I) {
-            return (_xSize == I._xSize) && (_xSize == 0 || it == I.it);
-        }
+    inline bool operator==(SearchTreeIterator const &I) {
+        return (_xSize == I._xSize) && (_xSize == 0 || it == I.it);
+    }
 
-        //operator FlatFwdIt() {
-        //    return it;
-        //}
+    //operator FlatFwdIt() {
+    //    return it;
+    //}
 
-        inline bool eof() {
-            return !_xSize;
-        }
+    inline bool eof() {
+        return !_xSize;
+    }
 
 		inline operator TIterator & () {
 			return it;
@@ -282,21 +282,21 @@ for @Class.Index@ based substring searches.
 		TSize _xSize;		// max interval size of current level
 		TSize _iSize;		// current interval size
 
-        inline void _descendLeft() 
+    inline void _descendLeft() 
 		{
 			goFurther(it, _left + _lSize);
 			_left <<= 1;
 			_xSize >>= 1;
 			_lSize = (size + _xSize - 1) / _xSize;
-        }
+    }
 
-        inline void _descendRight() 
+    inline void _descendRight() 
 		{
 			goFurther(it, _left + 1 + _lSize);
 			_left = (_left << 1) + 1;
 			_xSize >>= 1;
 			_lSize = (size + _xSize - 1) / _xSize;
-        }
+    }
     };
 
 
@@ -326,7 +326,7 @@ for @Class.Index@ based substring searches.
 		{
 			//_left = 0;
 			//_lSize = 0;
-   //         _iSize = size;
+   //     _iSize = size;
 
 			_heightHigh = 1;
 			_stepSizeLow = 1;
@@ -350,13 +350,13 @@ for @Class.Index@ based substring searches.
 			_updateElements();
 
 			//if (!size) _xSizeLow = 0;
-   //         if (!size) _xSizeHigh = 0;
+   //     if (!size) _xSizeHigh = 0;
 		}
 
 		inline SearchTreeIterator():
 			it() {}
 
-        inline const TValue& operator*() const {
+    inline const TValue& operator*() const {
 			return *it;
 		}
 
@@ -365,76 +365,76 @@ for @Class.Index@ based substring searches.
 		}
 
 		// descend left
-        inline SearchTreeIterator & left() 
+    inline SearchTreeIterator & left() 
 		{
-            if (_heightHigh == 1 && !_stepSizeLow) {
-                _heightHigh = 0;
-                return *this;
-            }
-            _descendLeft();
-            return *this;
+        if (_heightHigh == 1 && !_stepSizeLow) {
+        _heightHigh = 0;
+        return *this;
         }
+        _descendLeft();
+        return *this;
+    }
 
 		// descend right
-        inline SearchTreeIterator & right() 
+    inline SearchTreeIterator & right() 
 		{
-            if (_heightHigh == 1 && !_stepSizeLow) {
+        if (_heightHigh == 1 && !_stepSizeLow) {
 				++it;
-                _heightHigh = 0;
-                return *this;
-            }
-
-            // step down right
-            _descendRight();
-
-            // step down left until we have two sons or are a leaf
-            while (_elements <= _leftLow)
-                _descendLeft();
-
-            return *this;
+        _heightHigh = 0;
+        return *this;
         }
 
-        inline SearchTreeIterator leftChild() const {
-            return SearchTreeIterator(*this).left();
-        }
+        // step down right
+        _descendRight();
 
-        inline SearchTreeIterator rightChild() const {
-            return SearchTreeIterator(*this).right();
-        }
+        // step down left until we have two sons or are a leaf
+        while (_elements <= _leftLow)
+        _descendLeft();
 
-        inline SearchTreeIterator& operator--() {
-            --it;
-            return *this;
-        }
+        return *this;
+    }
 
-        inline SearchTreeIterator operator--(int) {
-            SearchTreeIterator before = *this;
-            --it;
-            return before;
-        }
+    inline SearchTreeIterator leftChild() const {
+        return SearchTreeIterator(*this).left();
+    }
 
-        inline SearchTreeIterator& operator++() {
-            ++it;
-            return *this;
-        }
+    inline SearchTreeIterator rightChild() const {
+        return SearchTreeIterator(*this).right();
+    }
 
-        inline SearchTreeIterator operator++(int) {
-            SearchTreeIterator before = *this;
-            ++it;
-            return before;
-        }
+    inline SearchTreeIterator& operator--() {
+        --it;
+        return *this;
+    }
 
-        inline bool operator==(SearchTreeIterator const &I) {
+    inline SearchTreeIterator operator--(int) {
+        SearchTreeIterator before = *this;
+        --it;
+        return before;
+    }
+
+    inline SearchTreeIterator& operator++() {
+        ++it;
+        return *this;
+    }
+
+    inline SearchTreeIterator operator++(int) {
+        SearchTreeIterator before = *this;
+        ++it;
+        return before;
+    }
+
+    inline bool operator==(SearchTreeIterator const &I) {
 			return it == I.it || (eof() && I.eof());
-        }
+    }
 
-        //operator FlatFwdIt() {
-        //    return it;
-        //}
+    //operator FlatFwdIt() {
+    //    return it;
+    //}
 
-        inline bool eof() {
-            return !_heightHigh;
-        }
+    inline bool eof() {
+        return !_heightHigh;
+    }
 
 		inline operator TIterator & () {
 			return it;
@@ -464,7 +464,7 @@ for @Class.Index@ based substring searches.
 					_leftLow = BlockInnerElements;		// point to the middle
 					_stepSizeLow = BlockLeafs / 2;		// with step size of half an interval length
 				}
-        }
+    }
 
 		inline void _descendRight() 
 		{
@@ -479,7 +479,7 @@ for @Class.Index@ based substring searches.
 					_leftLow = BlockInnerElements;		// point to the middle
 					_stepSizeLow = BlockLeafs / 2;		// with step size of half an interval length
 				}
-        }
+    }
 
 		inline void _updateElements() 
 		{
@@ -492,7 +492,7 @@ for @Class.Index@ based substring searches.
 				_elements = BlockElements;
 		}
 
-        inline void _descendBBlock(TSize _childIndex) 
+    inline void _descendBBlock(TSize _childIndex) 
 		{
 			// goFurther to the begin of the current BBlock and further to the destination BBlock
 			goFurther(it, BlockSize * (_leftHigh * (BlockSize - 1) + _childIndex + _lSizeHigh) + BlockInnerElements - _leftLow);
@@ -502,7 +502,7 @@ for @Class.Index@ based substring searches.
 			_lSizeHigh = (size / _xSizeHigh + BlockSize - 1) / BlockSize;
 
 			_updateElements();
-        }
+    }
     };
 
 
@@ -540,7 +540,7 @@ for @Class.Index@ based substring searches.
 			TTextIter	t = begin(suf, Standard());
 			TTextIter	tEnd = end(suf, Standard());
 			TQueryIter	q = qBegin;
-            TDiff		lcp = _min(lcpLower, lcpUpper);
+        TDiff		lcp = _min(lcpLower, lcpUpper);
 
 			goFurther(t, lcp);
 			goFurther(q, lcp);
@@ -550,7 +550,7 @@ for @Class.Index@ based substring searches.
 				++lcp;
 			}
 			
-            // is text < query ?
+        // is text < query ?
 			if (q != qEnd && (t == tEnd || *t < *q)) {
 				treeIter.right();
 				lcpLower = lcp;
@@ -594,7 +594,7 @@ for @Class.Index@ based substring searches.
 			TTextIter	t = begin(suf, Standard());
 			TTextIter	tEnd = end(suf, Standard());
 			TQueryIter	q = qBegin;
-            TDiff		lcp = _min(lcpLower, lcpUpper);
+        TDiff		lcp = _min(lcpLower, lcpUpper);
 
 			goFurther(t, lcp);
 			goFurther(q, lcp);
@@ -604,7 +604,7 @@ for @Class.Index@ based substring searches.
 				++lcp;
 			}
 			
-            // is text <= query ?
+        // is text <= query ?
 			if (q == qEnd || t == tEnd || !(*q < *t)) {
 				treeIter.right();
 				lcpLower = lcp;
@@ -649,7 +649,7 @@ for @Class.Index@ based substring searches.
 			TTextIter	t = begin(suf, Standard());
 			TTextIter	tEnd = end(suf, Standard());
 			TQueryIter	q = qBegin;
-            TDiff		lcp = _min(lcpLower, lcpUpper);
+        TDiff		lcp = _min(lcpLower, lcpUpper);
 
 			goFurther(t, lcp);
 			goFurther(q, lcp);
@@ -659,19 +659,19 @@ for @Class.Index@ based substring searches.
 				++lcp;
 			}
 			
-            // is text < query ?
+        // is text < query ?
 			if (q != qEnd && (t == tEnd || *t < *q))
 			{	// range begins above mid, loop
 				treeIter.right();
 				lcpLower = lcp;
 			}
-            // is text > query ?
+        // is text > query ?
 			else if (q != qEnd && (t != tEnd && *q < *t))
 			{	// range in first half, loop
 				treeIter.left();
 				lcpUpper = lcp;
 			} else
-            // is text == query ?
+        // is text == query ?
 			{	// range straddles mid, find each end and return
 				return Pair<TSAIter> (
 					_lowerBoundSA(text, treeIter.leftChild(), query),
@@ -1016,8 +1016,8 @@ for @Class.Index@ based substring searches.
 
 			if (lcpLower > lcpUpper) 
 			{
-                TLCPTreeIt leftChild = treeIter;
-                leftChild.left();
+        TLCPTreeIt leftChild = treeIter;
+        leftChild.left();
 				TDiff lcpMidLower = *leftChild;
 
 				if (lcpMidLower > lcpLower) 
@@ -1050,8 +1050,8 @@ for @Class.Index@ based substring searches.
 			} 
 			else if (lcpLower < lcpUpper) 
 			{
-                TLCPTreeIt rightChild = treeIter;
-                rightChild.right();
+        TLCPTreeIt rightChild = treeIter;
+        rightChild.right();
 				TDiff lcpMidUpper = *rightChild;
 
 				if (lcpMidUpper > lcpUpper) 
@@ -1073,7 +1073,7 @@ for @Class.Index@ based substring searches.
 					#endif
 					lcpLower = lcpMidUpper;
 					first = mid;
-                    treeIter = rightChild;
+            treeIter = rightChild;
 					if ((delta -= delta2) == 1) {
 						++first;
 						delta = 0;
@@ -1101,7 +1101,7 @@ for @Class.Index@ based substring searches.
 				i && *t == *q;
 				--i, ++t, ++q, ++lcp);
 
-            // is text < query ?
+        // is text < query ?
 			if (q != qEnd && (t == tEnd || *t < *q)) 
 			{
 				// second half
@@ -1125,8 +1125,8 @@ for @Class.Index@ based substring searches.
 			SEQAN_PROADD(SEQAN_PROEXTRA3, skippedCompares);
 		#endif
 
-        // binary search for intervals of 2 or less elements
-        lcp = _min(lcpLower, lcpUpper);
+    // binary search for intervals of 2 or less elements
+    lcp = _min(lcpLower, lcpUpper);
 		TQueryIter q = qBegin;
 		goFurther(q, lcp);
 
@@ -1137,20 +1137,20 @@ for @Class.Index@ based substring searches.
 
 			goFurther(t, lcp);
 			for(TDiff i = _min(difference(t, tEnd), difference(q, qEnd)); 
-            	i && *t == *q;
-            	 --i, ++t, ++q);
+        	i && *t == *q;
+        	 --i, ++t, ++q);
 
-            // is text < query ?
+        // is text < query ?
 			if (q != qEnd && (t == tEnd || *t < *q)) {
 				// second half
 				++first;
 				if (!delta) return first;
-                --delta;
+        --delta;
 			} else {
 				// first half -> end
 				return first;
 			}
-        }
+    }
 	}
 
 	template <
@@ -1203,7 +1203,7 @@ for @Class.Index@ based substring searches.
 		TQueryIter qEnd = end(query, Standard());
 		TSAIter first = begin(sa, Standard());
 
-        // binary search with intervals >= 3 elements
+    // binary search with intervals >= 3 elements
 		for (; 1 < delta; )
 		{	// divide and conquer, find half that contains answer
 			TDiff delta2 = treeIter.leftSize();
@@ -1212,8 +1212,8 @@ for @Class.Index@ based substring searches.
 
 			if (lcpLower > lcpUpper) 
 			{
-                TLCPTreeIt leftChild = treeIter;
-                leftChild.left();
+        TLCPTreeIt leftChild = treeIter;
+        leftChild.left();
 				TDiff lcpMidLower = *leftChild;
 
 				if (lcpMidLower > lcpLower) 
@@ -1239,8 +1239,8 @@ for @Class.Index@ based substring searches.
 			} 
 			else if (lcpLower < lcpUpper) 
 			{
-                TLCPTreeIt rightChild = treeIter;
-                rightChild.right();
+        TLCPTreeIt rightChild = treeIter;
+        rightChild.right();
 				TDiff lcpMidUpper = *rightChild;
 
 				if (lcpMidUpper > lcpUpper) 
@@ -1256,7 +1256,7 @@ for @Class.Index@ based substring searches.
 					// second half
 					lcpLower = lcpMidUpper;
 					first = mid;
-                    treeIter = rightChild;
+            treeIter = rightChild;
 					if ((delta -= delta2) == 1) {
 						++first;
 						delta = 0;
@@ -1275,11 +1275,11 @@ for @Class.Index@ based substring searches.
 			goFurther(t, lcp);
 			goFurther(q, lcp);
 			TDiff max = _min(difference(t, tEnd), difference(q, qEnd));
-            TDiff i = max;
+        TDiff i = max;
 			for(; i && *t == *q; --i, ++t, ++q);
 			lcp += max - i;
 
-            // is text <= query ?
+        // is text <= query ?
 			if (q == qEnd || t == tEnd || !(*q < *t)) 
 			{
 				// second half
@@ -1299,8 +1299,8 @@ for @Class.Index@ based substring searches.
 			}
 		}
 
-        // binary search for intervals of 2 or less elements
-        TDiff lcp = _min(lcpLower, lcpUpper);
+    // binary search for intervals of 2 or less elements
+    TDiff lcp = _min(lcpLower, lcpUpper);
 		TQueryIter q = qBegin;
 		goFurther(q, lcp);
 
@@ -1311,19 +1311,19 @@ for @Class.Index@ based substring searches.
 
 			goFurther(t, lcp);
 			TDiff i = _min(difference(t, tEnd), difference(q, qEnd));
-            for(; i && *t == *q; --i, ++t, ++q);
+        for(; i && *t == *q; --i, ++t, ++q);
 
-            // is text <= query ?
+        // is text <= query ?
 			if (q == qEnd || t == tEnd || !(*q < *t)) {
 				// second half
 				++first;
 				if (!delta) return first;
-                --delta;
+        --delta;
 			} else {
 				// first half -> end
 				return first;
 			}
-        }
+    }
 	}
 
 	template <
@@ -1369,14 +1369,14 @@ for @Class.Index@ based substring searches.
 
 		TDiff lcpLower = 0;
 		TDiff lcpUpper = 0;
-        TDiff delta = length(sa) - 1;
+    TDiff delta = length(sa) - 1;
 
 		TQueryIter qBegin = begin(query, Standard());
 		TQueryIter qEnd = end(query, Standard());
 		TSAIter first = begin(sa, Standard());
 		TSAIter last = end(sa, Standard());
 
-        // binary search with intervals >= 3 elements
+    // binary search with intervals >= 3 elements
 		for (; 1 < delta; )
 		{	// divide and conquer, find half that contains answer
 			TDiff delta2 = treeIter.leftSize();
@@ -1385,8 +1385,8 @@ for @Class.Index@ based substring searches.
 
 			if (lcpLower > lcpUpper) 
 			{
-                TLCPTreeIt leftChild = treeIter;
-                leftChild.left();
+        TLCPTreeIt leftChild = treeIter;
+        leftChild.left();
 				TDiff lcpMidLower = *leftChild;
 
 				if (lcpMidLower > lcpLower) 
@@ -1412,8 +1412,8 @@ for @Class.Index@ based substring searches.
 			} 
 			else if (lcpLower < lcpUpper) 
 			{
-                TLCPTreeIt rightChild = treeIter;
-                rightChild.right();
+        TLCPTreeIt rightChild = treeIter;
+        rightChild.right();
 				TDiff lcpMidUpper = *rightChild;
 
 				if (lcpMidUpper > lcpUpper) 
@@ -1429,7 +1429,7 @@ for @Class.Index@ based substring searches.
 					// second half
 					lcpLower = lcpMidUpper;
 					first = mid;
-                    treeIter = rightChild;
+            treeIter = rightChild;
 					if ((delta -= delta2) == 1) {
 						++first;
 						delta = 0;
@@ -1448,11 +1448,11 @@ for @Class.Index@ based substring searches.
 			goFurther(t, lcp);
 			goFurther(q, lcp);
 			TDiff max = _min(difference(t, tEnd), difference(q, qEnd));
-            TDiff i = max;
+        TDiff i = max;
 			for(; i && *t == *q; --i, ++t, ++q);
 			lcp += max - i;
 
-            // is text < query ?
+        // is text < query ?
 			if (q != qEnd && (t == tEnd || !(*q < *t))) {
 				// second half
 				lcpLower = lcp;
@@ -1463,7 +1463,7 @@ for @Class.Index@ based substring searches.
 					delta = 0;
 				}
 			} else
-            // is text > query ?
+        // is text > query ?
 			if (q != qEnd && t != tEnd && (*q < *t)) {
 				// first half
 				lcpUpper = lcp;
@@ -1725,7 +1725,7 @@ for @Class.Index@ based substring searches.
 		return _equalRangeLCPE(
 			begin(text), end(text),
 			begin(sa), end(sa),
-            SearchTreeIterator<typename Iterator<TLCPE const>::Type, LeftCompleteTree>(begin(lcpe), (length(text)>1)?length(text)-1:0),
+        SearchTreeIterator<typename Iterator<TLCPE const>::Type, LeftCompleteTree>(begin(lcpe), (length(text)>1)?length(text)-1:0),
 			begin(subtext), end(subtext));
 	}
 */

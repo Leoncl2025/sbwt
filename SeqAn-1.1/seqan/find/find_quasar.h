@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -39,29 +39,29 @@ template <typename TNeedle>
 class Pattern<TNeedle, Quasar> {
 //____________________________________________________________________________
 private:
-	Pattern(Pattern const& other);
-	Pattern const& operator=(Pattern const & other);
+    Pattern(Pattern const& other);
+    Pattern const& operator=(Pattern const & other);
 
 //____________________________________________________________________________
 public:
-	Holder<TNeedle> data_needle;
+    Holder<TNeedle> data_needle;
 
 
 //____________________________________________________________________________
 
-	Pattern() {	
-	}
+    Pattern() {    
+    }
 
-	template <typename TNeedle2>
-	Pattern(TNeedle2 const & ndl)
-	{
+    template <typename TNeedle2>
+    Pattern(TNeedle2 const & ndl)
+    {
 SEQAN_CHECKPOINT
-		setHost(*this, ndl);
-	}
+        setHost(*this, ndl);
+    }
 
-	~Pattern() {
-		SEQAN_CHECKPOINT
-	}
+    ~Pattern() {
+        SEQAN_CHECKPOINT
+    }
 //____________________________________________________________________________
 };
 
@@ -72,13 +72,13 @@ SEQAN_CHECKPOINT
 template <typename TNeedle>
 struct Host< Pattern<TNeedle, Quasar> >
 {
-	typedef TNeedle Type;
+    typedef TNeedle Type;
 };
 
 template <typename TNeedle>
 struct Host< Pattern<TNeedle, Quasar> const>
 {
-	typedef TNeedle const Type;
+    typedef TNeedle const Type;
 };
 
 
@@ -90,15 +90,15 @@ template <typename TNeedle, typename TNeedle2>
 inline void 
 setHost (Pattern<TNeedle, Quasar> & me, TNeedle2 const& needle) 
 {
-	SEQAN_CHECKPOINT
-	setValue(me.data_needle, needle);
+    SEQAN_CHECKPOINT
+    setValue(me.data_needle, needle);
 }
 
 template <typename TNeedle, typename TNeedle2>
 inline void 
 setHost (Pattern<TNeedle, Quasar> & me, TNeedle2 & needle)
 {
-	setHost(me, reinterpret_cast<TNeedle2 const &>(needle));
+    setHost(me, reinterpret_cast<TNeedle2 const &>(needle));
 }
 
 //____________________________________________________________________________
@@ -118,7 +118,7 @@ inline typename Host<Pattern<TNeedle, Quasar>const>::Type &
 host(Pattern<TNeedle, Quasar> & me)
 {
 SEQAN_CHECKPOINT
-	return value(me.data_needle);
+    return value(me.data_needle);
 }
 
 template <typename TNeedle>
@@ -126,7 +126,7 @@ inline typename Host<Pattern<TNeedle, Quasar>const>::Type &
 host(Pattern<TNeedle, Quasar> const & me)
 {
 SEQAN_CHECKPOINT
-	return value(me.data_needle);
+    return value(me.data_needle);
 }
 
 //____________________________________________________________________________
@@ -136,16 +136,16 @@ template <typename TFinder, typename TNeedle>
 inline bool 
 find(TFinder & finder, Pattern<TNeedle, Quasar> & me) 
 {
-	SEQAN_CHECKPOINT
-	
-	if (empty(finder)) {
-		_patternInit(me);
-		_finderSetNonEmpty(finder);
-	} else {
-		finder+=4;
-	}
+    SEQAN_CHECKPOINT
+    
+    if (empty(finder)) {
+        _patternInit(me);
+        _finderSetNonEmpty(finder);
+    } else {
+        finder+=4;
+    }
 
-	return true;
+    return true;
 }
 
 }// namespace SEQAN_NAMESPACE_MAIN

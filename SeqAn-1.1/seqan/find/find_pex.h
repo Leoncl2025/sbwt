@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -27,7 +27,7 @@
 namespace SEQAN_NAMESPACE_MAIN 
 {
 
-struct Hierarchical;			
+struct Hierarchical;            
 struct NonHierarchical;
 
 template <typename TVerification, typename TMultiFinder = AhoCorasick>
@@ -118,8 +118,8 @@ class Pattern<TNeedle, Pex<TVerification,TMultiFinder > >
    typedef unsigned TScore;
    typedef Pattern<TNeedle,MyersUkkonen> TVerifier;
    typedef typename PexMultiFinder< 
-                       Pattern<TNeedle, Pex<TVerification,TMultiFinder > > 
-                                  >::Type TMFinder; 
+               Pattern<TNeedle, Pex<TVerification,TMultiFinder > > 
+                  >::Type TMFinder; 
   
    // the maximal accepted error
    TScore limit;
@@ -250,7 +250,7 @@ SEQAN_CHECKPOINT
 template <typename TNeedle, typename TScoreValue,typename TVerification, typename TMultiFinder>
 inline void 
 setScoreLimit(Pattern<TNeedle, Pex<TVerification,TMultiFinder > > & me, 
-			  TScoreValue _limit)
+              TScoreValue _limit)
 {
 SEQAN_CHECKPOINT
   me.patternNeedsInit = true;
@@ -315,12 +315,12 @@ SEQAN_CHECKPOINT
 
 #ifdef SEQAN_DEBUG_PEX
   ::std::cout << " -------------------------------------------------  " << ::std::endl;
-  ::std::cout << "                   PATTERN INIT                     " << ::std::endl;
+  ::std::cout << "           PATTERN INIT             " << ::std::endl;
   ::std::cout << "Needle:   " << value(me.data_needle) << ::std::endl;
   ::std::cout << "|Needle|: " << me.needleLength << ::std::endl;
   ::std::cout << "seg_len:  " << seg_len << ::std::endl;
   ::std::cout << "limit:    " << me.limit << ::std::endl;
-  ::std::cout << "k:        " << k << ::std::endl;
+  ::std::cout << "k:    " << k << ::std::endl;
   ::std::cout << "computed following needles for multipattern search: " << ::std::endl;
   for(unsigned i = 0;i < length(me.splitted_needles);++i)  ::std::cout << me.splitted_needles[i] << ::std::endl;
   ::std::cout << " -------------------------------------------------  " << ::std::endl;
@@ -336,8 +336,8 @@ inline bool find (TFinder & finder, Pattern<TNeedle, Pex<NonHierarchical, TMulti
 SEQAN_CHECKPOINT
 
   typedef typename Host<TFinder>::Type    THost;
-  typedef Segment<THost>                  THostSegment;
-  typedef Finder<THostSegment>            THSFinder;
+  typedef Segment<THost>          THostSegment;
+  typedef Finder<THostSegment>        THSFinder;
   TFinder mf(finder);
   unsigned startPos;
 
@@ -366,11 +366,11 @@ SEQAN_CHECKPOINT
     {
       unsigned nP = start + position(f);
       if(nP > startPos){
-	// compute new position
-	unsigned offset = nP - position(finder);
-	finder += offset;
-	me.findNext = true;
-	return true;
+    // compute new position
+    unsigned offset = nP - position(finder);
+    finder += offset;
+    me.findNext = true;
+    return true;
       }
     }
     // reset mf finder to old position
@@ -395,13 +395,13 @@ SEQAN_CHECKPOINT
     {
       unsigned nP = s + position(f);
       if(nP > startPos){
-	// compute new position
-	unsigned offset = nP - position(finder);
-	finder += offset;
-	me.lastFPos = position(mf);
-	me.lastFNdl = position(me.multiPattern);
-	me.findNext = true;
-	return true;
+    // compute new position
+    unsigned offset = nP - position(finder);
+    finder += offset;
+    me.lastFPos = position(mf);
+    me.lastFNdl = position(me.multiPattern);
+    me.findNext = true;
+    return true;
       }
     }
   }
@@ -420,7 +420,7 @@ SEQAN_CHECKPOINT
 
 template <typename TNeedle, typename TMultiFinder>
 void _createTree(Pattern<TNeedle, Pex<Hierarchical, TMultiFinder > > &me, unsigned start, unsigned end,
-		 unsigned k, unsigned parent, unsigned direction ,unsigned idx, unsigned plen)
+         unsigned k, unsigned parent, unsigned direction ,unsigned idx, unsigned plen)
 {
   //create tree like proposed in Navarro & Raffinot
   // direction == 0 .. choose left child in the tree
@@ -502,11 +502,11 @@ SEQAN_CHECKPOINT
 
 #ifdef SEQAN_DEBUG_PEX
   ::std::cout << " -------------------------------------------------  " << ::std::endl;
-  ::std::cout << "                   PATTERN INIT                     " << ::std::endl;
+  ::std::cout << "           PATTERN INIT             " << ::std::endl;
   ::std::cout << "Needle:   " << value(me.data_needle) << ::std::endl;
   ::std::cout << "|Needle|: " << me.needleLength << ::std::endl;
   ::std::cout << "limit:    " << me.limit << ::std::endl;
-  ::std::cout << "k:        " << k << ::std::endl;
+  ::std::cout << "k:    " << k << ::std::endl;
   ::std::cout << "computed following needles for multipattern search: " << ::std::endl;
   for(unsigned i = 0;i < length(me.splitted_needles);++i)  ::std::cout << me.splitted_needles[i] << ::std::endl;
   ::std::cout << " -------------------------------------------------  " << ::std::endl;
@@ -521,8 +521,8 @@ inline bool find (TFinder & finder, Pattern<TNeedle, Pex<Hierarchical, TMultiFin
 SEQAN_CHECKPOINT
 
   typedef typename Host<TFinder>::Type    THost;
-  typedef Segment<THost>                  THostSegment;
-  typedef Finder<THostSegment>            THSFinder;
+  typedef Segment<THost>          THostSegment;
+  typedef Finder<THostSegment>        THSFinder;
   TFinder mf(finder);
   unsigned startPos;
 
@@ -553,13 +553,13 @@ SEQAN_CHECKPOINT
     {
       unsigned nP = p1 + position(f);
       if(nP > startPos)
-	{
-	  // compute new position
-	  unsigned offset = nP - position(finder);
-	  finder += offset;
-	  me.findNext = true;
-	  return true;
-	}      
+    {
+      // compute new position
+      unsigned offset = nP - position(finder);
+      finder += offset;
+      me.findNext = true;
+      return true;
+    }      
     }
     // reset mf finder to old position
     unsigned mf_offset = position(finder) - me.lastFPos;
@@ -603,17 +603,17 @@ SEQAN_CHECKPOINT
       THSFinder f(i);
       while(find(f,me.range_table[node].verifier))
       {
-	unsigned nP = p1 + position(f);
-	if(nP > startPos)
-	{
-	  // compute new position
-	  unsigned offset = nP - position(finder);
-	  finder += offset;
-	  me.lastFPos = position(mf);
-	  me.lastFNdl = position(me.multiPattern);
-	  me.findNext = true;
-	  return true;
-	}      
+    unsigned nP = p1 + position(f);
+    if(nP > startPos)
+    {
+      // compute new position
+      unsigned offset = nP - position(finder);
+      finder += offset;
+      me.lastFPos = position(mf);
+      me.lastFNdl = position(me.multiPattern);
+      me.findNext = true;
+      return true;
+    }      
       }
     }
   }

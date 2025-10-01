@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -61,7 +61,7 @@ namespace SEQAN_NAMESPACE_MAIN
 */
     template < typename TObject >
     struct DefaultIndexSpec {
-        typedef Index_ESA<> Type;
+    typedef Index_ESA<> Type;
     };
 
 //////////////////////////////////////////////////////////////////////////////
@@ -76,12 +76,12 @@ namespace SEQAN_NAMESPACE_MAIN
 */
     template < typename TIndex >
     struct DefaultIndexStringSpec {
-        typedef Alloc<> Type;
+    typedef Alloc<> Type;
     };
 
     template < typename TValue, typename TSpec >
     struct DefaultIndexStringSpec< String<TValue, External<TSpec> > > {
-        typedef External<TSpec> Type;
+    typedef External<TSpec> Type;
     };
 
 	template < typename TString, typename TSpec >
@@ -109,8 +109,8 @@ namespace SEQAN_NAMESPACE_MAIN
 
 	// index as a haystack
 	template < 
-        typename TObject, 
-        typename TSpec = typename DefaultIndexSpec<TObject>::Type > 
+    typename TObject, 
+    typename TSpec = typename DefaultIndexSpec<TObject>::Type > 
 	class Index;
 
 	template <typename TObject, typename TSpec>
@@ -388,8 +388,8 @@ should use the functions @Function.posLocalize@, @Function.posGlobalize@, @Funct
 
 		FunctorGlobalize() {}
 		FunctorGlobalize(TLimitsString const &_limits) : limits(&_limits) {}
-        inline Result operator()(const InType& x) const
-        {
+    inline Result operator()(const InType& x) const
+    {
 			return posGlobalize(x, *limits);
 		}
     };
@@ -427,22 +427,22 @@ should use the functions @Function.posLocalize@, @Function.posGlobalize@, @Funct
 
 	template < typename TText, typename TSpec >
 	struct DefaultIndexCreator<Index<TText, TSpec>, Fibre_SA> {
-        typedef Skew7 Type;							// standard suffix array creator is skew7
+    typedef Skew7 Type;							// standard suffix array creator is skew7
     };
 
 	template < typename TText, typename TSpec >
 	struct DefaultIndexCreator<Index<TText, TSpec>, Fibre_LCP> {
-        typedef Kasai Type;
+    typedef Kasai Type;
     };
 
 	template < typename TText, typename TSpec >
 	struct DefaultIndexCreator<Index<TText, TSpec>, Fibre_BWT> {
-        typedef BWT Type;
+    typedef BWT Type;
     };
 
 	template < typename TText, typename TSpec >
 	struct DefaultIndexCreator<Index<TText, TSpec>, Fibre_ChildTab> {
-        typedef ChildTab Type;
+    typedef ChildTab Type;
     };
 
 

@@ -37,36 +37,36 @@ template <typename TNeedle>
 class Pattern<TNeedle, WildShiftAnd> {
 //____________________________________________________________________________
 public:
-	typedef unsigned TWord;
+    typedef unsigned TWord;
 
-	Holder<TNeedle> data_needle;
-	String<TWord> table;			// Look up table for each character in the alphabet (called B in "Navarro")
-	
-	String<TWord> s_table;			// marks all positions, that can remain active, after reading a specific character (called S in "Navarro")
-	String<TWord> a_table;			// marks all positions of optional characters in the pattern (called A in "Navarro")
-	String<TWord> i_table;			// marks all positions in the pattern, that preceed a block of optional characters (called I in "Navarro")
-	String<TWord> f_table;			// marks all end-positions of blocks of optional characters (called F in "Navarro")
-	
-	String<TWord> prefSufMatch;		// Set of all the prefixes of needle that match a suffix of haystack (called D in "Navarro")
-	String<TWord> df;				// additional bit mask to enable flooding of bits
-	
-	TWord needleLength;				// e.g., needleLength=33 --> blockCount=2 (iff w=32 bits)
-	TWord character_count;			// number of normal characters in the needle
-	TWord blockCount;				// #unsigned ints required to store needle	
+    Holder<TNeedle> data_needle;
+    String<TWord> table;            // Look up table for each character in the alphabet (called B in "Navarro")
+    
+    String<TWord> s_table;            // marks all positions, that can remain active, after reading a specific character (called S in "Navarro")
+    String<TWord> a_table;            // marks all positions of optional characters in the pattern (called A in "Navarro")
+    String<TWord> i_table;            // marks all positions in the pattern, that preceed a block of optional characters (called I in "Navarro")
+    String<TWord> f_table;            // marks all end-positions of blocks of optional characters (called F in "Navarro")
+    
+    String<TWord> prefSufMatch;        // Set of all the prefixes of needle that match a suffix of haystack (called D in "Navarro")
+    String<TWord> df;                // additional bit mask to enable flooding of bits
+    
+    TWord needleLength;                // e.g., needleLength=33 --> blockCount=2 (iff w=32 bits)
+    TWord character_count;            // number of normal characters in the needle
+    TWord blockCount;                // #unsigned ints required to store needle    
 
-	bool _valid;					// is the pattern valid or not
+    bool _valid;                    // is the pattern valid or not
 
 //____________________________________________________________________________
 
-	Pattern()
-		: _valid(false)
-		{}
+    Pattern()
+        : _valid(false)
+        {}
 
-	template <typename TNeedle2>
-	Pattern(TNeedle2 const & ndl)
-		: _valid(false) {
-		setHost(*this, ndl);
-	}
+    template <typename TNeedle2>
+    Pattern(TNeedle2 const & ndl)
+        : _valid(false) {
+        setHost(*this, ndl);
+    }
 
 //____________________________________________________________________________
 };
@@ -80,105 +80,105 @@ public:
 // debug method to visualize bitmasks
 inline void _printMask(String <unsigned> const &  mask,unsigned line,String <char> name)
 {
-	unsigned len = length(mask);
-	std::cout << name << " " << line << "   ";
-	for(unsigned int j=0;j<len;++j) {
-		for(unsigned int bit_pos=0;bit_pos<BitsPerValue<unsigned int>::VALUE;++bit_pos) {
-			std::cout << ((mask[j] & (1<<(bit_pos % BitsPerValue<unsigned int>::VALUE))) !=0);
-		}
-		std::cout << " ";
-	}
-	std::cout << ::std::endl;
+    unsigned len = length(mask);
+    std::cout << name << " " << line << "   ";
+    for(unsigned int j=0;j<len;++j) {
+        for(unsigned int bit_pos=0;bit_pos<BitsPerValue<unsigned int>::VALUE;++bit_pos) {
+            std::cout << ((mask[j] & (1<<(bit_pos % BitsPerValue<unsigned int>::VALUE))) !=0);
+        }
+        std::cout << " ";
+    }
+    std::cout << ::std::endl;
 }
 */
 
 //____________________________________________________________________________
-//								VALIDATION
+//                                VALIDATION
 
 inline bool _isInt(String<char> const & number)
 {
-	unsigned int len = length(number);
-	for(unsigned int i = 0;i < len;++i){
-		if(!(convert<unsigned int>(getValue(number,i)) <= 57 && convert<unsigned int>(getValue(number,i)) >= 47))
-			return false;
-	}
-	return true;
+    unsigned int len = length(number);
+    for(unsigned int i = 0;i < len;++i){
+        if(!(convert<unsigned int>(getValue(number,i)) <= 57 && convert<unsigned int>(getValue(number,i)) >= 47))
+            return false;
+    }
+    return true;
 }
 
 // check if the pattern is valid
 template <typename TNeedle2>
 bool _validate(TNeedle2 const & needle)
 {
-	typedef unsigned TWord;
-	
-	TWord nl = length(needle);
-	TWord len = nl;
-	TWord i = 0;
-	
-	while (i < nl){
-		if (convert<char>(getValue(needle,i)) == '['){
-			// check if class ends
-			while(convert<char>(getValue(needle,i)) != ']' && i < nl)++i;
-			if(i == nl)	return false;
-		}
-		else if(convert<char>(getValue(needle,i)) == '*' || convert<char>(getValue(needle,i)) == '+' || convert<char>(getValue(needle,i)) == '?'){
-			// check for consecutive runs of +,*,?
-			++i;
-			if(convert<char>(getValue(needle,i)) == '*' || convert<char>(getValue(needle,i)) == '+' || convert<char>(getValue(needle,i)) == '?')
-				return false;
-			++i;
-		}
-		else if(convert<char>(getValue(needle,i)) == '{'){
+    typedef unsigned TWord;
+    
+    TWord nl = length(needle);
+    TWord len = nl;
+    TWord i = 0;
+    
+    while (i < nl){
+        if (convert<char>(getValue(needle,i)) == '['){
+            // check if class ends
+            while(convert<char>(getValue(needle,i)) != ']' && i < nl)++i;
+            if(i == nl)    return false;
+        }
+        else if(convert<char>(getValue(needle,i)) == '*' || convert<char>(getValue(needle,i)) == '+' || convert<char>(getValue(needle,i)) == '?'){
+            // check for consecutive runs of +,*,?
+            ++i;
+            if(convert<char>(getValue(needle,i)) == '*' || convert<char>(getValue(needle,i)) == '+' || convert<char>(getValue(needle,i)) == '?')
+                return false;
+            ++i;
+        }
+        else if(convert<char>(getValue(needle,i)) == '{'){
 SEQAN_CHECKPOINT
-			String <char> number;
-			TWord n,m;
-			n = m = 0;
-			--len;++i; // get to the first number
-			while(convert<char>(getValue(needle,i)) != '}' && convert<char>(getValue(needle,i)) != ',' && i < nl) {			
+            String <char> number;
+            TWord n,m;
+            n = m = 0;
+            --len;++i; // get to the first number
+            while(convert<char>(getValue(needle,i)) != '}' && convert<char>(getValue(needle,i)) != ',' && i < nl) {            
 SEQAN_CHECKPOINT
-				append(number,convert<char>(getValue(needle,i)));
-				--len;++i;
-			}
-			// class didn't ended
-			if(i == nl)	return false;
-			
-			// isNumber
-			if(!_isInt(number)) return false;
-			n = atoi(toCString(number));
-			
-			// check the second number
-			if (convert<char>(getValue(needle,i)) == ','){
+                append(number,convert<char>(getValue(needle,i)));
+                --len;++i;
+            }
+            // class didn't ended
+            if(i == nl)    return false;
+            
+            // isNumber
+            if(!_isInt(number)) return false;
+            n = atoi(toCString(number));
+            
+            // check the second number
+            if (convert<char>(getValue(needle,i)) == ','){
 SEQAN_CHECKPOINT
-				--len;++i;
-				clear(number);
-				while(convert<char>(getValue(needle,i)) != '}' && i < nl) {			
+                --len;++i;
+                clear(number);
+                while(convert<char>(getValue(needle,i)) != '}' && i < nl) {            
 SEQAN_CHECKPOINT
-					append(number,convert<char>(getValue(needle,i)));
-					--len;++i;
-				}
-			
-				// class didn't ended
-				if(i == nl) return false;
-				
-				// isNumber
-				if(!_isInt(number)) return false;
-				m = atoi(toCString(number));
-				--len;
-			}
-			else --len;
-			
-			// check if optional part is greater or equal then fixed
-			if(m < n && m != 0)	return false;
-		}
-		else if(convert<char>(getValue(needle,i)) == '\\'){
+                    append(number,convert<char>(getValue(needle,i)));
+                    --len;++i;
+                }
+            
+                // class didn't ended
+                if(i == nl) return false;
+                
+                // isNumber
+                if(!_isInt(number)) return false;
+                m = atoi(toCString(number));
+                --len;
+            }
+            else --len;
+            
+            // check if optional part is greater or equal then fixed
+            if(m < n && m != 0)    return false;
+        }
+        else if(convert<char>(getValue(needle,i)) == '\\'){
 SEQAN_CHECKPOINT
-			// check if there exists a next character
-			if(i == nl - 1)	return false;
-			else ++i;
-		}
-		++i;
-	}
-	return true;
+            // check if there exists a next character
+            if(i == nl - 1)    return false;
+            else ++i;
+        }
+        ++i;
+    }
+    return true;
 }
 
 /* 
@@ -188,119 +188,119 @@ SEQAN_CHECKPOINT
 template <typename TNeedle>
 unsigned _length_wo_wild(TNeedle const & needle) {
 
-	typedef unsigned TWord;
+    typedef unsigned TWord;
 
-	TWord nl = length(needle);
-	TWord len = nl;
-	TWord i = 0;
-	while(i < nl) {
-		if(convert<char>(getValue(needle,i)) == '+'){
+    TWord nl = length(needle);
+    TWord len = nl;
+    TWord i = 0;
+    while(i < nl) {
+        if(convert<char>(getValue(needle,i)) == '+'){
 SEQAN_CHECKPOINT
-			--len;
-		}
-		else if(convert<char>(getValue(needle,i)) == '*'){
+            --len;
+        }
+        else if(convert<char>(getValue(needle,i)) == '*'){
 SEQAN_CHECKPOINT
-			--len;
-		}
-		else if(convert<char>(getValue(needle,i)) == '?'){
+            --len;
+        }
+        else if(convert<char>(getValue(needle,i)) == '?'){
 SEQAN_CHECKPOINT
-			--len;
-		}
-		else if(convert<char>(getValue(needle,i)) == '['){
+            --len;
+        }
+        else if(convert<char>(getValue(needle,i)) == '['){
 SEQAN_CHECKPOINT
-			while(convert<char>(getValue(needle,i)) != ']') {			
+            while(convert<char>(getValue(needle,i)) != ']') {            
 SEQAN_CHECKPOINT
-				--len;++i;
-			}
-		}
-		else if(convert<char>(getValue(needle,i)) == '{'){
+                --len;++i;
+            }
+        }
+        else if(convert<char>(getValue(needle,i)) == '{'){
 SEQAN_CHECKPOINT
-			String <char> number;
-			TWord n,m;
-			n = m = 0;
-			--len;++i; // get to the first number
-			while(convert<char>(getValue(needle,i)) != '}' && convert<char>(getValue(needle,i)) != ',') {			
+            String <char> number;
+            TWord n,m;
+            n = m = 0;
+            --len;++i; // get to the first number
+            while(convert<char>(getValue(needle,i)) != '}' && convert<char>(getValue(needle,i)) != ',') {            
 SEQAN_CHECKPOINT
-				append(number,convert<char>(getValue(needle,i)));
-				--len;++i;
-			}
-			// we also have to read the second number
-			n = atoi(toCString(number));
-			if (convert<char>(getValue(needle,i)) == ','){
+                append(number,convert<char>(getValue(needle,i)));
+                --len;++i;
+            }
+            // we also have to read the second number
+            n = atoi(toCString(number));
+            if (convert<char>(getValue(needle,i)) == ','){
 SEQAN_CHECKPOINT
-				--len;++i;
-				//lets get m
-				clear(number);
-				while(convert<char>(getValue(needle,i)) != '}') {			
+                --len;++i;
+                //lets get m
+                clear(number);
+                while(convert<char>(getValue(needle,i)) != '}') {            
 SEQAN_CHECKPOINT
-					append(number,convert<char>(getValue(needle,i)));
-					--len;++i;
-				}
-				m = atoi(toCString(number));
-				--len;
-			}
-			else
-				--len;
-			
-			len += (m != 0 ? m : n) - 1;
-		}
-		else if(convert<char>(getValue(needle,i)) == '\\'){
+                    append(number,convert<char>(getValue(needle,i)));
+                    --len;++i;
+                }
+                m = atoi(toCString(number));
+                --len;
+            }
+            else
+                --len;
+            
+            len += (m != 0 ? m : n) - 1;
+        }
+        else if(convert<char>(getValue(needle,i)) == '\\'){
 SEQAN_CHECKPOINT
-			--len;++i; // next character could be a \ too
-		}
-		++i;
-	}
+            --len;++i; // next character could be a \ too
+        }
+        ++i;
+    }
 
-	return len;
+    return len;
 }
 
 /*
-	returns all character codes contained in the class
+    returns all character codes contained in the class
 */
 template <typename TValue,typename TNeedle2>
 String <unsigned> _getCharacterClass(TNeedle2 const & host,unsigned start,unsigned end){
-	typedef unsigned TWord;
-	String <unsigned> ret;
-	unsigned pos = start;
-	while (pos < end){
+    typedef unsigned TWord;
+    String <unsigned> ret;
+    unsigned pos = start;
+    while (pos < end){
 SEQAN_CHECKPOINT
-		if(convert<char>(getValue(host,pos)) != '-')
-			append(ret,convert<TWord>(convert<TValue>(getValue(host,pos))));
-		else{
+        if(convert<char>(getValue(host,pos)) != '-')
+            append(ret,convert<TWord>(convert<TValue>(getValue(host,pos))));
+        else{
 SEQAN_CHECKPOINT
-			// could be a range
-			if (pos > start && pos < end && (convert<TWord>(convert<TValue>(getValue(host,pos-1))) < convert<TWord>(convert<TValue>(getValue(host,pos+1)))) ){
-				unsigned r_s = convert<TWord>(convert<TValue>(getValue(host,pos-1))) + 1;
-				while(r_s < convert<TWord>(convert<TValue>(getValue(host,pos+1)))){
-					append(ret,r_s);
-					++r_s;
-				}
-			}
-			else // or simply a '-'
-				append(ret,convert<TWord>(convert<TValue>(getValue(host,pos))));
-		}
-		++pos;
-	}
-	return ret;
+            // could be a range
+            if (pos > start && pos < end && (convert<TWord>(convert<TValue>(getValue(host,pos-1))) < convert<TWord>(convert<TValue>(getValue(host,pos+1)))) ){
+                unsigned r_s = convert<TWord>(convert<TValue>(getValue(host,pos-1))) + 1;
+                while(r_s < convert<TWord>(convert<TValue>(getValue(host,pos+1)))){
+                    append(ret,r_s);
+                    ++r_s;
+                }
+            }
+            else // or simply a '-'
+                append(ret,convert<TWord>(convert<TValue>(getValue(host,pos))));
+        }
+        ++pos;
+    }
+    return ret;
 }
 
 
 template <typename TNeedle, typename TNeedle2>
 void setHost (Pattern<TNeedle, WildShiftAnd> & me, TNeedle2 const & needle) {
 SEQAN_CHECKPOINT
-	me._valid = _validate(needle);
+    me._valid = _validate(needle);
 
-	if(!valid(me)) return;
+    if(!valid(me)) return;
 
-	typedef unsigned TWord;
-	typedef typename Value<TNeedle>::Type TValue;
-	
-	me.needleLength = length(needle);
-	me.character_count = _length_wo_wild(needle);
+    typedef unsigned TWord;
+    typedef typename Value<TNeedle>::Type TValue;
+    
+    me.needleLength = length(needle);
+    me.character_count = _length_wo_wild(needle);
 
-	if (me.character_count<1) me.blockCount=1;
-	else me.blockCount=((me.character_count-1) / BitsPerValue<TWord>::VALUE)+1;
-	
+    if (me.character_count<1) me.blockCount=1;
+    else me.blockCount=((me.character_count-1) / BitsPerValue<TWord>::VALUE)+1;
+    
 	clear(me.table);
 	fill(me.table, me.blockCount * ValueSize<TValue>::VALUE, 0, Exact());
 

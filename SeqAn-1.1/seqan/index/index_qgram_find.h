@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -42,7 +42,7 @@ Finds q-grams in a @Spec.Index_QGram@ index using the hash table.
 
 	template < typename TText, typename TShapeSpec, typename TSpec >
 	struct DefaultFinder<Index<TText, Index_QGram<TShapeSpec, TSpec> > > {
-        typedef QGram_FIND_Lookup Type;
+    typedef QGram_FIND_Lookup Type;
     };
 
 

@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -450,7 +450,7 @@ You can simply use them with $Shape<TValue, ShapePatternHunter>$ for example.
 	}
 
 	template <
-		         int P01, int P02, int P03, int P04,
+		     int P01, int P02, int P03, int P04,
 		int P05, int P06, int P07, int P08, int P09,
 		int P10, int P11, int P12, int P13, int P14,
 		int P15, int P16, int P17, int P18, int P19,

@@ -1,6 +1,6 @@
 if [ $# -ne 3 ]; then
-        echo "usage: $0 [fa] [period] [length of seed]"
-        exit 1
+    echo "usage: $0 [fa] [period] [length of seed]"
+    exit 1
 fi
 
 

@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -163,7 +163,7 @@ The number of '1's (relevant positions) in the shape determines $q$ and the size
 
 	template < typename TText, typename TShapeSpec, typename TSpec >
 	struct DefaultIndexCreator<Index<TText, Index_QGram<TShapeSpec, TSpec> >, Fibre_SA> {
-        typedef Default Type;
+    typedef Default Type;
     };
 
 //////////////////////////////////////////////////////////////////////////////
@@ -767,7 +767,7 @@ Formally, this is a reference to the @Tag.QGram Index Fibres.QGram_Shape@ fibre.
 				THash h = hashNext(shape, itText) + 1;			// next hash
 				if (dir[h] != (TSize)-1) sa[dir[h]++] = i;		// if bucket is enabled
 			} else
-                sa[dir[hashNext(shape, itText) + 1]++] = i;		// next hash
+        sa[dir[hashNext(shape, itText) + 1]++] = i;		// next hash
 		}
 	}
 
@@ -869,8 +869,8 @@ Formally, this is a reference to the @Tag.QGram Index Fibres.QGram_Shape@ fibre.
 	{
 	SEQAN_CHECKPOINT
 		typename Fibre<TIndex, QGram_Text>::Type const &text  = indexText(index);
-		typename Fibre<TIndex, QGram_SA>::Type         &sa    = indexSA(index);
-		typename Fibre<TIndex, QGram_Dir>::Type        &dir   = indexDir(index);
+		typename Fibre<TIndex, QGram_SA>::Type     &sa    = indexSA(index);
+		typename Fibre<TIndex, QGram_Dir>::Type    &dir   = indexDir(index);
 		typename Fibre<TIndex, QGram_Shape>::Type      &shape = indexShape(index);
 		
 		// 1. clear counters
@@ -903,7 +903,7 @@ Formally, this is a reference to the @Tag.QGram Index Fibres.QGram_Shape@ fibre.
 	// DEPRECATED
 	// better use createQGramIndex(index) (above)
 	template <
-        typename TSA,
+    typename TSA,
 		typename TDir,
 		typename TText,
 		typename TShape >
@@ -1222,55 +1222,55 @@ Formally, this is a reference to the @Tag.QGram Index Fibres.QGram_Shape@ fibre.
 // create q-gram index of *one* sequence in external memory 
 
 	// *** COMPARATORS & MAPS ***
-        
+    
     template <typename InType, typename Result = int>
     struct _qgram_comp : public ::std::binary_function<InType,InType,Result> {
-        inline Result operator()(InType const &a, InType const &b) const
-        {
+    inline Result operator()(InType const &a, InType const &b) const
+    {
 			typedef typename Value<InType, 2>::Type TQGram;
 			typename Value<TQGram>::Type const *sa = a.i2.i;
-            typename Value<TQGram>::Type const *sb = b.i2.i;
+        typename Value<TQGram>::Type const *sb = b.i2.i;
 			typename Value<TQGram>::Type const *saEnd = sa + length(a.i2);
 
-            for(; sa != saEnd; ++sa, ++sb) {
-                if (*sa == *sb) continue;
-                return (*sa < *sb)? -1 : 1;
-            }
-			return posCompare(a.i1, b.i1);
+        for(; sa != saEnd; ++sa, ++sb) {
+        if (*sa == *sb) continue;
+        return (*sa < *sb)? -1 : 1;
         }
+			return posCompare(a.i1, b.i1);
+    }
     };
 
     // optimized for bitvectors
     template <typename T1, typename TValue, unsigned _size, typename Result>
     struct _qgram_comp< Pair<T1, Tuple<TValue, _size, Compressed>, Compressed >, Result > :
-        public ::std::binary_function<
-            Pair<T1, Tuple<TValue, _size, Compressed>, Compressed >,
-            Pair<T1, Tuple<TValue, _size, Compressed>, Compressed >,
-            Result> {       
-        inline Result operator()(
-            const Pair<T1, Tuple<TValue, _size, Compressed>, Compressed > &a,
-            const Pair<T1, Tuple<TValue, _size, Compressed>, Compressed > &b) const
-        {
-            if (a.i2 < b.i2) return -1;
-            if (a.i2 > b.i2) return 1;
+    public ::std::binary_function<
+        Pair<T1, Tuple<TValue, _size, Compressed>, Compressed >,
+        Pair<T1, Tuple<TValue, _size, Compressed>, Compressed >,
+        Result> {       
+    inline Result operator()(
+        const Pair<T1, Tuple<TValue, _size, Compressed>, Compressed > &a,
+        const Pair<T1, Tuple<TValue, _size, Compressed>, Compressed > &b) const
+    {
+        if (a.i2 < b.i2) return -1;
+        if (a.i2 > b.i2) return 1;
 			return posCompare(a.i1, b.i1);
-        }
+    }
     };
 
 
     template <typename TValue, typename TResult = unsigned>
     struct _qgram_hash : public ::std::unary_function<TValue, TResult> {
-        inline TResult operator()(TValue const &a) const
-        {
+    inline TResult operator()(TValue const &a) const
+    {
 			typedef typename Value<TValue, 2>::Type	TQGram;
 			TResult hash = 0;
 			unsigned len = length(a.i2);
-            for(unsigned i = 0; i < len; ++i) {
+        for(unsigned i = 0; i < len; ++i) {
 				hash *= ValueSize< typename Value<TQGram>::Type >::VALUE;
 				hash += (TResult)a.i2[i];
-            }
-            return hash;
         }
+        return hash;
+    }
     };
 
 	// TODO: replace fixed tuple size of 6 with q and add q to Shape template arguments
@@ -1285,27 +1285,27 @@ Formally, this is a reference to the @Tag.QGram Index Fibres.QGram_Shape@ fibre.
 		TText &text,
 		TShape &shape)
 	{
-        // signed characters behave different than unsigned when compared
-        // to get the same index with signed or unsigned chars we simply cast them to unsigned
-        // before feeding them into the pipeline
-        typedef typename _MakeUnsigned< typename Value<TText>::Type >::Type TUValue;
+    // signed characters behave different than unsigned when compared
+    // to get the same index with signed or unsigned chars we simply cast them to unsigned
+    // before feeding them into the pipeline
+    typedef typename _MakeUnsigned< typename Value<TText>::Type >::Type TUValue;
 
-        // *** SPECIALIZATION ***
+    // *** SPECIALIZATION ***
 
 		typedef Pipe< TText, Source<> >				TSource;
-        typedef Pipe< TSource, Caster<TUValue> >    TUnsigner;
+    typedef Pipe< TSource, Caster<TUValue> >    TUnsigner;
 		typedef Pipe< TUnsigner, Tupler<7> >	    TTupler;
-						                typedef _qgram_comp<_TypeOf(TTupler)> qcomp_t;
-        typedef Pool< 
+						        typedef _qgram_comp<_TypeOf(TTupler)> qcomp_t;
+    typedef Pool< 
 					_TypeOf(TTupler), 
 					SorterSpec< SorterConfigSize<qcomp_t, _TSizeOf(TTupler) > > 
 				> TSortTuples;
 										typedef _qgram_hash<_TypeOf(TTupler), typename Size<TDir>::Type> qhash_t;
 
-        // *** INSTANTIATION ***
+    // *** INSTANTIATION ***
 
 		TSource			src(text);
-        TUnsigner		unsigner(src);
+    TUnsigner		unsigner(src);
 		TTupler			tupler(unsigner);
 		TSortTuples		sorter;
 
@@ -1323,7 +1323,7 @@ Formally, this is a reference to the @Tag.QGram Index Fibres.QGram_Shape@ fibre.
 
 		typename Value<TSortTuples>::Type	old_qgram;
 		typename Size<TDir>::Type			hash, old_hash = 0;
-        typename Size<TSortTuples>::Type	leftToRead = length(sorter);
+    typename Size<TSortTuples>::Type	leftToRead = length(sorter);
 		bool first = true;
 
 		while (leftToRead) {
@@ -1372,32 +1372,32 @@ Formally, this is a reference to the @Tag.QGram Index Fibres.QGram_Shape@ fibre.
 		TShape &shape,
 		TLimitsString &limits)
 	{
-        // signed characters behave different than unsigned when compared
-        // to get the same index with signed or unsigned chars we simply cast them to unsigned
-        // before feeding them into the pipeline
+    // signed characters behave different than unsigned when compared
+    // to get the same index with signed or unsigned chars we simply cast them to unsigned
+    // before feeding them into the pipeline
 		typedef typename Concatenator<StringSet<TString, TSpec> >::Type			TConcat;
-        typedef typename _MakeUnsigned< typename Value<TConcat>::Type >::Type	TUValue;
+    typedef typename _MakeUnsigned< typename Value<TConcat>::Type >::Type	TUValue;
 		typedef Multi<
 			Tupler<7, true, Compressed>, 
 			typename Value<TSA>::Type,
 			typename StringSetLimits< StringSet<TString, TSpec> >::Type >		TTuplerSpec;
 
-        // *** SPECIALIZATION ***
+    // *** SPECIALIZATION ***
 
 		typedef Pipe< TConcat, Source<> >			TSource;
-        typedef Pipe< TSource, Caster<TUValue> >    TUnsigner;
+    typedef Pipe< TSource, Caster<TUValue> >    TUnsigner;
 		typedef Pipe< TUnsigner, TTuplerSpec >	    TTupler;
-						                typedef _qgram_comp<_TypeOf(TTupler)> qcomp_t;
-        typedef Pool< 
+						        typedef _qgram_comp<_TypeOf(TTupler)> qcomp_t;
+    typedef Pool< 
 					_TypeOf(TTupler), 
 					SorterSpec< SorterConfigSize<qcomp_t, _TSizeOf(TTupler) > > 
 				> TSortTuples;
 										typedef _qgram_hash<_TypeOf(TTupler), typename Size<TDir>::Type> qhash_t;
 
-        // *** INSTANTIATION ***
+    // *** INSTANTIATION ***
 
 		TSource			src(concat(stringSet));
-        TUnsigner		unsigner(src);
+    TUnsigner		unsigner(src);
 		TTupler			tupler(unsigner, limits);
 		TSortTuples		sorter;
 
@@ -1415,7 +1415,7 @@ Formally, this is a reference to the @Tag.QGram Index Fibres.QGram_Shape@ fibre.
 
 		typename Value<TSortTuples>::Type	old_qgram;
 		typename Size<TDir>::Type			hash, old_hash = 0;
-        typename Size<TSortTuples>::Type	leftToRead = length(sorter);
+    typename Size<TSortTuples>::Type	leftToRead = length(sorter);
 		bool first = true;
 
 		while (leftToRead) {

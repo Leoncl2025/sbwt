@@ -9,7 +9,7 @@ Folders:
 ========
 
 "seqan": SeqAn library (add the folder that contains "seqan" to 
-         your include path)
+     your include path)
 "demos": SeqAn demos, see also "docs/INDEXPAGE_Demo.html"
 "apps":  SeqAn applications
 "docs":  HTML-Documentation

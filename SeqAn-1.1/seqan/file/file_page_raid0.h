@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -111,7 +111,7 @@ namespace SEQAN_NAMESPACE_MAIN
 		#endif
 		pf.dirty = false;
 		pf.status = pf.READY;
-//        resize(pf, size);
+//    resize(pf, size);
 		return writeAt(
 			file[pageNo % _FileCount], 
 			(TValue*)pf.begin, 
@@ -133,19 +133,19 @@ namespace SEQAN_NAMESPACE_MAIN
 		File< Striped<_FileCount, TFile> > &file) 
 	{
 		typedef typename Position<TFile>::Type pos_t;
-        unsigned readSize = _min(dataSize - b.pageOfs, (unsigned)(b.end - b.begin));
+    unsigned readSize = _min(dataSize - b.pageOfs, (unsigned)(b.end - b.begin));
 		#ifdef SEQAN_VVERBOSE
 			::std::cerr << "readBucket:  " << ::std::hex << b.begin;
 			::std::cerr << " from page " << ::std::dec << pageNo << " at " << (pos_t)(pageNo / _FileCount) * (pos_t)pageSize + b.pageOfs;
 			::std::cerr << " size " << readSize << ::std::endl;
 		#endif
-        if (readSize && readAt(file[pageNo % _FileCount], b.begin, readSize, (pos_t)(pageNo / _FileCount) * (pos_t)pageSize + b.pageOfs)) {
-            b.pageOfs += readSize;
-            b.cur = b.begin;
-            b.end = b.begin + readSize;
-            return readSize;
-        } else
-            return 0;
+    if (readSize && readAt(file[pageNo % _FileCount], b.begin, readSize, (pos_t)(pageNo / _FileCount) * (pos_t)pageSize + b.pageOfs)) {
+        b.pageOfs += readSize;
+        b.cur = b.begin;
+        b.end = b.begin + readSize;
+        return readSize;
+    } else
+        return 0;
 	}
 
 	template < typename TValue, unsigned _FileCount, typename TFile >
@@ -162,12 +162,12 @@ namespace SEQAN_NAMESPACE_MAIN
 			::std::cerr << " from page " << ::std::dec << pageNo << " at " << (pos_t)(pageNo / _FileCount) * (pos_t)pageSize + b.pageOfs;
 			::std::cerr << " size " << b.cur - b.begin << ::std::endl;
 		#endif
-        if ((b.cur == b.begin) || writeAt(file[pageNo % _FileCount], b.begin, b.cur - b.begin, (pos_t)(pageNo / _FileCount) * (pos_t)pageSize + b.pageOfs)) {
-            b.pageOfs += b.cur - b.begin;
-            b.cur = b.begin;
-            return true;
-        } else
-            return false;
+    if ((b.cur == b.begin) || writeAt(file[pageNo % _FileCount], b.begin, b.cur - b.begin, (pos_t)(pageNo / _FileCount) * (pos_t)pageSize + b.pageOfs)) {
+        b.pageOfs += b.cur - b.begin;
+        b.cur = b.begin;
+        return true;
+    } else
+        return false;
 	}
 
 	template < typename TValue, unsigned _FileCount, typename TFile, typename TSpec >
@@ -183,13 +183,13 @@ namespace SEQAN_NAMESPACE_MAIN
 			::std::cerr << " from page " << ::std::dec << pf.pageNo << " at " << (pos_t)(pf.pageNo / _FileCount) * (pos_t)pageSize(pf) + pageOfs;
 			::std::cerr << " size " << size(pf) << ::std::endl;
 		#endif
-        if (pf.end == pf.begin) return true;
-        if (awriteAt(file[pf.pageNo % _FileCount], pf.begin, size(pf), (pos_t)(pf.pageNo / _FileCount) * (pos_t)pageSize(pf) + pageOfs, pf.request)) {
-            pf.status = pf.WRITING;
-            pageOfs += size(pf);
-            return true;
-        } else
-            return false;
+    if (pf.end == pf.begin) return true;
+    if (awriteAt(file[pf.pageNo % _FileCount], pf.begin, size(pf), (pos_t)(pf.pageNo / _FileCount) * (pos_t)pageSize(pf) + pageOfs, pf.request)) {
+        pf.status = pf.WRITING;
+        pageOfs += size(pf);
+        return true;
+    } else
+        return false;
 	}
 
 }

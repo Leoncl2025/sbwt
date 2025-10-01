@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -31,12 +31,12 @@ namespace SEQAN_NAMESPACE_MAIN
 		SAFwdIt _First, SAFwdIt _Last,
 		FlatOutIt _Dest, unsigned BlockSize)
 	{
-        typedef typename Value<SAFwdIt>::Type	TSize;
+    typedef typename Value<SAFwdIt>::Type	TSize;
 
-        TSize size = difference(_First, _Last);
+    TSize size = difference(_First, _Last);
 		if (!size) return _Dest;
 
-        // calculate the depth of the sa b-tree
+    // calculate the depth of the sa b-tree
 		TSize BlockElements = BlockSize - 1;
 
 		unsigned treeLevels = 1;
@@ -94,7 +94,7 @@ namespace SEQAN_NAMESPACE_MAIN
 
     template < typename TSAB, typename TSA >
     inline void createSABTree(TSAB &sa_btree, TSA &sa, unsigned BlockSize) {
-        createSABTree(begin(sa), end(sa), begin(sa_btree), BlockSize);
+    createSABTree(begin(sa), end(sa), begin(sa_btree), BlockSize);
     }
 
 
@@ -103,15 +103,15 @@ namespace SEQAN_NAMESPACE_MAIN
 	{
 		unsigned treeLevels = 1;
 		for(TSize _xSize = 1; _xSize <= saSize; _xSize *= BlockSize, ++treeLevels);
-        return treeLevels;
+    return treeLevels;
     }
 
     template < typename TValue, typename TConfig, typename TSA >
     inline void createSABTree(String<TValue, External<TConfig> > &sa_btree, TSA &sa, unsigned BlockSize) {
-        int writeHeads = treeLevelsSAB(length(sa)) + 1;   // plus 1 write back buffer
-        if (sa_btree.cache.size() < writeHeads)
-            sa_btree.resizeCache(writeHeads);
-        createSABTree(begin(sa), end(sa), begin(sa_btree), BlockSize);
+    int writeHeads = treeLevelsSAB(length(sa)) + 1;   // plus 1 write back buffer
+    if (sa_btree.cache.size() < writeHeads)
+        sa_btree.resizeCache(writeHeads);
+    createSABTree(begin(sa), end(sa), begin(sa_btree), BlockSize);
     }
 
 }

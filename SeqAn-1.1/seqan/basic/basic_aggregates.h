@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -67,8 +67,8 @@ namespace SEQAN_NAMESPACE_MAIN
 	// standard storage 
 	template <typename _T1, typename _T2 = _T1, typename TCompression = void>
     struct Pair {
-        typedef _T1 T1;
-        typedef _T2 T2;
+    typedef _T1 T1;
+    typedef _T2 T2;
 	    _T1 i1;
 	    _T2 i2;
 		inline Pair() {}
@@ -88,10 +88,10 @@ namespace SEQAN_NAMESPACE_MAIN
 #endif
     template <typename _T1, typename _T2>
     struct Pair<_T1, _T2, Compressed> {
-        typedef _T1 T1;
-        typedef _T2 T2;
-        _T1 i1;
-        _T2 i2;
+    typedef _T1 T1;
+    typedef _T2 T2;
+    _T1 i1;
+    _T2 i2;
 		inline Pair() {}
 		inline Pair(Pair const &_p): i1(_p.i1), i2(_p.i2) {}
 		inline Pair(_T1 const &_i1, _T2 const &_i2): i1(_i1), i2(_i2) {}
@@ -115,15 +115,15 @@ namespace SEQAN_NAMESPACE_MAIN
 #endif
     template <typename _T1, typename _T2, unsigned valueSizeI1>
     struct Pair<_T1, _T2, CutCompressed<valueSizeI1> > {
-        typedef _T1 T1;
-        typedef _T2 T2;
+    typedef _T1 T1;
+    typedef _T2 T2;
 
 		typedef _T2 T12;
 
-        T12 i12;
+    T12 i12;
 
 		enum { bitSizeI1 = CutCompressed<valueSizeI1>::bitSizeI1 };
-        enum { bitShiftI1 = BitsPerValue<T12>::VALUE - bitSizeI1 };
+    enum { bitShiftI1 = BitsPerValue<T12>::VALUE - bitSizeI1 };
 
 		inline Pair() {}
 		inline Pair(Pair const &_p): i12(_p.i12) {}
@@ -216,12 +216,12 @@ namespace SEQAN_NAMESPACE_MAIN
 	// standard storage 
 	template <typename _T1, typename _T2 = _T1, typename _T3 = _T1, typename TCompression = void>
     struct Triple {
-        typedef _T1 T1;
-        typedef _T2 T2;
-        typedef _T3 T3;
-        _T1 i1;
-        _T2 i2;
-        _T3 i3;
+    typedef _T1 T1;
+    typedef _T2 T2;
+    typedef _T3 T3;
+    _T1 i1;
+    _T2 i2;
+    _T3 i3;
 		inline Triple() {}
 		inline Triple(Triple const &_p):
 			i1(_p.i1), i2(_p.i2), i3(_p.i3) {}
@@ -239,12 +239,12 @@ namespace SEQAN_NAMESPACE_MAIN
 #endif
     template <typename _T1, typename _T2, typename _T3>
     struct Triple<_T1, _T2, _T3, Compressed> {
-        typedef _T1 T1;
-        typedef _T2 T2;
-        typedef _T3 T3;
-        _T1 i1;
-        _T2 i2;
-        _T3 i3;
+    typedef _T1 T1;
+    typedef _T2 T2;
+    typedef _T3 T3;
+    _T1 i1;
+    _T2 i2;
+    _T3 i3;
 		inline Triple() {}
 		inline Triple(Triple const &_p):
 			i1(_p.i1), i2(_p.i2), i3(_p.i3) {}
@@ -311,20 +311,20 @@ namespace SEQAN_NAMESPACE_MAIN
 	// standard storage 
 	template <typename _T, unsigned _size, typename TCompression = void>
     struct Tuple {
-        typedef _T T;
-        enum { size = _size };
-        _T i[_size];
+    typedef _T T;
+    enum { size = _size };
+    _T i[_size];
 
 		template <typename TPos>
-        inline _T& operator[](TPos k) {
-            SEQAN_ASSERT(k >= 0 && k < size);
-            return i[k];
-        }
+    inline _T& operator[](TPos k) {
+        SEQAN_ASSERT(k >= 0 && k < size);
+        return i[k];
+    }
 		template <typename TPos>
-        inline const _T& operator[](TPos k) const {
-            SEQAN_ASSERT(k >= 0 && k < size);
-            return i[k];
-        }
+    inline const _T& operator[](TPos k) const {
+        SEQAN_ASSERT(k >= 0 && k < size);
+        return i[k];
+    }
 		inline _T* operator&() { return i; }
 		inline const _T* operator&() const { return i; }
 
@@ -338,7 +338,7 @@ namespace SEQAN_NAMESPACE_MAIN
 
     template < unsigned char _size >
 	struct _BitVector {
-        typedef typename _BitVector<_size + 1>::Type Type;
+    typedef typename _BitVector<_size + 1>::Type Type;
     };
 
     template <> struct _BitVector<8> { typedef unsigned char Type; };
@@ -353,53 +353,53 @@ namespace SEQAN_NAMESPACE_MAIN
 #endif
     template <typename _T, unsigned _size>
     struct Tuple<_T, _size, Compressed> {
-        typedef _T T;
-        enum { size = _size };
-        enum { bitSize = BitsPerValue<_T>::VALUE };
-        enum { bitMask = (1 << bitSize) - 1 };
-        enum { mask = (1 << (size * bitSize)) - 1 };
-        typedef typename _BitVector< bitSize * size >::Type CT;
-        
-        CT i;
+    typedef _T T;
+    enum { size = _size };
+    enum { bitSize = BitsPerValue<_T>::VALUE };
+    enum { bitMask = (1 << bitSize) - 1 };
+    enum { mask = (1 << (size * bitSize)) - 1 };
+    typedef typename _BitVector< bitSize * size >::Type CT;
+    
+    CT i;
 /*
 		inline Tuple() {
 			SEQAN_ASSERT(bitSize * size <= sizeof(CT) * 8);
 		}
 */
 		template <typename TPos>
-        inline const _T operator[](TPos k) const {
-            SEQAN_ASSERT(k >= 0 && k < size);
-            return (i >> (size - 1 - k) * bitSize) & bitMask;
-        }
+    inline const _T operator[](TPos k) const {
+        SEQAN_ASSERT(k >= 0 && k < size);
+        return (i >> (size - 1 - k) * bitSize) & bitMask;
+    }
 		template <unsigned __size>
 		inline Tuple operator=(Tuple<_T, __size, Compressed> const &_right) {
 			i = _right.i;
 			return *this;
 		}
 		template <typename TShiftSize>
-        inline CT operator<<=(TShiftSize shift) {
-            return i = (i << (shift * bitSize)) & mask;
-        }
+    inline CT operator<<=(TShiftSize shift) {
+        return i = (i << (shift * bitSize)) & mask;
+    }
 		template <typename TShiftSize>
-        inline CT operator<<(TShiftSize shift) const {
-            return (i << (shift * bitSize)) & mask;
-        }
+    inline CT operator<<(TShiftSize shift) const {
+        return (i << (shift * bitSize)) & mask;
+    }
 		template <typename TShiftSize>
-        inline CT operator>>=(TShiftSize shift) {
-            return i = (i >> (shift * bitSize));
-        }
+    inline CT operator>>=(TShiftSize shift) {
+        return i = (i >> (shift * bitSize));
+    }
 		template <typename TShiftSize>
-        inline CT operator>>(TShiftSize shift) const {
-            return i >> (shift * bitSize);
-        }
-        template <typename T>
-        inline void operator|=(T const &t) {
-            i |= t;
-        }
-        template <typename T, typename TSpec>
-        inline void operator|=(SimpleType<T, TSpec> const &t) {
-            i |= t.value;
-        }
+    inline CT operator>>(TShiftSize shift) const {
+        return i >> (shift * bitSize);
+    }
+    template <typename T>
+    inline void operator|=(T const &t) {
+        i |= t;
+    }
+    template <typename T, typename TSpec>
+    inline void operator|=(SimpleType<T, TSpec> const &t) {
+        i |= t.value;
+    }
 		inline CT* operator&() { return &i; }
 		inline const CT* operator&() const { return &i; }
 
@@ -440,36 +440,36 @@ namespace SEQAN_NAMESPACE_MAIN
     template <typename TObject, typename TPos, typename TSource>
     inline TSource & 
 	assignValueAt(TObject &me, TPos k, TSource &source) {
-        assign(value(me, k), source);
+    assign(value(me, k), source);
 		return source;
     }
 
     template <typename TObject, typename TPos, typename TSource>
     inline TSource const & 
 	assignValueAt(TObject &me, TPos k, TSource const &source) {
-        assign(value(me, k), source);
+    assign(value(me, k), source);
 		return source;
     }
 
     template <typename TTT, unsigned _size, typename SSS, typename TPos>
     inline SSS const assignValueAt(Tuple<TTT, _size, void> &me, TPos k, SSS const source) {
-        return me.i[k] = source;
+    return me.i[k] = source;
     }
 
     template <typename TTT, unsigned _size, typename SSS, typename TPos>
     inline SSS const assignValueAt(Tuple<TTT, _size, Compressed> &me, TPos k, SSS const source) {
-        typedef Tuple<TTT, _size, Compressed> Tup;
-        typename Tup::CT mask = Tup::bitMask << ((_size - 1 - k) * me.bitSize);
-        me.i = (me.i & ~mask) | source << ((_size - 1 - k) * me.bitSize);
-        return source;
+    typedef Tuple<TTT, _size, Compressed> Tup;
+    typename Tup::CT mask = Tup::bitMask << ((_size - 1 - k) * me.bitSize);
+    me.i = (me.i & ~mask) | source << ((_size - 1 - k) * me.bitSize);
+    return source;
     }
 
     template <typename TTT, typename SSS, typename SSSpec, unsigned _size, typename TPos>
     inline SimpleType<SSS, SSSpec> const & assignValueAt(Tuple<TTT, _size, Compressed> &me, TPos k, SimpleType<SSS, SSSpec> const &source) {
-        typedef Tuple<TTT, _size, Compressed> Tup;
-        typename Tup::CT mask = Tup::bitMask << ((_size - 1 - k) * me.bitSize);
-        me.i = (me.i & ~mask) | source.value << ((_size - 1 - k) * me.bitSize);
-        return source;
+    typedef Tuple<TTT, _size, Compressed> Tup;
+    typename Tup::CT mask = Tup::bitMask << ((_size - 1 - k) * me.bitSize);
+    me.i = (me.i & ~mask) | source.value << ((_size - 1 - k) * me.bitSize);
+    return source;
     }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -477,7 +477,7 @@ namespace SEQAN_NAMESPACE_MAIN
 
 	template <typename TTT, unsigned _size, typename TCompression>
 	inline void clear(Tuple<TTT, _size, TCompression> &me) {
-        memset<sizeof(me.i), 0>(&(me.i));
+    memset<sizeof(me.i), 0>(&(me.i));
 	}
     template <typename TTT, unsigned _size>
 	inline void clear(Tuple<TTT, _size, Compressed> &me) {
@@ -508,17 +508,17 @@ namespace SEQAN_NAMESPACE_MAIN
 // optimized shifts
 
     struct _TupleShiftLeftWorker {
-        template <typename Arg>
-        static inline void body(Arg &arg, unsigned I) {
-            arg[I-1] = arg[I];
-        }
+    template <typename Arg>
+    static inline void body(Arg &arg, unsigned I) {
+        arg[I-1] = arg[I];
+    }
     };
 
     struct _TupleShiftRightWorker {
-        template <typename Arg>
-        static inline void body(Arg &arg, unsigned I) {
-            arg[I] = arg[I-1];
-        }
+    template <typename Arg>
+    static inline void body(Arg &arg, unsigned I) {
+        arg[I] = arg[I-1];
+    }
     };
 
 	template <typename _T, unsigned _size, typename TCompression>
@@ -624,7 +624,7 @@ namespace SEQAN_NAMESPACE_MAIN
 	{
 		typedef Pair<T1, T2, CutCompressed<valueSizeI1> > TPair;
 		pair.i12 = ((typename TPair::T12)_i << TPair::bitShiftI1) |
-		           (pair.i12 & (((typename TPair::T12)1 << TPair::bitShiftI1) - 1));
+		       (pair.i12 & (((typename TPair::T12)1 << TPair::bitShiftI1) - 1));
 	}
 
 	template <typename T1, typename T2, unsigned valueSizeI1, typename T>

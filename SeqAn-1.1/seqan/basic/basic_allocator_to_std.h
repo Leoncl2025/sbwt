@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -102,7 +102,7 @@ struct ToStdAllocator
 */
     friend THost & host(ToStdAllocator & me)
     {
-        return *me.m_host;
+    return *me.m_host;
     }
 
 	pointer allocate(size_type count)

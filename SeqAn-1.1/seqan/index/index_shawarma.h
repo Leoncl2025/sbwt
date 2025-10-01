@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -50,7 +50,7 @@ namespace SEQAN_NAMESPACE_MAIN {
 	//
 
     template < typename TSA,
-               typename TText >
+           typename TText >
     void createSuffixArray(
 		TSA &SA,
 		TText &s,

@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -37,7 +37,7 @@ namespace SEQAN_NAMESPACE_MAIN
 
     template < typename TTextInput, typename TSuffixArrayInput >
     struct Value< Pipe< Bundle2< TTextInput, TSuffixArrayInput >, BWT > > {
-        typedef typename Value<TTextInput>::Type Type;
+    typedef typename Value<TTextInput>::Type Type;
     };
 
 	//////////////////////////////////////////////////////////////////////////////
@@ -45,65 +45,65 @@ namespace SEQAN_NAMESPACE_MAIN
     template < typename TTextInput, typename TSuffixArrayInput >
     struct Pipe< Bundle2< TTextInput, TSuffixArrayInput >, BWT >
     {
-        // *** SPECIALIZATION ***
+    // *** SPECIALIZATION ***
 
-        typedef Pipe< TSuffixArrayInput, Counter > TSA;
-		                                typedef typename Size<TTextInput>::Type	TSize;
+    typedef Pipe< TSuffixArrayInput, Counter > TSA;
+		                typedef typename Size<TTextInput>::Type	TSize;
 		typedef Pool< _TypeOf(TSA), MapperSpec< MapperConfigSize< filterI1<_TypeOf(TSA)>, TSize> > > TInverter;
-        typedef Pipe< TInverter, Filter< filterI2<_TypeOf(TInverter)> > > TCounterFilter;
+    typedef Pipe< TInverter, Filter< filterI2<_TypeOf(TInverter)> > > TCounterFilter;
 		typedef Pipe< TTextInput, Shifter< -1, false > > TShiftText;
 
 		typedef Pipe< Bundle2< TCounterFilter, TShiftText >, Joiner > TJoiner;
 		typedef Pool< _TypeOf(TJoiner), MapperSpec< MapperConfigSize< filterI1<_TypeOf(TJoiner)>, TSize> > > TLinearMapper;
-        typedef Pipe< TLinearMapper, Filter< filterI2<_TypeOf(TLinearMapper)> > > TFilter;
+    typedef Pipe< TLinearMapper, Filter< filterI2<_TypeOf(TLinearMapper)> > > TFilter;
 
-        TLinearMapper		mapper;
+    TLinearMapper		mapper;
 		TFilter				in;
-        
-        Pipe():
-            in(mapper) {}
+    
+    Pipe():
+        in(mapper) {}
 
-        Pipe(Bundle2< TTextInput, TSuffixArrayInput > const &_bundleIn):
-            in(mapper)
+    Pipe(Bundle2< TTextInput, TSuffixArrayInput > const &_bundleIn):
+        in(mapper)
 		{
 			process(_bundleIn.in1, _bundleIn.in2);
 		}
 
 		template < typename _TTextInput, typename _TSuffixArrayInput >
-        bool process(_TTextInput &textIn, _TSuffixArrayInput &suffixArrayIn) {
+    bool process(_TTextInput &textIn, _TSuffixArrayInput &suffixArrayIn) {
 
-            // *** INSTANTIATION ***
+        // *** INSTANTIATION ***
 
 			TSA							sa(suffixArrayIn);
 			TInverter					inverter;
 			TCounterFilter				filter(inverter);
 			
-            #ifdef SEQAN_DEBUG_INDEX
+        #ifdef SEQAN_DEBUG_INDEX
 				::std::cerr << "  invert suffix array" << ::std::endl;
-            #endif
+        #endif
 			inverter << sa;
 			SEQAN_PROMARK("Suffix-Array invertiert");
 
 			TShiftText					shifter(textIn);
 			TJoiner						joiner(bundle2(filter, shifter));
 			
-            #ifdef SEQAN_DEBUG_INDEX
-                ::std::cerr << "  de-invert suffix array" << ::std::endl;
-            #endif
+        #ifdef SEQAN_DEBUG_INDEX
+        ::std::cerr << "  de-invert suffix array" << ::std::endl;
+        #endif
 			mapper << joiner;
 			SEQAN_PROMARK("Suffix-Array linearisiert");
 
-            return true;
-        }
+        return true;
+    }
 
-        inline typename Value<Pipe>::Type const operator*() const {
-            return *in;
-        }
-        
-        inline Pipe& operator++() {
-            ++in;
-            return *this;
-        }
+    inline typename Value<Pipe>::Type const operator*() const {
+        return *in;
+    }
+    
+    inline Pipe& operator++() {
+        ++in;
+        return *this;
+    }
 	};
 
     // not sure which interface is more intuitive, we support both
@@ -123,15 +123,15 @@ namespace SEQAN_NAMESPACE_MAIN
 
     template < typename TTextInput, typename TSuffixArrayInput, typename TPair, typename TLimitsString >
     struct Value< Pipe< Bundle2< TTextInput, TSuffixArrayInput >, Multi<BWT, TPair, TLimitsString> > > {
-        typedef typename Value<TTextInput>::Type Type;
+    typedef typename Value<TTextInput>::Type Type;
     };
 
 	template <typename InType, typename TLimitsString, typename Result = typename Value<TLimitsString>::Type>
 	struct filter_globalizer : public ::std::unary_function<InType,Result> {
 		TLimitsString const &limits;
 		filter_globalizer(TLimitsString const &_limits) : limits(_limits) {}
-        inline Result operator()(const InType& x) const
-        {
+    inline Result operator()(const InType& x) const
+    {
 			return posGlobalize(x, limits);
 		}
     };
@@ -142,48 +142,48 @@ namespace SEQAN_NAMESPACE_MAIN
     template < typename TTextInput, typename TSuffixArrayInput, typename TPair, typename TLimitsString >
     struct Pipe< Bundle2< TTextInput, TSuffixArrayInput >, Multi<BWT, TPair, TLimitsString> >
     {
-        // *** SPECIALIZATION ***
+    // *** SPECIALIZATION ***
 
 										typedef filter_globalizer<_TypeOf(TSuffixArrayInput), TLimitsString, _TSizeOf(TSuffixArrayInput)> filter_globalizer_t;
 		typedef Pipe< TSuffixArrayInput, Filter<filter_globalizer_t> > TGlobalizer;
-        typedef Pipe< TGlobalizer, Counter > TSA;
-		                                typedef typename Size<TTextInput>::Type	TSize;
+    typedef Pipe< TGlobalizer, Counter > TSA;
+		                typedef typename Size<TTextInput>::Type	TSize;
 		typedef Pool< _TypeOf(TSA), MapperSpec< MapperConfigSize< filterI1<_TypeOf(TSA)>, TSize> > > TInverter;
-        typedef Pipe< TInverter, Filter< filterI2<_TypeOf(TInverter)> > > TCounterFilter;
+    typedef Pipe< TInverter, Filter< filterI2<_TypeOf(TInverter)> > > TCounterFilter;
 		typedef Pipe< TTextInput, Shifter< -1, false > > TShiftText;
 
 		typedef Pipe< Bundle2< TCounterFilter, TShiftText >, Joiner > TJoiner;
 		typedef Pool< _TypeOf(TJoiner), MapperSpec< MapperConfigSize< filterI1<_TypeOf(TJoiner)>, TSize> > > TLinearMapper;
-        typedef Pipe< TLinearMapper, Filter< filterI2<_TypeOf(TLinearMapper)> > > TFilter;
+    typedef Pipe< TLinearMapper, Filter< filterI2<_TypeOf(TLinearMapper)> > > TFilter;
 
 		TTextInput			*textIn;
 		TSuffixArrayInput	*suffixArrayIn;
-        TLinearMapper		mapper;
+    TLinearMapper		mapper;
 		TFilter				in;
 
 		TLimitsString const	&limits;
-        
-        Pipe(TLimitsString const &_limits):
-            in(mapper),
+    
+    Pipe(TLimitsString const &_limits):
+        in(mapper),
 			limits(_limits)	{}
 
-        Pipe(Bundle2< TTextInput, TSuffixArrayInput > const &_bundleIn, TLimitsString const &_limits):
-            textIn(&_bundleIn.in1),
+    Pipe(Bundle2< TTextInput, TSuffixArrayInput > const &_bundleIn, TLimitsString const &_limits):
+        textIn(&_bundleIn.in1),
 			suffixArrayIn(&_bundleIn.in2),
-            in(mapper),
+        in(mapper),
 			limits(_limits)
 		{
 			process();
 		}
 
-        inline void process() {
-            process(*textIn, *suffixArrayIn);
-        }
+    inline void process() {
+        process(*textIn, *suffixArrayIn);
+    }
 
 		template < typename _TTextInput, typename _TSuffixArrayInput >
-        bool process(_TTextInput &textIn, _TSuffixArrayInput &suffixArrayIn) {
+    bool process(_TTextInput &textIn, _TSuffixArrayInput &suffixArrayIn) {
 
-            // *** INSTANTIATION ***
+        // *** INSTANTIATION ***
 
 			for(int i=0;i<length(limits);++i)
 				::std::cout << limits[i]<<"  ";
@@ -194,32 +194,32 @@ namespace SEQAN_NAMESPACE_MAIN
 			TInverter					inverter;
 			TCounterFilter				filter(inverter);
 			
-            #ifdef SEQAN_DEBUG_INDEX
-                ::std::cerr << "  invert suffix array" << ::std::endl;
-            #endif
+        #ifdef SEQAN_DEBUG_INDEX
+        ::std::cerr << "  invert suffix array" << ::std::endl;
+        #endif
 			inverter << sa;
 			SEQAN_PROMARK("Suffix-Array invertiert");
 
 			TShiftText					shifter(textIn);
 			TJoiner						joiner(bundle2(filter, shifter));
 			
-            #ifdef SEQAN_DEBUG_INDEX
-                ::std::cerr << "  de-invert suffix array" << ::std::endl;
-            #endif
+        #ifdef SEQAN_DEBUG_INDEX
+        ::std::cerr << "  de-invert suffix array" << ::std::endl;
+        #endif
 			mapper << joiner;
 			SEQAN_PROMARK("Suffix-Array linearisiert");
 
-            return true;
-        }
+        return true;
+    }
 
-        inline typename Value<Pipe>::Type const operator*() const {
-            return *in;
-        }
-        
-        inline Pipe& operator++() {
-            ++in;
-            return *this;
-        }
+    inline typename Value<Pipe>::Type const operator*() const {
+        return *in;
+    }
+    
+    inline Pipe& operator++() {
+        ++in;
+        return *this;
+    }
 	};
 
     // not sure which interface is more intuitive, we support both
@@ -238,8 +238,8 @@ namespace SEQAN_NAMESPACE_MAIN
 
 
     template < typename TBWT,
-               typename TText,
-               typename TSA >
+           typename TText,
+           typename TSA >
     void createBWTableInt(
 		TBWT &bwt,
 		TText const &s,
@@ -251,7 +251,7 @@ namespace SEQAN_NAMESPACE_MAIN
 		#ifdef SEQAN_DEBUG_INDEX
 			if (sizeof(TSize) > 4)
 				::std::cerr << "WARNING: TSize size is greater 4 (BWT)" << ::std::endl;
-        #endif
+    #endif
 
 		TSize n = length(s);
 
@@ -265,9 +265,9 @@ namespace SEQAN_NAMESPACE_MAIN
 	}
 
     template < typename TBWT,
-               typename TString,
+           typename TString,
 			   typename TSpec,
-               typename TSA >
+           typename TSA >
     void createBWTableInt(
 		TBWT &bwt,
 		StringSet<TString, TSpec> const &s,
@@ -279,7 +279,7 @@ namespace SEQAN_NAMESPACE_MAIN
 		#ifdef SEQAN_DEBUG_INDEX
 			if (sizeof(TSize) > 4)
 				::std::cerr << "WARNING: TSize size is greater 4 (BWT)" << ::std::endl;
-        #endif
+    #endif
 
 		TSize n = length(s);
 		Pair<unsigned, typename Size<TString>::Type> loc;

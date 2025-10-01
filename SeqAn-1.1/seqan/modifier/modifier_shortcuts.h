@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for object Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for object Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 

@@ -56,17 +56,17 @@ extern const char DnaCharMapReverseComplement[256];
 /* Speed up 154% in profile */
 #ifdef BOWTIE_POPCOUNT
 #define HammingWeight64(x) \
-        x = x - ((x >> 1) & 0x5555555555555555llu); \
-        x = (x & 0x3333333333333333llu) + ((x >> 2) & 0x3333333333333333llu); \
-        x = (x + (x >> 4)) & 0x0F0F0F0F0F0F0F0Fllu; \
-        x = x + (x >> 8); \
-        x = x + (x >> 16); \
-        x = x + (x >> 32); \
-        x = (x & 0x3F)
+    x = x - ((x >> 1) & 0x5555555555555555llu); \
+    x = (x & 0x3333333333333333llu) + ((x >> 2) & 0x3333333333333333llu); \
+    x = (x + (x >> 4)) & 0x0F0F0F0F0F0F0F0Fllu; \
+    x = x + (x >> 8); \
+    x = x + (x >> 16); \
+    x = x + (x >> 32); \
+    x = (x & 0x3F)
 #endif
 
-        template <typename T>
-        void PrintBinary(T c, const std::string &end_str = "\n");
+    template <typename T>
+    void PrintBinary(T c, const std::string &end_str = "\n");
 
 /// 0100 0[00]1 - A
 /// 0100 0[01]1 - C
@@ -78,37 +78,37 @@ extern const char DnaCharMapReverseComplement[256];
 
 /// turn 8 chars (1 unsigned 64-bit integer) to 8 base pairs (16-bit)
 #define UINT64_TO_8BP(c)\
-        c &= BASE_EXTRACT_MASK64;\
-        c >>= 1;\
-        c |= (c >> 6 ) & 0x0C0C0C0C0C0C0C0CULL;\
-        c |= (c >> 12) & 0xF0F0F0F0F0F0F0F0ULL;\
-        c &=             0x000000FF000000FFULL;\
-        c |= c >> 24
+    c &= BASE_EXTRACT_MASK64;\
+    c >>= 1;\
+    c |= (c >> 6 ) & 0x0C0C0C0C0C0C0C0CULL;\
+    c |= (c >> 12) & 0xF0F0F0F0F0F0F0F0ULL;\
+    c &=         0x000000FF000000FFULL;\
+    c |= c >> 24
 
 
-        /* It seems that 'inline' does not work here */
-        /* TODO should be included */
-        void BaseChar2Binary64B(char*, uint64_t, uint64_t*);
-        void BaseChar2Binary8B(char*, uint32_t, uint8_t*);
+    /* It seems that 'inline' does not work here */
+    /* TODO should be included */
+    void BaseChar2Binary64B(char*, uint64_t, uint64_t*);
+    void BaseChar2Binary8B(char*, uint32_t, uint8_t*);
 
-        /* Reverse Complement version */
-        /// 0100 0[00]1 - A
-        /// 0100 0[01]1 - C
-        /// 0100 0[11]1 - G
-        /// 0101 0[10]0 - T
-        /// 0100 1[11]0 - N (G)
-        void BaseChar2Binary64B_RC(uint64_t* binary_seq, uint64_t size_seq, uint64_t *binary_seq_rc);
+    /* Reverse Complement version */
+    /// 0100 0[00]1 - A
+    /// 0100 0[01]1 - C
+    /// 0100 0[11]1 - G
+    /// 0101 0[10]0 - T
+    /// 0100 1[11]0 - N (G)
+    void BaseChar2Binary64B_RC(uint64_t* binary_seq, uint64_t size_seq, uint64_t *binary_seq_rc);
 
-        /// Version 1: Streamed from BaseChar2Binary8B (as benchmark)
-        void BaseChar2Binary8B_RC(uint8_t *bin/*src*/, uint32_t size, uint8_t *bin_rc/*sink*/);
+    /// Version 1: Streamed from BaseChar2Binary8B (as benchmark)
+    void BaseChar2Binary8B_RC(uint8_t *bin/*src*/, uint32_t size, uint8_t *bin_rc/*sink*/);
 
-        /// Version 2: reverse the dnas and then use BaseChar2Binary8B
-        void BaseChar2Binary8B_RC(char *buffer, uint32_t size, uint8_t *bin);
+    /// Version 2: reverse the dnas and then use BaseChar2Binary8B
+    void BaseChar2Binary8B_RC(char *buffer, uint32_t size, uint8_t *bin);
 
-        /// Version 3: turned from dnas sequence as BaseChar2Binary8B does.
-        void BaseChar2Binary8B_RC_Exter(char *buffer, uint8_t *bin, uint32_t size_char, uint32_t size_8bit, uint32_t mod_4_by2, uint32_t mod_4_r_by2);
+    /// Version 3: turned from dnas sequence as BaseChar2Binary8B does.
+    void BaseChar2Binary8B_RC_Exter(char *buffer, uint8_t *bin, uint32_t size_char, uint32_t size_8bit, uint32_t mod_4_by2, uint32_t mod_4_r_by2);
 
-        void NaiveBaseChar2Binary64B(char *buffer, uint64_t size_buffer, uint64_t* binary_seq);
+    void NaiveBaseChar2Binary64B(char *buffer, uint64_t size_buffer, uint64_t* binary_seq);
 
 } /* namespace sbwtio */
 #endif /* SBWT_SEQUENCE_PACK_H */

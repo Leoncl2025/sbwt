@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -55,14 +55,14 @@ namespace SEQAN_NAMESPACE_MAIN
 		Pipe(TInput const &_cont):
 			in(_cont) {}
 
-        inline typename Value<TInput>::Type const & operator*() const {
-            return *cur;
-        }
+    inline typename Value<TInput>::Type const & operator*() const {
+        return *cur;
+    }
     
-        inline Pipe& operator++() {
-            ++cur;
-            return *this;
-        }
+    inline Pipe& operator++() {
+        ++cur;
+        return *this;
+    }
     };
 
     template < typename TInput, typename TSpec, typename TIteratorSpec >
@@ -91,7 +91,7 @@ namespace SEQAN_NAMESPACE_MAIN
 	{
 		TContainer *cont;
 
-        ContainerBuffer(): cont(NULL) {}
+    ContainerBuffer(): cont(NULL) {}
 		ContainerBuffer(TContainer &_cont): cont(&_cont) {}
 
 		template <typename TSize>
@@ -132,7 +132,7 @@ namespace SEQAN_NAMESPACE_MAIN
 		TIterator						begin;
 		typename Size<TIterator>::Type	size;
 
-        IteratorBuffer(): begin(NULL), size(0) {}
+    IteratorBuffer(): begin(NULL), size(0) {}
 		template <typename TSize>
 		IteratorBuffer(TIterator &_begin, TSize _size): begin(&_begin), size(_size) {}
 
@@ -171,8 +171,8 @@ namespace SEQAN_NAMESPACE_MAIN
 	template < typename TPipe >
 	struct BufferHandler< TPipe, SourceNonCachingSpec >
     {
-        typedef typename Source<TPipe>::Type	TSource;
-        typedef ContainerBuffer<TSource const>	TBuffer;
+    typedef typename Source<TPipe>::Type	TSource;
+    typedef ContainerBuffer<TSource const>	TBuffer;
 
 		TPipe	&pipe;
 
@@ -183,22 +183,22 @@ namespace SEQAN_NAMESPACE_MAIN
 		BufferHandler(TPipe &_pipe, TSize):
 			pipe(_pipe) {}
 
-        inline TBuffer first() {
-            return TBuffer(pipe.in);
-        }
+    inline TBuffer first() {
+        return TBuffer(pipe.in);
+    }
 
-        inline TBuffer next() {
-            return TBuffer();
-        }
+    inline TBuffer next() {
+        return TBuffer();
+    }
 
-        inline void process() {}
-        inline void end() {}
-        inline void cancel() {}
+    inline void process() {}
+    inline void end() {}
+    inline void cancel() {}
     };
 
 	template < typename TPipe >
     struct Value< BufferHandler< TPipe, SourceNonCachingSpec > > {
-        typedef ContainerBuffer< typename Source<TPipe>::Type const > Type;
+    typedef ContainerBuffer< typename Source<TPipe>::Type const > Type;
     };
 
 
@@ -210,55 +210,55 @@ namespace SEQAN_NAMESPACE_MAIN
 	template < typename TPipe >
 	struct BufferHandler< TPipe, SourceCachingSpec >
     {
-        typedef typename Value<TPipe>::Type			TValue;
-        typedef typename Size<TPipe>::Type			TSize;
+    typedef typename Value<TPipe>::Type			TValue;
+    typedef typename Size<TPipe>::Type			TSize;
 
-        typedef SimpleBuffer<TValue>						TBuffer;
+    typedef SimpleBuffer<TValue>						TBuffer;
 		typedef IPipeIterator<TPipe>						ISource;
 		typedef typename Iterator<TBuffer, Standard>::Type	ITarget;
 
 		TPipe		&pipe;
 		size_t		bufferSize;
-        TSize		rest;
-        TBuffer		buffer;
+    TSize		rest;
+    TBuffer		buffer;
 		ISource		source;
 
 		BufferHandler(TPipe &_pipe, size_t requestedSize):
 			pipe(_pipe),
 			bufferSize(requestedSize),
-            rest(0) {}
+        rest(0) {}
 
-        inline TBuffer& first() {
-            rest = length(pipe);
+    inline TBuffer& first() {
+        rest = length(pipe);
 			allocPage(buffer, _min(bufferSize, rest), *this);
 			source = ISource(pipe);
 			for(ITarget target = buffer.begin; target != buffer.end; ++target) {
 				*target = *source;
 				++source;
 			}
-            if (!(rest -= size(buffer))) source = ISource();
+        if (!(rest -= size(buffer))) source = ISource();
 			return buffer;
-        }
+    }
 
-        inline TBuffer& next() {
+    inline TBuffer& next() {
 			resize(buffer, _min(bufferSize, rest));
 			ITarget _end = buffer.begin + size(buffer);
 			for(ITarget target = buffer.begin; target != _end; ++target) {
 				*target = *source;
 				++source;
 			}
-            if (!(rest -= size(buffer))) source = ISource();
+        if (!(rest -= size(buffer))) source = ISource();
 			return buffer;
-        }
+    }
 
-        inline void process() {}
-        inline void end() { cancel(); }
-        inline void cancel() { source = ISource(); freePage(buffer, *this); }
+    inline void process() {}
+    inline void end() { cancel(); }
+    inline void cancel() { source = ISource(); freePage(buffer, *this); }
     };
 
 	template < typename TPipe >
     struct Value< BufferHandler< TPipe, SourceCachingSpec > > {
-        typedef SimpleBuffer< typename Value<TPipe>::Type > Type;
+    typedef SimpleBuffer< typename Value<TPipe>::Type > Type;
     };
 
     //////////////////////////////////////////////////////////////////////////////
@@ -270,50 +270,50 @@ namespace SEQAN_NAMESPACE_MAIN
 	struct BufferHandler< Pipe<TSequence, TSpec>, ExtStringSourceCachingSpec >
     {
 		typedef typename Value<TSequence>::Type		TValue;
-        typedef typename Size<TSequence>::Type		TSize;
-        typedef SimpleBuffer<TValue>				TBuffer;
-        typedef Pipe<TSequence, TSpec>				TPipe;
+    typedef typename Size<TSequence>::Type		TSize;
+    typedef SimpleBuffer<TValue>				TBuffer;
+    typedef Pipe<TSequence, TSpec>				TPipe;
 
 		typedef typename Iterator<TSequence const, Standard>::Type	ISource;
 		typedef typename Iterator<TBuffer, Standard>::Type			ITarget;
 
 		TPipe		&pipe;
 		unsigned	bufferSize;
-        TSize		rest;
-        TBuffer		buffer;
+    TSize		rest;
+    TBuffer		buffer;
 		ISource		source;
 
 		BufferHandler(TPipe &_pipe, unsigned requestedSize):
 			pipe(_pipe),
 			bufferSize(requestedSize),
-            rest(0) {}
+        rest(0) {}
 
-        inline TBuffer& first() {
-            rest = length(pipe.in);
+    inline TBuffer& first() {
+        rest = length(pipe.in);
 			allocPage(buffer, _min(bufferSize, rest), *this);
 			source = begin(pipe.in);
 			for(ITarget target = buffer.begin; target != buffer.end; ++target) {
 				*target = *source;
 				++source;
 			}
-            if (!(rest -= size(buffer))) source = ISource();
+        if (!(rest -= size(buffer))) source = ISource();
 			return buffer;
-        }
+    }
 
-        inline TBuffer& next() {
+    inline TBuffer& next() {
 			resize(buffer, _min(bufferSize, rest));
 			ITarget _end = buffer.begin + size(buffer);
 			for(ITarget target = buffer.begin; target != _end; ++target) {
 				*target = *source;
 				++source;
 			}
-            if (!(rest -= size(buffer))) source = ISource();
+        if (!(rest -= size(buffer))) source = ISource();
 			return buffer;
-        }
+    }
 
-        inline void process() {}
-        inline void end() { cancel(); }
-        inline void cancel() { source = ISource(); freePage(buffer, *this); }
+    inline void process() {}
+    inline void end() { cancel(); }
+    inline void cancel() { source = ISource(); freePage(buffer, *this); }
     };
 
 	template < typename TSequence, typename TSpec >
@@ -356,7 +356,7 @@ namespace SEQAN_NAMESPACE_MAIN
 
 	template < typename TInput, typename TSpec, typename TCommand >
 	inline bool control(Pipe< TInput, Source<TSpec> > &me, TCommand const &) {
-        return true;
+    return true;
     }
 
 	template < typename TInput, typename TSpec >
@@ -367,7 +367,7 @@ namespace SEQAN_NAMESPACE_MAIN
 	
 	template < typename TInput, typename TSpec >
 	inline bool control(Pipe< TInput, Source<TSpec> > &me, ControlEndRead const &) {
-        me.cur = end(me.in, Rooted());
+    me.cur = end(me.in, Rooted());
 		return true;
 	}
 	
@@ -384,7 +384,7 @@ namespace SEQAN_NAMESPACE_MAIN
     template < typename TInput, typename TSpec >
     inline typename Size< Pipe< TInput, Source<TSpec> > >::Type
 	length(Pipe< TInput, Source<TSpec> > const &me) {
-        return length(me.in);
+    return length(me.in);
     }
 
 }

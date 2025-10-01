@@ -1,6 +1,6 @@
 /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -97,48 +97,48 @@ typedef Tag<_PizzaChili_Test> const PizzaChili_Test;
 #define SEQAN_MAKE_PIZZACHILI_PROVIDER(name) \
     class PizzaChiliApi##name { \
     public: \
-        static char* error_index(impl::error_t e); \
-        static int build_index( \
-            impl::uchar_t* text, \
-            impl::ulong_t length, \
-            char* build_options, \
-            impl::index_t* index \
-            ); \
-        static int save_index(impl::index_t index, char* filename); \
-        static int load_index(char* filename, impl::index_t* index); \
-        static int free_index(impl::index_t index); \
-        static int index_size(impl::index_t index, impl::ulong_t* size); \
-        static int count( \
-            impl::index_t index, \
-            impl::uchar_t* pattern, \
-            impl::ulong_t length, \
-            impl::ulong_t* numocc \
+    static char* error_index(impl::error_t e); \
+    static int build_index( \
+        impl::uchar_t* text, \
+        impl::ulong_t length, \
+        char* build_options, \
+        impl::index_t* index \
         ); \
-        static int locate( \
-            impl::index_t index, \
-            impl::uchar_t* pattern, \
-            impl::ulong_t length, \
-            impl::ulong_t** occ, \
-            impl::ulong_t* numocc \
-        ); \
-        static int get_length(impl::index_t index, impl::ulong_t* length); \
-        static int extract( \
-            impl::index_t index, \
-            impl::ulong_t from, \
-            impl::ulong_t to, \
-            impl::uchar_t** snippet, \
-            impl::ulong_t* snippet_length \
-        ); \
-        static int display( \
-            impl::index_t index, \
-            impl::uchar_t* pattern, \
-            impl::ulong_t length, \
-            impl::ulong_t numc,  \
-            impl::ulong_t* numocc, \
-            impl::uchar_t** snippet_text, \
-            impl::ulong_t** snippet_length \
-        ); \
-        static int init_ds_ssort(int adist, int bs_ratio); \
+    static int save_index(impl::index_t index, char* filename); \
+    static int load_index(char* filename, impl::index_t* index); \
+    static int free_index(impl::index_t index); \
+    static int index_size(impl::index_t index, impl::ulong_t* size); \
+    static int count( \
+        impl::index_t index, \
+        impl::uchar_t* pattern, \
+        impl::ulong_t length, \
+        impl::ulong_t* numocc \
+    ); \
+    static int locate( \
+        impl::index_t index, \
+        impl::uchar_t* pattern, \
+        impl::ulong_t length, \
+        impl::ulong_t** occ, \
+        impl::ulong_t* numocc \
+    ); \
+    static int get_length(impl::index_t index, impl::ulong_t* length); \
+    static int extract( \
+        impl::index_t index, \
+        impl::ulong_t from, \
+        impl::ulong_t to, \
+        impl::uchar_t** snippet, \
+        impl::ulong_t* snippet_length \
+    ); \
+    static int display( \
+        impl::index_t index, \
+        impl::uchar_t* pattern, \
+        impl::ulong_t length, \
+        impl::ulong_t numc,  \
+        impl::ulong_t* numocc, \
+        impl::uchar_t** snippet_text, \
+        impl::ulong_t** snippet_length \
+    ); \
+    static int init_ds_ssort(int adist, int bs_ratio); \
     }; \
     \
     /*struct _PizzaChili_##name; \
@@ -146,7 +146,7 @@ typedef Tag<_PizzaChili_Test> const PizzaChili_Test;
     \
     template <> \
     struct PizzaChiliCodeProvider<PizzaChili_##name> { \
-        typedef PizzaChiliApi##name Type; \
+    typedef PizzaChiliApi##name Type; \
     };
 
 SEQAN_MAKE_PIZZACHILI_PROVIDER(AF)

@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -35,7 +35,7 @@ namespace SEQAN_NAMESPACE_MAIN
 
     template < typename TLCPInput >
     struct Value< Pipe< TLCPInput, ChildTab > > {
-        typedef typename Size<TLCPInput>::Type Type;
+    typedef typename Size<TLCPInput>::Type Type;
     };
 
 
@@ -117,7 +117,7 @@ namespace SEQAN_NAMESPACE_MAIN
     template < typename TLCPInput >
     struct Pipe< TLCPInput, ChildTab >
     {
-        // *** SPECIALIZATION ***
+    // *** SPECIALIZATION ***
 
 		typedef typename Value<TLCPInput>::Type		TValue;
 		typedef typename Size<TLCPInput>::Type		TSize;
@@ -125,37 +125,37 @@ namespace SEQAN_NAMESPACE_MAIN
 		typedef Pair<TSize, TValue, Compressed>		TCoreType;		// (i, lcptab[i])
 
 		typedef Pool< TCoreType, MapperSpec< MapperConfigSize< filterI1<TCoreType>, TSize > > > TLinearMapper;
-        typedef Pipe< TLinearMapper, Filter< filterI2<TCoreType> > > TFilter;
+    typedef Pipe< TLinearMapper, Filter< filterI2<TCoreType> > > TFilter;
 
-        TLinearMapper   mapper;
+    TLinearMapper   mapper;
 		TFilter			in;
-        
-        Pipe():
-            in(mapper) {}
+    
+    Pipe():
+        in(mapper) {}
 
-        Pipe(TLCPInput &_in):
-            in(mapper)
+    Pipe(TLCPInput &_in):
+        in(mapper)
 		{
 			process(_in);
 		}
 
 		template < typename _TLCPInput >
-        inline bool process(_TLCPInput &_lcpIn) {
+    inline bool process(_TLCPInput &_lcpIn) {
 
-            // *** INSTANTIATION ***
+        // *** INSTANTIATION ***
 			
 			childtab_process(_lcpIn, mapper);
-            return true;
-        }
+        return true;
+    }
 
-        inline typename Value<Pipe>::Type const operator*() const {
-            return *in;
-        }
-        
-        inline Pipe& operator++() {
-            ++in;
-            return *this;
-        }
+    inline typename Value<Pipe>::Type const operator*() const {
+        return *in;
+    }
+    
+    inline Pipe& operator++() {
+        ++in;
+        return *this;
+    }
 	};
 
 	template < typename TInput, typename _TLCPInput >
@@ -164,7 +164,7 @@ namespace SEQAN_NAMESPACE_MAIN
     }
 
 	template < typename TLCPTable,
-               typename TChildTable >
+           typename TChildTable >
     void createChildTableExt(
 		TChildTable &childtab,
 		TLCPTable &lcp)
@@ -189,7 +189,7 @@ namespace SEQAN_NAMESPACE_MAIN
 ..remarks:The size of $childTab$ must be at least $length(text)$ before calling this function.
 */
 	template < typename TLCPTable,
-               typename TValue,
+           typename TValue,
 			   typename TConfig >
     inline void createChildTable(
 		String<TValue, External<TConfig> > &childtab,

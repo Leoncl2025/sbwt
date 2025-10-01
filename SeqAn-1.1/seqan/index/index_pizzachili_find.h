@@ -1,6 +1,6 @@
 /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -80,8 +80,8 @@ public:
 
     ~Finder() {
 SEQAN_CHECKPOINT
-        if (range.i1 != 0)
-            ::std::free(range.i1);
+    if (range.i1 != 0)
+        ::std::free(range.i1);
     }
 };
 
@@ -91,25 +91,25 @@ namespace impl {
     template <typename TPattern>
     inline uchar_t* getPizzaChiliString(TPattern const& pattern) {
 SEQAN_CHECKPOINT
-        typedef
-            typename _RemoveConst<
-                typename Value<TPattern>::Type
-            >::Type alph_t;
+    typedef
+        typename _RemoveConst<
+        typename Value<TPattern>::Type
+        >::Type alph_t;
 
-        // This const_cast is safe because 'cstr' is only read.
-        // On the other hand, this cast is necessary to prevent a copy from
-        // being made: this would result in an invalid pointer to local memory.
-        String<alph_t, CStyle> const cstr = *const_cast<TPattern*>(&pattern);
-        // This const_cast is safe because the return value is only read.
-        return
-            reinterpret_cast<uchar_t*>(
-                const_cast<alph_t*>(static_cast<alph_t const*>(cstr))
-            );
+    // This const_cast is safe because 'cstr' is only read.
+    // On the other hand, this cast is necessary to prevent a copy from
+    // being made: this would result in an invalid pointer to local memory.
+    String<alph_t, CStyle> const cstr = *const_cast<TPattern*>(&pattern);
+    // This const_cast is safe because the return value is only read.
+    return
+        reinterpret_cast<uchar_t*>(
+        const_cast<alph_t*>(static_cast<alph_t const*>(cstr))
+        );
     }
 
     inline uchar_t* getPizzaChiliString(char const* pattern) {
 SEQAN_CHECKPOINT
-        return reinterpret_cast<uchar_t*>(const_cast<char*>(pattern));
+    return reinterpret_cast<uchar_t*>(const_cast<char*>(pattern));
     }
 } // namespace impl
 
@@ -126,29 +126,29 @@ SEQAN_CHECKPOINT
     typedef typename PizzaChiliCodeProvider<TSpec>::Type TCodeProvider;
 
     if (finder.range.i1 != 0)
-        ::std::free(finder.range.i1);
+    ::std::free(finder.range.i1);
 
     TIndex& index = haystack(finder);
     indexRequire(index, PizzaChili_Compressed());
 
     impl::uchar_t* c_pattern =
-        impl::getPizzaChiliString(pattern);
+    impl::getPizzaChiliString(pattern);
     impl::ulong_t patternlength = length(pattern);
 
     impl::ulong_t numocc;
     impl::ulong_t* occ;
 
     impl::error_t e =
-        TCodeProvider::locate(
-            index.index_handle,
-            c_pattern,
-            patternlength,
-            &occ,
-            &numocc
-        );
+    TCodeProvider::locate(
+        index.index_handle,
+        c_pattern,
+        patternlength,
+        &occ,
+        &numocc
+    );
 
     if (e != 0)
-        SEQAN_ABORT(TCodeProvider::error_index(e));
+    SEQAN_ABORT(TCodeProvider::error_index(e));
 
     finder.range.i1 = occ;
     finder.range.i2 = occ + numocc;

@@ -17,14 +17,14 @@ using namespace seqan;
  * of less singificant bits.
  */
 static inline std::string u32ToDna(uint32_t a, int len) {
-	char buf[17]; // TODO: return a new string; by value I guess
-	assert_leq(len, 16);
-	for(int i = 0; i < len; i++) {
-		buf[len-i-1] = "ACGT"[a & 3];
-		a >>= 2;
-	}
-	buf[len] = '\0';
-	return std::string(buf);
+    char buf[17]; // TODO: return a new string; by value I guess
+    assert_leq(len, 16);
+    for(int i = 0; i < len; i++) {
+        buf[len-i-1] = "ACGT"[a & 3];
+        a >>= 2;
+    }
+    buf[len] = '\0';
+    return std::string(buf);
 }
 
 /**
@@ -32,31 +32,31 @@ static inline std::string u32ToDna(uint32_t a, int len) {
  */
 template<typename TStr>
 static inline TStr reverseComplement(const TStr& s) {
-	typedef typename Value<TStr>::Type TVal;
-	TStr s_rc;
-	size_t slen = length(s);
-	resize(s_rc, slen);
-	for(size_t i = 0; i < slen; i++) {
-		int sv = (int)s[slen-i-1];
-		if(sv == 4) {
-			s_rc[i] = (TVal)4;
-		} else {
-			s_rc[i] = (TVal)(sv ^ 3);
-		}
-	}
-	return s_rc;
+    typedef typename Value<TStr>::Type TVal;
+    TStr s_rc;
+    size_t slen = length(s);
+    resize(s_rc, slen);
+    for(size_t i = 0; i < slen; i++) {
+        int sv = (int)s[slen-i-1];
+        if(sv == 4) {
+            s_rc[i] = (TVal)4;
+        } else {
+            s_rc[i] = (TVal)(sv ^ 3);
+        }
+    }
+    return s_rc;
 }
 
 /// Reverse a string in-place
 template <typename TStr>
 static inline void reverseInPlace(TStr& s) {
-	typedef typename Value<TStr>::Type TVal;
-	size_t len = length(s);
-	for(size_t i = 0; i < (len>>1); i++) {
-		TVal tmp = s[i];
-		s[i] = s[len-i-1];
-		s[len-i-1] = tmp;
-	}
+    typedef typename Value<TStr>::Type TVal;
+    size_t len = length(s);
+    for(size_t i = 0; i < (len>>1); i++) {
+        TVal tmp = s[i];
+        s[i] = s[len-i-1];
+        s[len-i-1] = tmp;
+    }
 }
 
 /**
@@ -64,33 +64,33 @@ static inline void reverseInPlace(TStr& s) {
  */
 template<typename TStr>
 static inline TStr reverseCopy(const TStr& s) {
-	typedef typename Value<TStr>::Type TVal;
-	TStr s_rc;
-	size_t slen = length(s);
-	resize(s_rc, slen);
-	for(size_t i = 0; i < slen; i++) {
-		s_rc[i] = (TVal)((int)s[slen-i-1]);
-	}
-	return s_rc;
+    typedef typename Value<TStr>::Type TVal;
+    TStr s_rc;
+    size_t slen = length(s);
+    resize(s_rc, slen);
+    for(size_t i = 0; i < slen; i++) {
+        s_rc[i] = (TVal)((int)s[slen-i-1]);
+    }
+    return s_rc;
 }
 
 /**
  * Return whether the reverse-complement of s.
  */
 static inline bool isReverseComplement(const String<Dna5>& s1,
-                                       const String<Dna5>& s2)
+                       const String<Dna5>& s2)
 {
-	if(length(s1) != length(s2)) return false;
-	size_t slen = length(s1);
-	for(size_t i = 0; i < slen; i++) {
-		int i1 = (int)s1[i];
-		int i2 = (int)s2[slen - i - 1];
-		if(i1 == 4) {
-			if(i2 != 4) return false;
-		}
-		else if(i1 != (i2 ^ 3)) return false;
-	}
-	return true;
+    if(length(s1) != length(s2)) return false;
+    size_t slen = length(s1);
+    for(size_t i = 0; i < slen; i++) {
+        int i1 = (int)s1[i];
+        int i2 = (int)s2[slen - i - 1];
+        if(i1 == 4) {
+            if(i2 != 4) return false;
+        }
+        else if(i1 != (i2 ^ 3)) return false;
+    }
+    return true;
 }
 
 /**
@@ -102,7 +102,7 @@ static inline bool isReverseComplement(const String<Dna5>& s1,
 template <typename TStr>
 static inline bool
 dollarLt(const TStr& l, const TStr& r) {
-	return isPrefix(r, l) || (l < r && !isPrefix(l, r));
+    return isPrefix(r, l) || (l < r && !isPrefix(l, r));
 }
 
 /**
@@ -114,7 +114,7 @@ dollarLt(const TStr& l, const TStr& r) {
 template <typename TStr>
 static inline bool
 dollarGt(const TStr& l, const TStr& r) {
-	return !dollarLt(l, r);
+    return !dollarLt(l, r);
 }
 
 

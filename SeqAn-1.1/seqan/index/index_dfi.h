@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -42,7 +42,7 @@ namespace SEQAN_NAMESPACE_MAIN
 	template <bool RESULT>
 	struct _DFIPredDefault 
 	{
-        inline bool operator()(_DFIEntry const &) const {
+    inline bool operator()(_DFIEntry const &) const {
 			return RESULT;
 		}
     };

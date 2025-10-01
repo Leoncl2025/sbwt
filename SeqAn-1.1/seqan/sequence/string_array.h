@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -47,137 +47,137 @@ template <typename TValue, unsigned int ISize>
 class String<TValue, Array<ISize> >
 {
 protected:
-	mutable TValue data_begin[ISize];
-	TValue * data_end;
+    mutable TValue data_begin[ISize];
+    TValue * data_end;
 
 //____________________________________________________________________________
 
 public:
-	String()
-	{
+    String()
+    {
 SEQAN_CHECKPOINT
-		data_end = data_begin;
-	}
+        data_end = data_begin;
+    }
 
-	template <typename TSource>
-	String(TSource & source)
-	{
+    template <typename TSource>
+    String(TSource & source)
+    {
 SEQAN_CHECKPOINT
-		data_end = data_begin;
-		assign(*this, source);
-	}
-	template <typename TSource>
-	String(TSource const & source)
-	{
+        data_end = data_begin;
+        assign(*this, source);
+    }
+    template <typename TSource>
+    String(TSource const & source)
+    {
 SEQAN_CHECKPOINT
-		data_end = data_begin;
-		assign(*this, source);
-	}
-	String(String const & source)
-	{
+        data_end = data_begin;
+        assign(*this, source);
+    }
+    String(String const & source)
+    {
 SEQAN_CHECKPOINT
-		data_end = data_begin;
-		assign(*this, source);
-	}
+        data_end = data_begin;
+        assign(*this, source);
+    }
 
-	template <typename TSource>
-	String & operator =(TSource const & source)
-	{
+    template <typename TSource>
+    String & operator =(TSource const & source)
+    {
 SEQAN_CHECKPOINT
-		assign(*this, source);
-		return *this;
-	}
-	String & operator =(String const & source)
-	{
+        assign(*this, source);
+        return *this;
+    }
+    String & operator =(String const & source)
+    {
 SEQAN_CHECKPOINT
-		assign(*this, source);
-		return *this;
-	}
+        assign(*this, source);
+        return *this;
+    }
 
-	~String()
-	{
-	}
-
-//____________________________________________________________________________
-
-	template <typename TPos>
-	inline typename Reference<String>::Type
-	operator [] (TPos pos)
-	{
-SEQAN_CHECKPOINT
-		return value(*this, pos);
-	}
-
-	template <typename TPos>
-	inline typename Reference<String const>::Type 
-	operator [] (TPos pos) const
-	{
-SEQAN_CHECKPOINT
-		return value(*this, pos);
-	}
+    ~String()
+    {
+    }
 
 //____________________________________________________________________________
 
-	friend inline typename Iterator<String, Standard>::Type
-	begin(String & me,
-		Standard)
-	{
+    template <typename TPos>
+    inline typename Reference<String>::Type
+    operator [] (TPos pos)
+    {
 SEQAN_CHECKPOINT
-		return me.data_begin;
-	}
-	friend inline typename Iterator<String const, Standard>::Type
-	begin(String const & me,
-		Standard)
-	{
+        return value(*this, pos);
+    }
+
+    template <typename TPos>
+    inline typename Reference<String const>::Type 
+    operator [] (TPos pos) const
+    {
 SEQAN_CHECKPOINT
-		return me.data_begin;
-	}
+        return value(*this, pos);
+    }
 
 //____________________________________________________________________________
 
-	friend inline typename Iterator<String, Standard>::Type
-	end(String & me,
-		Standard)
-	{
+    friend inline typename Iterator<String, Standard>::Type
+    begin(String & me,
+        Standard)
+    {
 SEQAN_CHECKPOINT
-		return me.data_end;
-	}
-	friend inline typename Iterator<String const, Standard>::Type
-	end(String const & me,
-		Standard)
-	{
+        return me.data_begin;
+    }
+    friend inline typename Iterator<String const, Standard>::Type
+    begin(String const & me,
+        Standard)
+    {
 SEQAN_CHECKPOINT
-		return me.data_end;
-	}
+        return me.data_begin;
+    }
 
 //____________________________________________________________________________
 
-	friend inline size_t
-	capacity(String &)
-	{
+    friend inline typename Iterator<String, Standard>::Type
+    end(String & me,
+        Standard)
+    {
 SEQAN_CHECKPOINT
-		return ISize;
-	}
+        return me.data_end;
+    }
+    friend inline typename Iterator<String const, Standard>::Type
+    end(String const & me,
+        Standard)
+    {
+SEQAN_CHECKPOINT
+        return me.data_end;
+    }
 
-	friend inline size_t
-	capacity(String const &)
-	{
+//____________________________________________________________________________
+
+    friend inline size_t
+    capacity(String &)
+    {
 SEQAN_CHECKPOINT
-		return ISize;
-	}
+        return ISize;
+    }
+
+    friend inline size_t
+    capacity(String const &)
+    {
+SEQAN_CHECKPOINT
+        return ISize;
+    }
 //____________________________________________________________________________
 
 /**
 .Internal._setLength.param.object.type:Spec.Array String
 */
-	friend inline void 
-	_setLength(
-		String & me, 
-		size_t new_length)
-	{
+    friend inline void 
+    _setLength(
+        String & me, 
+        size_t new_length)
+    {
 SEQAN_CHECKPOINT
-		me.data_end = me.data_begin + new_length;
-	}
+        me.data_end = me.data_begin + new_length;
+    }
 
 //____________________________________________________________________________
 
@@ -189,13 +189,13 @@ SEQAN_CHECKPOINT
 template <typename TValue, unsigned int ISize>
 struct DefaultOverflowImplicit<String<TValue, Array<ISize> > >
 {
-	typedef Limit Type;
+    typedef Limit Type;
 };
 
 template <typename TValue, unsigned int ISize>
 struct DefaultOverflowImplicit<String<TValue, Array<ISize> > const >
 {
-	typedef Limit Type;
+    typedef Limit Type;
 };
 
 //////////////////////////////////////////////////////////////////////////////
@@ -203,13 +203,13 @@ struct DefaultOverflowImplicit<String<TValue, Array<ISize> > const >
 template <typename TValue, unsigned int ISize>
 struct DefaultOverflowExplicit<String<TValue, Array<ISize> > >
 {
-	typedef Limit Type;
+    typedef Limit Type;
 };
 
 template <typename TValue, unsigned int ISize>
 struct DefaultOverflowExplicit<String<TValue, Array<ISize> > const >
 {
-	typedef Limit Type;
+    typedef Limit Type;
 };
 
 //////////////////////////////////////////////////////////////////////////////
@@ -218,7 +218,7 @@ template <typename TValue, unsigned int ISize>
 struct IsContiguous< String<TValue, Array<ISize> > >
 {
     typedef True Type;
-	enum { VALUE = true };
+    enum { VALUE = true };
 };
 
 //////////////////////////////////////////////////////////////////////////////
@@ -227,7 +227,7 @@ struct IsContiguous< String<TValue, Array<ISize> > >
 template <typename TValue, unsigned int ISize>
 struct LENGTH< String<TValue, Array<ISize> > >
 {
-	enum { VALUE = ISize };
+    enum { VALUE = ISize };
 };
 
 //////////////////////////////////////////////////////////////////////////////

@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -107,13 +107,13 @@ Chained Files should be used for file systems or $TFile$ types that don't suppor
 	struct Striped;
 
     enum FileOpenMode {
-        OPEN_RDONLY     = 1,
-        OPEN_WRONLY     = 2,
-        OPEN_RDWR       = 3,
-        OPEN_MASK       = 3,
-        OPEN_CREATE     = 4,
-        OPEN_APPEND     = 8,
-        OPEN_ASYNC      = 16,
+    OPEN_RDONLY     = 1,
+    OPEN_WRONLY     = 2,
+    OPEN_RDWR       = 3,
+    OPEN_MASK       = 3,
+    OPEN_CREATE     = 4,
+    OPEN_APPEND     = 8,
+    OPEN_ASYNC      = 16,
 		OPEN_TEMPORARY	= 32,
 		OPEN_QUIET		= 128
     };
@@ -129,8 +129,8 @@ Chained Files should be used for file systems or $TFile$ types that don't suppor
 	};
 
     enum FileSeekMode {
-        SEEK_BEGIN   = 0,
-        SEEK_CURRENT = 1
+    SEEK_BEGIN   = 0,
+    SEEK_CURRENT = 1
 #ifndef SEEK_END
       , SEEK_END     = 2
 #endif
@@ -154,7 +154,7 @@ Chained Files should be used for file systems or $TFile$ types that don't suppor
     template < typename T >
     struct aRequest
     {
-        typedef aDummyRequest Type;
+    typedef aDummyRequest Type;
     };
 /*
     //////////////////////////////////////////////////////////////////////////////
@@ -163,7 +163,7 @@ Chained Files should be used for file systems or $TFile$ types that don't suppor
     template < typename T >
     struct aEvent
     {
-        typedef DummyEvent Type;
+    typedef DummyEvent Type;
     };
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -172,7 +172,7 @@ Chained Files should be used for file systems or $TFile$ types that don't suppor
     template < typename T >
     struct aHint
     {
-        typedef void Type;
+    typedef void Type;
     };
 
     //////////////////////////////////////////////////////////////////////////////
@@ -180,7 +180,7 @@ Chained Files should be used for file systems or $TFile$ types that don't suppor
     template < typename T >
     struct aCallback
     {
-        typedef void Type(aHint<T> *);
+    typedef void Type(aHint<T> *);
     };
 
     //////////////////////////////////////////////////////////////////////////////
@@ -188,7 +188,7 @@ Chained Files should be used for file systems or $TFile$ types that don't suppor
     template < typename T >
     struct aQueue
     {
-        typedef Nothing Type;
+    typedef Nothing Type;
     };
 */
 
@@ -213,7 +213,7 @@ Chained Files should be used for file systems or $TFile$ types that don't suppor
 
     template < typename TSpec >
     inline bool open(File<TSpec> &me, const char *fileName, int openMode) {
-        return me.open(fileName, openMode);
+    return me.open(fileName, openMode);
     }
 
     template < typename TSpec >
@@ -235,12 +235,12 @@ Chained Files should be used for file systems or $TFile$ types that don't suppor
 
     template < typename TSpec >
     inline bool openTemp(File<TSpec> &me) {
-        return me.openTemp();
+    return me.openTemp();
     }
 
     template < typename TSpec >
     inline bool openTemp(File<TSpec> &me, int openMode) {
-        return me.openTemp(openMode);
+    return me.openTemp(openMode);
     }
 
     template < typename File >
@@ -259,12 +259,12 @@ Chained Files should be used for file systems or $TFile$ types that don't suppor
 
     template < typename TSpec >
     inline bool close(File<TSpec> & me) {
-        return me.close();
+    return me.close();
     }
 
     template < typename TSpec >
     inline unsigned sectorSize(File<TSpec> const & /*me*/) {
-        return 4096;
+    return 4096;
     }
 
 
@@ -370,12 +370,12 @@ Chained Files should be used for file systems or $TFile$ types that don't suppor
     inline typename Position< File<TSpec> >::Type seek(File<TSpec> &me, TPos const fileOfs, int origin) {
 		typedef typename Position< File<TSpec> >::Type TFilePos;
 		TFilePos newOfs = me.seek(fileOfs, origin);
-        #ifdef SEQAN_DEBUG_OR_TEST_
+    #ifdef SEQAN_DEBUG_OR_TEST_
 			if (origin == SEEK_BEGIN && newOfs != (TFilePos)fileOfs) {
 				::std::cerr << "seek returned " << ::std::hex << newOfs << " instead of " << fileOfs << ::std::dec << ::std::endl;
 			}
-        #endif
-        return newOfs;
+    #endif
+    return newOfs;
     }
     
 	template < typename TSpec, typename TPos >
@@ -394,7 +394,7 @@ Chained Files should be used for file systems or $TFile$ types that don't suppor
 
     template < typename TSpec >
     inline typename Position< File<TSpec> >::Type tell(File<TSpec> &me) {
-        return me.tell();
+    return me.tell();
     }
 
 /**
@@ -424,10 +424,10 @@ Chained Files should be used for file systems or $TFile$ types that don't suppor
 
     template < typename TSpec >
     inline typename Size<File<TSpec> >::Type size(File<TSpec> &me) {
-        typename Size<File<TSpec> >::Type old_pos = tell(me);
-        typename Size<File<TSpec> >::Type result = seek(me, 0, SEEK_END);
-        seek(me, old_pos, SEEK_BEGIN);
-        return result;
+    typename Size<File<TSpec> >::Type old_pos = tell(me);
+    typename Size<File<TSpec> >::Type result = seek(me, 0, SEEK_END);
+    seek(me, old_pos, SEEK_BEGIN);
+    return result;
     }
 
 /**
@@ -441,10 +441,10 @@ Chained Files should be used for file systems or $TFile$ types that don't suppor
 
     template < typename TSpec, typename TSize >
     inline void resize(File<TSpec> &me, TSize new_length) {
-        typename Size<File<TSpec> >::Type old_pos = tell(me);
-        seek(me, new_length, SEEK_BEGIN);
-        setEOF(me);
-        seek(me, old_pos, SEEK_BEGIN);
+    typename Size<File<TSpec> >::Type old_pos = tell(me);
+    seek(me, new_length, SEEK_BEGIN);
+    setEOF(me);
+    seek(me, old_pos, SEEK_BEGIN);
     }
 
 /**
@@ -470,47 +470,47 @@ Chained Files should be used for file systems or $TFile$ types that don't suppor
     // callback based read/write
 /*
     template < typename File, typename TValue, typename TSize,
-               typename aCallback, typename aHint >
+           typename aCallback, typename aHint >
     inline typename aRequest<File>::Type
     aread(File & me, TValue *memPtr, TSize const count,
-        aCallback* cb, aHint* hint)
+    aCallback* cb, aHint* hint)
     {
-        result = read(me, memPtr, count);
-        cb(hint);
-        return NULL;
+    result = read(me, memPtr, count);
+    cb(hint);
+    return NULL;
     }
     
     template < typename File, typename TValue, typename TSize,
-               typename aCallback, typename aHint >
+           typename aCallback, typename aHint >
     inline typename aRequest<File>::Type
     awrite(File & me, TValue const *memPtr, TSize const count,
-        aCallback* cb, aHint* hint)
+    aCallback* cb, aHint* hint)
     {
-        write(me, memPtr, count);
-        cb(hint);
-        return NULL;
+    write(me, memPtr, count);
+    cb(hint);
+    return NULL;
     }
 
     template < typename File, typename TValue, typename TSize, typename TPos,
-               typename aCallback, typename aHint >
+           typename aCallback, typename aHint >
     inline typename aRequest<File>::Type
     areadAt(File & me, TValue *memPtr, TSize const count, TPos const fileOfs,
-        aCallback* cb, aHint* hint)
+    aCallback* cb, aHint* hint)
     {
-        readAt(me, memPtr, count, fileOfs);
-        cb(hint);
-        return NULL;
+    readAt(me, memPtr, count, fileOfs);
+    cb(hint);
+    return NULL;
     }
     
     template < typename File, typename TValue, typename TSize, typename TPos,
-               typename aCallback, typename aHint >
+           typename aCallback, typename aHint >
     inline typename aRequest<File>::Type
     awriteAt(File & me, TValue const *memPtr, TSize const count, TPos const fileOfs,
-        aCallback* cb, aHint* hint)
+    aCallback* cb, aHint* hint)
     {
-        result = writeAt(me, memPtr, count, fileOfs);
-        cb(hint);
-        return NULL;
+    result = writeAt(me, memPtr, count, fileOfs);
+    cb(hint);
+    return NULL;
     }
 
 
@@ -518,47 +518,47 @@ Chained Files should be used for file systems or $TFile$ types that don't suppor
     // event based read/write
 
     template < typename File, typename TValue, typename TSize,
-               typename aEvent >
+           typename aEvent >
     inline typename aRequest<File>::Type
     aread(File & me, TValue *memPtr, TSize const count,
-        aEvent &event)
+    aEvent &event)
     {
-        read(me, memPtr, count);
-        event.signal();
-        return NULL;
+    read(me, memPtr, count);
+    event.signal();
+    return NULL;
     }
     
     template < typename File, typename TValue, typename TSize,
-               typename aEvent >
+           typename aEvent >
     inline typename aRequest<File>::Type
     awrite(File & me, TValue const *memPtr, TSize const count,
-        aEvent &event)
+    aEvent &event)
     {
-        write(me, memPtr, count);
-        event.signal();
-        return NULL;
+    write(me, memPtr, count);
+    event.signal();
+    return NULL;
     }
 
     template < typename File, typename TValue, typename TSize, typename TPos,
-               typename aEvent >
+           typename aEvent >
     inline typename aRequest<File>::Type
     areadAt(File & me, TValue *memPtr, TSize const count, TPos const fileOfs,
-        aEvent &event)
+    aEvent &event)
     {
-        readAt(me, memPtr, count, fileOfs);
-        event.signal();
-        return NULL;
+    readAt(me, memPtr, count, fileOfs);
+    event.signal();
+    return NULL;
     }
     
     template < typename File, typename TValue, typename TSize, typename TPos,
-               typename aEvent >
+           typename aEvent >
     inline typename aRequest<File>::Type
     awriteAt(File & me, TValue const *memPtr, TSize const count, TPos const fileOfs,
-        aEvent &event)
+    aEvent &event)
     {
-        writeAt(me, memPtr, count, fileOfs);
-        event.signal();
-        return NULL;
+    writeAt(me, memPtr, count, fileOfs);
+    event.signal();
+    return NULL;
     }
 */
 
@@ -581,12 +581,12 @@ Chained Files should be used for file systems or $TFile$ types that don't suppor
 */
 
     template < typename File, typename TValue, typename TSize, typename TPos,
-               typename aRequest >
+           typename aRequest >
     inline bool 
 	areadAt(File & me, TValue *memPtr, TSize const count, TPos const fileOfs,
-        aRequest &request)
+    aRequest &request)
     {
-        return readAt(me, memPtr, count, fileOfs);
+    return readAt(me, memPtr, count, fileOfs);
     }
     
 /**
@@ -605,12 +605,12 @@ Chained Files should be used for file systems or $TFile$ types that don't suppor
 */
 
     template < typename File, typename TValue, typename TSize, typename TPos,
-               typename aRequest >
+           typename aRequest >
     inline bool
 	awriteAt(File & me, TValue const *memPtr, TSize const count, TPos const fileOfs,
-        aRequest &request)
+    aRequest &request)
     {
-        return writeAt(me, memPtr, count, fileOfs);
+    return writeAt(me, memPtr, count, fileOfs);
     }
 
 	
@@ -686,9 +686,9 @@ Chained Files should be used for file systems or $TFile$ types that don't suppor
 
 	template <typename T1, typename T2> inline
 	T1 alignSize(T1 _size, T2 _aligning) {
-        if (_size < _aligning)
-            return _aligning;
-        else
+    if (_size < _aligning)
+        return _aligning;
+    else
 		    return (_size / _aligning) * (T1)_aligning;
 	}
 

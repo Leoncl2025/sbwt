@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -40,8 +40,8 @@ namespace SEQAN_NAMESPACE_MAIN
 ...text:Instances of $Segment<THost, SuffixSegment>$ are suffixes of $THost$ objects.
 ...remarks:Use @Metafunction.Host@ to get the host type for a given class.
 ..remarks.note:Since the appropriate segment type depends on the host sequence type, 
-	it is recommended to use the metafunction @Metafunction.Suffix@ instead of explicitely 
-	choose a specialization of @Class.Segment@.
+    it is recommended to use the metafunction @Metafunction.Suffix@ instead of explicitely 
+    choose a specialization of @Class.Segment@.
 ..see:Spec.InfixSegment
 ..see:Metafunction.Suffix
 */
@@ -52,10 +52,10 @@ template <typename THost_>
 class Segment<THost_, SuffixSegment>
 {
 protected:
-	typedef typename Host<Segment>::Type THost;
+    typedef typename Host<Segment>::Type THost;
 
-	typename _Pointer<THost>::Type data_host;
-	typename Position<THost>::Type data_begin_position;
+    typename _Pointer<THost>::Type data_host;
+    typename Position<THost>::Type data_begin_position;
 
 //____________________________________________________________________________
 
@@ -87,222 +87,222 @@ If $begin$ is omitted, the suffix segment corresponding to
 the whole sequence $host$ is constructed.
 This is the same segment that is returned by @Function.goBegin@.
 */
-	Segment():
-		data_begin_position(0)
-	{
+    Segment():
+        data_begin_position(0)
+    {
 SEQAN_CHECKPOINT
-	}
+    }
 
-	Segment(THost & _host):
-		data_host(& _host),
-		data_begin_position(0)
-	{
+    Segment(THost & _host):
+        data_host(& _host),
+        data_begin_position(0)
+    {
 SEQAN_CHECKPOINT
-	}
+    }
 
-	Segment(typename _Parameter<THost>::Type _host, typename Position<THost>::Type _begin_index):
-		data_host(_toPointer(_host)),
-		data_begin_position(_begin_index)
-	{
+    Segment(typename _Parameter<THost>::Type _host, typename Position<THost>::Type _begin_index):
+        data_host(_toPointer(_host)),
+        data_begin_position(_begin_index)
+    {
 SEQAN_CHECKPOINT
-	}
+    }
 /*
-	Segment(typename _Parameter<THost>::Type _host, typename Iterator<THost, Rooted>::Type _begin):
-		data_host(_toPointer(_host)),
-		data_begin_position(position(_begin))
-	{
+    Segment(typename _Parameter<THost>::Type _host, typename Iterator<THost, Rooted>::Type _begin):
+        data_host(_toPointer(_host)),
+        data_begin_position(position(_begin))
+    {
 SEQAN_CHECKPOINT
-	}
+    }
 */
-	Segment(typename _Parameter<THost>::Type _host, typename Iterator<THost, Standard>::Type _begin):
-		data_host(_toPointer(_host)),
-		data_begin_position(position(_begin, _host))
-	{
+    Segment(typename _Parameter<THost>::Type _host, typename Iterator<THost, Standard>::Type _begin):
+        data_host(_toPointer(_host)),
+        data_begin_position(position(_begin, _host))
+    {
 SEQAN_CHECKPOINT
-	}
+    }
 /*
-	Segment(Segment const & _other):
-		data_host(_other.data_host),
-		data_begin_position(_other.data_begin_position)
-	{
+    Segment(Segment const & _other):
+        data_host(_other.data_host),
+        data_begin_position(_other.data_begin_position)
+    {
 SEQAN_CHECKPOINT
-	}
+    }
 */
-	template <typename THost2, typename TSpec2>
-	Segment(Segment<THost2, TSpec2> const & _other):
-		data_host(_toPointer(host(_other))),
-		data_begin_position(beginPosition(_other))
-	{
+    template <typename THost2, typename TSpec2>
+    Segment(Segment<THost2, TSpec2> const & _other):
+        data_host(_toPointer(host(_other))),
+        data_begin_position(beginPosition(_other))
+    {
 SEQAN_CHECKPOINT
-	}
+    }
 
-	~ Segment() 
-	{
+    ~ Segment() 
+    {
 SEQAN_CHECKPOINT
-	}
+    }
 
-	template <typename TSource>
-	inline Segment & 
-	operator = (TSource const & source)
-	{
-		assign(*this, source);
-		return *this;
-	}
-	inline Segment & 
-	operator = (Segment const & source)
-	{
-		assign(*this, source);
-		return *this;
-	}
+    template <typename TSource>
+    inline Segment & 
+    operator = (TSource const & source)
+    {
+        assign(*this, source);
+        return *this;
+    }
+    inline Segment & 
+    operator = (Segment const & source)
+    {
+        assign(*this, source);
+        return *this;
+    }
 //____________________________________________________________________________
 
 public:
 
-	friend inline typename _Parameter<THost>::Type 
-	host(Segment & me)
-	{
+    friend inline typename _Parameter<THost>::Type 
+    host(Segment & me)
+    {
 SEQAN_CHECKPOINT
-		return _toParameter<THost>(me.data_host);
-	}
+        return _toParameter<THost>(me.data_host);
+    }
 
-	friend inline typename _Parameter<THost>::Type 
-	host(Segment const & me)
-	{
+    friend inline typename _Parameter<THost>::Type 
+    host(Segment const & me)
+    {
 SEQAN_CHECKPOINT
-		return _toParameter<THost>(me.data_host);
-	}
+        return _toParameter<THost>(me.data_host);
+    }
 
 //____________________________________________________________________________
 
-	friend inline void 
-	setHost(Segment & me, typename _Parameter<THost>::Type _host)
-	{
+    friend inline void 
+    setHost(Segment & me, typename _Parameter<THost>::Type _host)
+    {
 SEQAN_CHECKPOINT
-		me.data_host = _toPointer(_host);
-	}
+        me.data_host = _toPointer(_host);
+    }
 
 //____________________________________________________________________________
 
-	template <typename TPos>
-	inline typename Reference<Segment>::Type
-	operator [] (TPos pos)
-	{
+    template <typename TPos>
+    inline typename Reference<Segment>::Type
+    operator [] (TPos pos)
+    {
 SEQAN_CHECKPOINT
-		return value(*this, pos);
-	}
+        return value(*this, pos);
+    }
 
-	template <typename TPos>
-	inline typename Reference<Segment const>::Type 
-	operator [] (TPos pos) const
-	{
+    template <typename TPos>
+    inline typename Reference<Segment const>::Type 
+    operator [] (TPos pos) const
+    {
 SEQAN_CHECKPOINT
-		return value(*this, pos);
-	}
+        return value(*this, pos);
+    }
 
 //____________________________________________________________________________
 
-	friend inline typename Iterator<Segment, Standard>::Type 
-	begin(Segment & me,
-		Standard)
-	{
+    friend inline typename Iterator<Segment, Standard>::Type 
+    begin(Segment & me,
+        Standard)
+    {
 SEQAN_CHECKPOINT
-		return begin(host(me), Standard()) + me.data_begin_position;
-	}
-	friend inline typename Iterator<Segment const, Standard>::Type 
-	begin(Segment const & me,
-		Standard)
-	{
+        return begin(host(me), Standard()) + me.data_begin_position;
+    }
+    friend inline typename Iterator<Segment const, Standard>::Type 
+    begin(Segment const & me,
+        Standard)
+    {
 SEQAN_CHECKPOINT
-		return begin(host(me), Standard()) + me.data_begin_position;
-	}
+        return begin(host(me), Standard()) + me.data_begin_position;
+    }
 
 //____________________________________________________________________________
 
-	friend inline typename Position<Segment const>::Type 
-	beginPosition(Segment const & me)
-	{
+    friend inline typename Position<Segment const>::Type 
+    beginPosition(Segment const & me)
+    {
 SEQAN_CHECKPOINT
-		return me.data_begin_position;
-	}
-	friend inline typename Position<Segment>::Type 
-	beginPosition(Segment & me)
-	{
+        return me.data_begin_position;
+    }
+    friend inline typename Position<Segment>::Type 
+    beginPosition(Segment & me)
+    {
 SEQAN_CHECKPOINT
-		return me.data_begin_position;
-	}
+        return me.data_begin_position;
+    }
 //____________________________________________________________________________
 
-	template <typename TIterator>
-	friend inline void 
-	setBegin(Segment & me, TIterator new_begin)
-	{
+    template <typename TIterator>
+    friend inline void 
+    setBegin(Segment & me, TIterator new_begin)
+    {
 SEQAN_CHECKPOINT
-		me.data_begin_position = new_begin - begin(host(me));//, Standard());
-	}
+        me.data_begin_position = new_begin - begin(host(me));//, Standard());
+    }
 
-	friend inline void 
-	setBegin(typename Iterator<Segment, Rooted>::Type new_begin)
-	{
+    friend inline void 
+    setBegin(typename Iterator<Segment, Rooted>::Type new_begin)
+    {
 SEQAN_CHECKPOINT
-		container(new_begin).data_begin_position = hostIterator(new_begin) - begin(host(container(new_begin)));//, Standard());
-	}
-
-//____________________________________________________________________________
-
-	template <typename TPosition>
-	friend inline void 
-	setBeginPosition(Segment & me, TPosition new_begin)
-	{
-SEQAN_CHECKPOINT
-		me.data_begin_position = new_begin;
-	}
+        container(new_begin).data_begin_position = hostIterator(new_begin) - begin(host(container(new_begin)));//, Standard());
+    }
 
 //____________________________________________________________________________
 
-	friend inline typename Iterator<Segment, Standard>::Type 
-	end(Segment & me,
-		Standard)
-	{
+    template <typename TPosition>
+    friend inline void 
+    setBeginPosition(Segment & me, TPosition new_begin)
+    {
 SEQAN_CHECKPOINT
-		return end(host(me), Standard());
-	}
-	friend inline typename Iterator<Segment const, Standard>::Type 
-	end(Segment const & me,
-		Standard)
-	{
+        me.data_begin_position = new_begin;
+    }
+
+//____________________________________________________________________________
+
+    friend inline typename Iterator<Segment, Standard>::Type 
+    end(Segment & me,
+        Standard)
+    {
 SEQAN_CHECKPOINT
-		return end(host(me), Standard());
-	}
+        return end(host(me), Standard());
+    }
+    friend inline typename Iterator<Segment const, Standard>::Type 
+    end(Segment const & me,
+        Standard)
+    {
+SEQAN_CHECKPOINT
+        return end(host(me), Standard());
+    }
 
 //____________________________________________________________________________
 
 
-	friend inline typename Position<Segment>::Type 
-	endPosition(Segment & me)
-	{
+    friend inline typename Position<Segment>::Type 
+    endPosition(Segment & me)
+    {
 SEQAN_CHECKPOINT
-		return length(host(me));
-	}
+        return length(host(me));
+    }
 
-	friend inline typename Position<Segment const>::Type 
-	endPosition(Segment const & me)
-	{
+    friend inline typename Position<Segment const>::Type 
+    endPosition(Segment const & me)
+    {
 SEQAN_CHECKPOINT
-		return length(host(me));
-	}
+        return length(host(me));
+    }
 
 //____________________________________________________________________________
 
-	template <typename TIterator>
-	friend inline void
-	setEnd(Segment &, TIterator)
-	{
-	}
+    template <typename TIterator>
+    friend inline void
+    setEnd(Segment &, TIterator)
+    {
+    }
 
-	friend inline void 
-	_setLength(Segment &, typename Size<THost>::Type)
-	{
-	}
+    friend inline void 
+    _setLength(Segment &, typename Size<THost>::Type)
+    {
+    }
 
 //____________________________________________________________________________
 };
@@ -327,51 +327,51 @@ struct InfixSegment;
 template <typename THost>
 struct Suffix
 {
-	typedef Segment<THost, SuffixSegment> Type;
+    typedef Segment<THost, SuffixSegment> Type;
 };
 
 template <typename THost>
 struct Suffix< Segment<THost, InfixSegment> >
 {
-	typedef Segment<THost, InfixSegment> Type;
+    typedef Segment<THost, InfixSegment> Type;
 };
 template <typename THost>
 struct Suffix< Segment<THost, SuffixSegment> >
 {
-	typedef Segment<THost, SuffixSegment> Type;
+    typedef Segment<THost, SuffixSegment> Type;
 };
 template <typename THost>
 struct Suffix< Segment<THost, PrefixSegment> >
 {
-	typedef Segment<THost, InfixSegment> Type;
+    typedef Segment<THost, InfixSegment> Type;
 };
 
 template <typename THost, typename TSpec>
 struct Suffix< Segment<THost, TSpec> const >:
-	Suffix< Segment<THost, TSpec> > {};
+    Suffix< Segment<THost, TSpec> > {};
 
 //////////////////////////////////////////////////////////////////////////////
 
 template <typename THost, typename TPosition>
 inline void
 set(Segment<THost, SuffixSegment> & me,
-	THost & host_,
-	TPosition begin_)
+    THost & host_,
+    TPosition begin_)
 {
 SEQAN_CHECKPOINT
-	setHost(me, host_);
-	setBegin(me, begin_);
+    setHost(me, host_);
+    setBegin(me, begin_);
 }
 //____________________________________________________________________________
 
 template <typename THost>
 inline void
 set(Segment<THost, SuffixSegment> & me,
-	THost & host_)
+    THost & host_)
 {
 SEQAN_CHECKPOINT
-	setHost(me, host_);
-	setBegin(me, begin(host_, Standard()));
+    setHost(me, host_);
+    setBegin(me, begin(host_, Standard()));
 }
 
 //____________________________________________________________________________
@@ -379,21 +379,21 @@ SEQAN_CHECKPOINT
 template <typename THost, typename TSpec>
 inline void
 set(Segment<THost, SuffixSegment> & me,
-	Segment<THost, TSpec> & source)
+    Segment<THost, TSpec> & source)
 {
 SEQAN_CHECKPOINT
-	setHost(me, host(source));
-	setBeginPosition(me, beginPosition(source));
+    setHost(me, host(source));
+    setBeginPosition(me, beginPosition(source));
 }
 
 template <typename THost, typename TSpec>
 inline void
 set(Segment<THost, SuffixSegment> & me,
-	Segment<THost, TSpec> const & source)
+    Segment<THost, TSpec> const & source)
 {
 SEQAN_CHECKPOINT
-	setHost(me, host(source));
-	setBeginPosition(me, beginPosition(source));
+    setHost(me, host(source));
+    setBeginPosition(me, beginPosition(source));
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -403,7 +403,7 @@ inline bool
 atBegin(Segment<THost, SuffixSegment> const & segment)
 {
 SEQAN_CHECKPOINT
-	return (beginPosition(segment) == 0);
+    return (beginPosition(segment) == 0);
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -413,7 +413,7 @@ inline bool
 atEnd(Segment<THost, SuffixSegment> const & segment)
 {
 SEQAN_CHECKPOINT
-	return (beginPosition(segment) == length(host(segment)));
+    return (beginPosition(segment) == length(host(segment)));
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -421,17 +421,17 @@ SEQAN_CHECKPOINT
 template <typename THost>
 inline void
 goBegin(Segment<THost, SuffixSegment> & segment,
-		THost &)
+        THost &)
 {
 SEQAN_CHECKPOINT
-	goBegin(segment);
+    goBegin(segment);
 }
 
 template <typename THost>
 inline void
 goBegin(Segment<THost, SuffixSegment> & segment)
 {
-	setBegin(segment);
+    setBegin(segment);
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -439,17 +439,17 @@ goBegin(Segment<THost, SuffixSegment> & segment)
 template <typename THost>
 inline void
 goEnd(Segment<THost, SuffixSegment> & segment,
-	  THost &)
+      THost &)
 {
 SEQAN_CHECKPOINT
-	goEnd(segment);
+    goEnd(segment);
 }
 
 template <typename THost>
 inline void
 goEnd(Segment<THost, SuffixSegment> & segment)
 {
-	setBegin(segment, length(host(segment))-1);
+    setBegin(segment, length(host(segment))-1);
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -458,8 +458,8 @@ template <typename THost>
 inline Segment<THost, SuffixSegment> &
 operator ++(Segment<THost, SuffixSegment> & segment)
 {
-	setBegin(segment, beginPosition(segment) + 1);
-	return segment;
+    setBegin(segment, beginPosition(segment) + 1);
+    return segment;
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -468,8 +468,8 @@ template <typename THost>
 inline Segment<THost, SuffixSegment> &
 operator --(Segment<THost, SuffixSegment> & segment)
 {
-	setBegin(segment, beginPosition(segment) - 1);
-	return segment;
+    setBegin(segment, beginPosition(segment) - 1);
+    return segment;
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -497,7 +497,7 @@ inline typename Suffix<T>::Type
 suffix(T & t, TPosBegin pos_begin)
 {
 SEQAN_CHECKPOINT
-	return typename Suffix<T>::Type(t, pos_begin);
+    return typename Suffix<T>::Type(t, pos_begin);
 }
 
 template <typename T, typename TPosBegin>
@@ -505,7 +505,7 @@ inline typename Suffix<T *>::Type
 suffix(T * t, TPosBegin pos_begin)
 {
 SEQAN_CHECKPOINT
-	return typename Suffix<T *>::Type (t, pos_begin);
+    return typename Suffix<T *>::Type (t, pos_begin);
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -515,20 +515,20 @@ inline typename Suffix<Segment<T, PrefixSegment> >::Type
 suffix(Segment<T, PrefixSegment> & t, TPosBegin pos_begin)
 {
 SEQAN_CHECKPOINT
-	return typename Suffix<Segment<T, PrefixSegment> >::Type (
-		host(t), 
-		beginPosition(t) + pos_begin, 
-		endPosition(t));
+    return typename Suffix<Segment<T, PrefixSegment> >::Type (
+        host(t), 
+        beginPosition(t) + pos_begin, 
+        endPosition(t));
 }
 template <typename T, typename TPosBegin>
 inline typename Suffix<Segment<T, PrefixSegment> const>::Type
 suffix(Segment<T, PrefixSegment> const & t, TPosBegin pos_begin)
 {
 SEQAN_CHECKPOINT
-	return typename Suffix<Segment<T, PrefixSegment> const>::Type (
-		host(t), 
-		beginPosition(t) + pos_begin, 
-		endPosition(t));
+    return typename Suffix<Segment<T, PrefixSegment> const>::Type (
+        host(t), 
+        beginPosition(t) + pos_begin, 
+        endPosition(t));
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -538,20 +538,20 @@ inline typename Suffix<Segment<T, InfixSegment> >::Type
 suffix(Segment<T, InfixSegment> & t, TPosBegin pos_begin)
 {
 SEQAN_CHECKPOINT
-	return typename Suffix<Segment<T, InfixSegment> >::Type (
-		host(t), 
-		beginPosition(t) + pos_begin, 
-		endPosition(t));
+    return typename Suffix<Segment<T, InfixSegment> >::Type (
+        host(t), 
+        beginPosition(t) + pos_begin, 
+        endPosition(t));
 }
 template <typename T, typename TPosBegin>
 inline typename Suffix<Segment<T, InfixSegment> const>::Type
 suffix(Segment<T, InfixSegment> const & t, TPosBegin pos_begin)
 {
 SEQAN_CHECKPOINT
-	return typename Suffix<Segment<T, InfixSegment> const>::Type (
-		host(t), 
-		beginPosition(t) + pos_begin, 
-		endPosition(t));
+    return typename Suffix<Segment<T, InfixSegment> const>::Type (
+        host(t), 
+        beginPosition(t) + pos_begin, 
+        endPosition(t));
 }
 
 
@@ -562,18 +562,18 @@ inline typename Suffix<Segment<T, SuffixSegment> >::Type
 suffix(Segment<T, SuffixSegment> & t, TPosBegin pos_begin)
 {
 SEQAN_CHECKPOINT
-	return typename Suffix<Segment<T, SuffixSegment> >::Type (
-		host(t), 
-		beginPosition(t) + pos_begin);
+    return typename Suffix<Segment<T, SuffixSegment> >::Type (
+        host(t), 
+        beginPosition(t) + pos_begin);
 }
 template <typename T, typename TPosBegin>
 inline typename Suffix<Segment<T, SuffixSegment> const>::Type
 suffix(Segment<T, SuffixSegment> const & t, TPosBegin pos_begin)
 {
 SEQAN_CHECKPOINT
-	return typename Suffix<Segment<T, SuffixSegment> const>::Type (
-		host(t), 
-		beginPosition(t) + pos_begin);
+    return typename Suffix<Segment<T, SuffixSegment> const>::Type (
+        host(t), 
+        beginPosition(t) + pos_begin);
 }
 
 //////////////////////////////////////////////////////////////////////////////

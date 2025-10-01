@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -82,7 +82,7 @@ namespace SEQAN_NAMESPACE_MAIN
 		{
 			TSize j = getValue(a,i) + shift;							// count occurences
 			if (j < sn) c[ordValue(getValue(r,j))]++;
-			else        sum++;
+			else    sum++;
 		}
 		
 		for (i = 0;  i < K;  i++)
@@ -158,7 +158,7 @@ namespace SEQAN_NAMESPACE_MAIN
 		
 		for (i = 0;  i < n;  i++)
 		{																// count occurences
-	        TSize j = getValue(a,i);
+	    TSize j = getValue(a,i);
 			if (j > 0) c[ordValue(getValue(r,j-1))]++;
 		}
 		

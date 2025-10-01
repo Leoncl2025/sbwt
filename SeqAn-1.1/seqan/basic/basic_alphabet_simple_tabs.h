@@ -1,6 +1,6 @@
  /*==========================================================================
-                SeqAn - The Library for Sequence Analysis
-                          http://www.seqan.de 
+        SeqAn - The Library for Sequence Analysis
+              http://www.seqan.de 
  ============================================================================
   Copyright (C) 2007
 
@@ -340,30 +340,30 @@ struct _Translate_Table_AA_2_Ascii
 template <typename T>
 char const _Translate_Table_AA_2_Ascii<T>::VALUE[24] = 
 {
-	'A', // 0 Ala Alanine                 
-	'R', // 1 Arg Arginine                
-	'N', // 2 Asn Asparagine              
-	'D', // 3 Asp Aspartic Acid           
-	'C', // 4 Cys Cystine                 
-	'Q', // 5 Gln Glutamine               
-	'E', // 6 Glu Glutamic Acid           
-	'G', // 7 Gly Glycine                 
-	'H', // 8 His Histidine               
-	'I', // 9 Ile Isoleucine              
-	'L', //10 Leu Leucine                 
-	'K', //11 Lys Lysine                  
-	'M', //12 Met Methionine              
-	'F', //13 Phe Phenylalanine           
-	'P', //14 Pro Proline                 
-	'S', //15 Ser Serine                  
-	'T', //16 Thr Threonine               
-	'W', //17 Trp Tryptophan              
-	'Y', //18 Tyr Tyrosine                
-	'V', //19 Val Valine                  
+	'A', // 0 Ala Alanine         
+	'R', // 1 Arg Arginine        
+	'N', // 2 Asn Asparagine          
+	'D', // 3 Asp Aspartic Acid       
+	'C', // 4 Cys Cystine         
+	'Q', // 5 Gln Glutamine           
+	'E', // 6 Glu Glutamic Acid       
+	'G', // 7 Gly Glycine         
+	'H', // 8 His Histidine           
+	'I', // 9 Ile Isoleucine          
+	'L', //10 Leu Leucine         
+	'K', //11 Lys Lysine          
+	'M', //12 Met Methionine          
+	'F', //13 Phe Phenylalanine       
+	'P', //14 Pro Proline         
+	'S', //15 Ser Serine          
+	'T', //16 Thr Threonine           
+	'W', //17 Trp Tryptophan          
+	'Y', //18 Tyr Tyrosine        
+	'V', //19 Val Valine          
 	'B', //20 Aspartic Acid, Asparagine   
 	'Z', //21 Glutamic Acid, Glutamine    
-	'X', //22 Unknown                     
-	'*'  //23 Terminator                  
+	'X', //22 Unknown             
+	'*'  //23 Terminator          
 };
 
 //____________________________________________________________________________
