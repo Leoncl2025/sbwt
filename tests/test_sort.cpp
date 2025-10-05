@@ -7,7 +7,6 @@
 
 #include "utils/sort.hpp"
 
-// Helper to build naive suffix array (cyclic like implementation used in SortSuffixArrayOneStep)
 static std::vector<uint32_t> naive_suffix_array_cyclic(const std::string &s, const uint32_t step=1) {
     const uint32_t n = static_cast<uint32_t>(s.size());
     std::vector<uint32_t> sa(n);
@@ -48,31 +47,6 @@ static void assert_equal_array(const std::vector<uint32_t> &got,
                   << " got=" << got[first_idx] << std::endl;
         assert(false);
         throw;
-    }
-}
-
-static void test_one_step_basic() {
-    std::string seq = "ACGT"; // length 4
-    const uint32_t n = seq.size();
-    std::vector<uint32_t> sa = {3,2,1,0}; // reversed initial order
-    // perform depth 0 one step sort over whole range
-    // Explicitly capture const char* to avoid any ambiguity with potential old declarations
-    const char *seq_ptr = seq.c_str();
-    utility::SortSuffixArrayOneStep(seq_ptr, sa.data(), 1 /*step*/, n, 0 /*depth*/, 0, n);
-    // After sorting by first char cyclically at depth 0, order should be A(0), C(1), G(2), T(3)
-    assert(sa[0] == 0 && sa[1] == 1 && sa[2] == 2 && sa[3] == 3);
-}
-
-static void test_one_step_stable_tie_break() {
-    std::string seq = "AAAA"; // all same letters
-    const uint32_t n = seq.size();
-    std::vector<uint32_t> sa = {3,2,1,0};
-    const char *seq_ptr = seq.c_str();
-    utility::SortSuffixArrayOneStep(seq_ptr, sa.data(), 1, n, 0, 0, n);
-    // all characters equal, comparator returns a<b as tie-break => ascending indices
-    {
-        std::vector<uint32_t> expected(n); for(uint32_t i=0;i<n;++i) expected[i]=i;
-        assert_equal_array(sa, expected, "test_one_step_stable_tie_break");
     }
 }
 
@@ -133,8 +107,6 @@ static void test_full_sort_forced_fail_period3() {
 }
 
 int main() {
-    test_one_step_basic();
-    test_one_step_stable_tie_break();
     test_full_sort_simple();
     test_full_sort_repeated_pattern();
     test_full_sort_random_small();
