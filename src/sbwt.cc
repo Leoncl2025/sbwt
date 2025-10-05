@@ -21,6 +21,7 @@
 #include "word_io.h"
 #include "sequence_pack.h"
 #include "utility.h"
+#include "utils/sort.hpp"
 
 namespace sbwt {
 using std::vector;
@@ -968,69 +969,15 @@ void SortSbwtBlockwise(BuildIndexRawData &build_index)
     const uint32_t &period = build_index.period;
 
     /// Firstly, split the sequence rotation matrix into 4^num_block blocks
-    LOGINFO("Firstly, split the sequence rotation matrix into 4^"<< num_block_sort << " blocks\n");
+    LOGINFO("Firstly, sort index" << std::endl);
     try {
-        SortSbwtBlockwise( seq, seq_index, 0, N, 0, length_ref, period, num_block_sort );
-    } catch (...) {
+        utility::SortSuffixArray(seq, seq_index, period, length_ref);
+    }
+    catch (...) {
         LOGERROR("SortSbwtBlockwise");
         throw;
     }
 
-    {
-        /**
-         * Splitting blocks:
-         * The segments in range [beg0, end0) share with same
-         * spaced prefix (length: num_block_sort * period).
-         * Those blocks sharing with same prefix are sorted
-         * again according to their suffixes.
-         */
-        LOGINFO("Splitting blocks...\n");
-        vector<char> tmpcv(num_block_sort, '\0');
-        uint32_t j = 0;
-        uint32_t t0 = 0;
-        bool flg;
-        uint32_t beg0 = 0, end0 = 1;
-        for (j = 0; j < num_block_sort; ++j) {
-               tmpcv[j] = seq[(j*period+seq_index[0])%N];
-        }
-        for (uint32_t i = 1; i < N; ++i) {
-            flg = true;
-            for (j = 0; j < num_block_sort; ++j) {
-                t0 = (j*period+seq_index[i]) % N;
-                if (seq[t0] != tmpcv[j] && flg) {
-                    flg = false;
-                }
-                tmpcv[j] = seq[t0];
-            }
-            if (!flg) {
-                end0 = i;
-                if (end0 > 1 + beg0) {
-                    try {
-                        LOGINFO("Sort block in [" << beg0 << ",\t" << end0 << ")...\t");
-                        SortSbwt(seq, seq_index, beg0, end0, num_block_sort*period, N, period);
-                        LOGPUT("Done\n");
-                    } catch (...) {
-                        LOGERROR("[" << beg0 << ",\t" << end0 << ")\n");
-                        throw;
-                    }
-
-                }
-                beg0 = i;
-            }
-        }
-        /// tail
-        LOGINFO("Tail case...\t");
-        if (N > 1 + beg0) {
-            try {
-                SortSbwt(seq, seq_index, beg0, N, num_block_sort*period, N, period);
-            } catch (...) {
-                LOGERROR("SortSbwt");
-                throw;
-            }
-
-        }
-        LOGPUT("Done\n");
-    }
 }
 
 void SortSbwtBlockwise(
