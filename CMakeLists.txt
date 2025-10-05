@@ -35,6 +35,9 @@ endif()
 file ( GLOB varCC ${CMAKE_SOURCE_DIR}/src/*.cc)
 file ( GLOB varC ${CMAKE_SOURCE_DIR}/src/*.c)
 file ( GLOB varCPP ${CMAKE_SOURCE_DIR}/src/*.cpp)
+# Also include sources in utils subdirectory (e.g., utils/sort.cc)
+file ( GLOB varUTILS_CC ${CMAKE_SOURCE_DIR}/src/utils/*.cc)
+file ( GLOB varUTILS_CPP ${CMAKE_SOURCE_DIR}/src/utils/*.cpp)
 
 # exclude test_io.cpp to prevent targeting multi-main cpp file
 list(REMOVE_ITEM varCC "${CMAKE_SOURCE_DIR}/src/build_index.cc")
@@ -42,9 +45,9 @@ list(REMOVE_ITEM varCC "${CMAKE_SOURCE_DIR}/src/count_occ.cc")
 list(REMOVE_ITEM varCPP "${CMAKE_SOURCE_DIR}/src/sbwt_aligner.cpp")
 list(REMOVE_ITEM varCPP "${CMAKE_SOURCE_DIR}/src/sbwt_test.cpp")
 
-set(SRC_CC ${varCC} )
+set(SRC_CC ${varCC} ${varUTILS_CC})
 set(SRC_C ${varC})
-set(SRC_CPP ${varCPP})
+set(SRC_CPP ${varCPP} ${varUTILS_CPP})
 
 add_definitions(
         -DSBWT_VERBOSE
@@ -59,6 +62,11 @@ add_executable(count_occ ${CMAKE_SOURCE_DIR}/src/count_occ.cc ${SRC_C} ${SRC_CC}
 add_executable(sbwt ${CMAKE_SOURCE_DIR}/src/sbwt_aligner.cpp ${SRC_C} ${SRC_CC} ${SRC_CPP})
 
 add_executable(sbwt_test ${CMAKE_SOURCE_DIR}/src/sbwt_test.cpp ${SRC_C} ${SRC_CC} ${SRC_CPP})
+
+# Unit test for utils/sort
+if (BUILD_TESTING)
+    add_executable(sort_unit ${CMAKE_SOURCE_DIR}/tests/test_sort.cpp ${SRC_C} ${SRC_CC} ${SRC_CPP})
+endif()
 
 # Register tests if requested
 if(BUILD_TESTING)
@@ -77,5 +85,13 @@ if(BUILD_TESTING)
     )
     set_tests_properties(e2e_sbwt PROPERTIES
         PASS_REGULAR_EXPRESSION "All e2e checks passed"
+    )
+
+    add_test(
+        NAME unit_sort
+        COMMAND $<TARGET_FILE:sort_unit>
+    )
+    set_tests_properties(unit_sort PROPERTIES
+        PASS_REGULAR_EXPRESSION "All sort unit tests passed"
     )
 endif()
