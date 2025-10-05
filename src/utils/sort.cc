@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <vector>
+#include "../log.h"
 
 using namespace std;
 
@@ -18,7 +19,11 @@ namespace utility {
         uint32_t beg = 0;
         uint32_t end = 0;
         ranges.push_back({0, length_ref});
+        LOGINFO("Sorting suffix array of length " << length_ref << " with step " << step << "\n");
         for (uint32_t i = 0; i < length_ref && ranges.size() > 0; i += step) {
+            if (i % 100 < step) {
+                LOGINFO("Sorting at depth " << i << "\trange size\t" << ranges.size() << std::endl);
+            }
             new_ranges.clear();
             for (auto &p : ranges) {
                 beg = p.first;
